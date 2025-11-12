@@ -1,0 +1,56 @@
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+<button (click)="toggleDrawer()" id="menuBtn" class="menu-btn">
+  ☰
+</button>
+
+<div id="drawer" [class.open]="isOpen">
+  <a href="javascript:void(0)" class="closebtn" (click)="toggleDrawer()">×</a>
+
+  <div class="drawer">
+    <a href="javascript:void(0)" (click)="toggleTrueUp()">
+      <span class="material-icons">spa</span> TrueUP
+      <span class="material-icons rotate" [class.rotate]="isTrueUpOpen">arrow_drop_down</span>
+    </a>
+    <div class="drawer-menu" [class.show]="isTrueUpOpen">
+      <a [routerLink]=""><span class="material-icons">create</span> Generar</a>
+    </div>
+  </div>
+
+  <div class="drawer">
+    <a href="javascript:void(0)" (click)="toggleUsuariosP()">
+      <span class="material-icons">sync_alt</span> Transacciones
+      <span class="material-icons rotate" [class.rotate]="isUsuariosOpen">arrow_drop_down</span>
+    </a>
+    <div class="drawer-menu" [class.show]="isUsuariosOpen">
+      <a [routerLink]=""><span class="material-icons">payments</span>Pagos</a>
+      <a [routerLink]=""><span class="material-icons">monetization_on</span>Saldo Inicial</a>
+      <a [routerLink]=""><span class="material-icons">request_page</span>Obligación</a>
+      <a [routerLink]=""><span class="material-icons">local_atm</span>Provisión</a>
+    </div>
+  </div>
+
+  <div class="drawer">
+    <a href="javascript:void(0)" (click)="toggleTareas()">
+      <span class="material-icons">map</span> Catálogos
+      <span class="material-icons rotate" [class.rotate]="isTareasOpen">arrow_drop_down</span>
+    </a>
+    <div class="drawer-menu" [class.show]="isTareasOpen">
+      <a [routerLink]=""><span class="material-icons">star</span>Administrar</a>
+      <a [routerLink]=""><span class="material-icons">account_tree</span>Conceptos</a>
+      <a [routerLink]=""><span class="material-icons">lan</span>Rubros</a>
+      <a href="javascript:void(0)"  (click)="toggleUsuario()">
+        <span class="material-icons">group</span> Usuarios
+        <span class="material-icons rotate" [class.rotate]="isUsuario">arrow_drop_down</span>
+      </a>
+      <div class="drawer-menu" [class.show]="isUsuario">
+        <a [routerLink]=""><span class="material-icons">group_add</span>Crear Usuario</a>
+        <a [routerLink]=""><span class="material-icons">groups</span>Mostrar Usuario</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- <a href="/costosNomina">
+    <span class="material-icons">payments</span> Costos de nómina
+  </a> -->
+</div>
