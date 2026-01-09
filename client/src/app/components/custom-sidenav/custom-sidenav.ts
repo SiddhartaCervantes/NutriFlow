@@ -1,5 +1,6 @@
-import { Component, signal, input} from '@angular/core';
+import { Component, signal, input } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
+import { RouterLink, RouterLinkActive } from '@angular/router';
 
 interface MenuItem {
   path: string;
@@ -10,18 +11,23 @@ interface MenuItem {
 @Component({
   selector: 'app-custom-sidenav',
   standalone: true,
-  imports: [MatIconModule],
+  imports: [MatIconModule, RouterLink, RouterLinkActive], // 👈 importa router
   template: `
     <nav class="sidenav">
       <h2 class="text-xl font-semibold px-4 py-2 mb-1">
-          {{ collapsed() ? 'M' : 'MENU' }}
+        {{ collapsed() ? 'M' : 'MENU' }}
       </h2>
       <ul>
         @for (item of items(); track item.label) {
           <li>
-            <a class="sidenav-item" [class.justify-center]="collapsed()">
+            <a
+              [routerLink]="item.path"               
+              routerLinkActive="sidenav-item--active" 
+              class="sidenav-item"
+              [class.justify-center]="collapsed()"
+            >
               <mat-icon class="sidenav-icon">{{ item.icon }}</mat-icon>
-              @if(!collapsed()){
+              @if (!collapsed()) {
                 <span class="sidenav-label">{{ item.label }}</span>
               }
             </a>
@@ -34,11 +40,11 @@ interface MenuItem {
 })
 export class CustomSidenav {
   items = signal<MenuItem[]>([
-    { path: '/dashboard', icon: 'dashboard', label: 'Dashboard' },
-    { path: '/videos', icon: 'video_library', label: 'Videos' },
+    { path: '/', icon: 'dashboard', label: 'Dashboard' },
+    { path: '/recetas', icon: 'restaurant_menu', label: 'Recetas' },
     { path: '/analytics', icon: 'bar_chart', label: 'Analytics' },
     { path: '/settings', icon: 'settings', label: 'Settings' },
   ]);
 
-  collapsed = input.required<boolean>()
+  collapsed = input.required<boolean>();
 }

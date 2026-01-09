@@ -1,0 +1,116 @@
+.recipe-card {
+  width: 320px; /* ⬅️ antes 220px, ahora más amplia */
+  background: #fff;
+  border-radius: 1.4rem;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+/* imagen arriba */
+.recipe-card__image-wrap {
+  width: 100%;
+  height: 130px; /* 🔹 un poco más alta para mantener proporción */
+  overflow: hidden;
+}
+
+.recipe-card__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* cuerpo */
+.recipe-card__body {
+  padding: 0.8rem 1rem 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+/* pastilla del título */
+.recipe-card__title-pill {
+  background: #f7cfa4;
+  color: #333;
+  padding: 0.35rem 1rem; /* un poco más ancha */
+  border-radius: 9999px;
+  font-weight: 600;
+  font-size: 0.8rem; /* ligeramente más grande */
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* descripción */
+.recipe-card__desc {
+  margin: 0;
+  font-size: 0.75rem;
+  color: #555;
+  text-align: center;
+  min-height: 1.4rem;
+}
+
+/* parte de abajo con los dos datos */
+.recipe-card__info {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin-top: 0.2rem;
+}
+
+.recipe-card__info-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.2rem;
+  font-size: 0.7rem;
+  color: #333;
+
+  mat-icon {
+    font-size: 1.2rem;
+    width: 1.2rem;
+    height: 1.2rem;
+    color: #666;
+  }
+}
+
+/* 🔸 Ajuste del grid */
+.recipes-grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(240px, 1fr)); /* más flexibles */
+  gap: 1.2rem; /* un poco más de espacio */
+  justify-items: center;
+  padding: 1.5rem 0;
+  width: 100%;
+  max-width: 1600px; /* 🔹 permite más ancho total */
+  margin: 0 auto;
+}
+
+/* Responsividad */
+@media (max-width: 1300px) {
+  .recipes-grid {
+    grid-template-columns: repeat(4, minmax(240px, 1fr));
+  }
+}
+
+@media (max-width: 1000px) {
+  .recipes-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 700px) {
+  .recipes-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 500px) {
+  .recipes-grid {
+    grid-template-columns: 1fr;
+  }
+}

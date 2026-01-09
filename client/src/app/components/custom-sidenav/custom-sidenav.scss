@@ -45,3 +45,16 @@
 .sidenav-label {
   font-size: 0.9rem;
 }
+.sidenav-item {
+  display: flex;
+  gap: .6rem;
+  align-items: center;
+  padding: .5rem 1rem;
+  border-radius: .75rem;
+  text-decoration: none;
+  color: inherit;
+}
+
+.sidenav-item--active {
+  background: rgba(255, 255, 255, 0.25);
+}
