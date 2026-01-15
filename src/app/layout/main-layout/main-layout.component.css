@@ -1,0 +1,127 @@
+.app-shell {
+  height: 100vh;
+}
+
+/* base sidenav */
+mat-sidenav {
+  border-right: none;
+  padding: 16px 0;
+  box-sizing: border-box;
+  background: #ffffff;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: width 0.25s ease;
+  overflow: hidden; /* hide labels when collapsed */
+}
+
+/* widths */
+mat-sidenav.collapsed {
+  width: 72px;   /* rail mode */
+}
+
+mat-sidenav.expanded {
+  width: 220px;  /* full sidebar */
+}
+
+/* top logo + toggle */
+.side-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 0 12px 24px;
+}
+
+.logo {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: #f7a94b;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  color: white;
+}
+
+/* nav items */
+.side-nav,
+.side-footer {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 0 8px;
+}
+
+.nav-item {
+  justify-content: center;          /* rail */
+  border-radius: 16px;
+  min-width: 0;
+}
+
+mat-sidenav.expanded .nav-item {
+  justify-content: flex-start;      /* expanded */
+}
+
+.nav-item mat-icon {
+  margin-right: 0;
+}
+
+.nav-label {
+  margin-left: 12px;
+  white-space: nowrap;
+}
+
+/* active icon (like your screenshot) */
+.nav-item.active {
+  background: #333333;
+  color: #ffffff;
+}
+
+.nav-item.active mat-icon {
+  color: #ffffff;
+}
+
+/* logout at bottom */
+.side-footer {
+  margin-top: auto;
+}
+
+
+.logo-btn {
+  background: transparent;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  outline: none;
+}
+
+.logo-btn:hover .logo {
+  transform: scale(1.05);
+  transition: 0.2s ease;
+}
+
+.logo {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: #f7a94b;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  color: white;
+  transition: transform 0.2s ease;
+}
+
+.page-shell {
+  background: #FFFCF8;
+  min-height: 100vh;
+  padding: 24px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+

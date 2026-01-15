@@ -1,0 +1,33 @@
+<div class="header-card">
+    <div class="header-left">
+        <img [src]="avatarUrl" alt="User photo" class="avatar" />
+
+        <div class="text-block">
+            <p class="greeting">Bienvenido de nuevo</p>
+            <h2 class="title">
+                {{ userName }}
+            </h2>
+            <p class="subtitle">{{ phrase }}</p>
+        </div>
+    </div>
+
+    <div class="header-right">
+        <div class="icon-group">
+            <div>
+                <button mat-icon-button class="icon-pill" aria-label="Notificaciones">
+                <mat-icon>notifications_none</mat-icon>
+                </button>
+
+                <button mat-icon-button class="icon-pill" aria-label="Perfil">
+                    <mat-icon>person_outline</mat-icon>
+                </button>
+            </div>
+            
+             <p class="date">
+                {{ date | date:'EEE d MMMM y' }}
+            </p>
+        </div>
+    </div>
+
+   
+</div>
