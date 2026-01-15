@@ -1,10 +1,12 @@
-<mat-sidenav-container class="app-shell">
+<mat-sidenav-container class="app-shell"
+    [class.is-expanded]="isSideNavExpanded"
+    [class.is-collapsed]="!isSideNavExpanded"
+>
   <!-- SIDENAV -->
   <mat-sidenav 
     mode="side"
     [opened]="true"
-    [class.expanded]="isSideNavExpanded"
-    [class.collapsed]= "!isSideNavExpanded">
+  >
 
     <!-- LOGO + TOGGLE -->
     <div class="side-header">

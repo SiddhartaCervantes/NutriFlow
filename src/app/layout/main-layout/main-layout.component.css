@@ -1,5 +1,8 @@
 .app-shell {
   height: 100vh;
+  /* variables for widths */
+  --sidenav-collapsed-width: 72px;
+  --sidenav-expanded-width: 220px;
 }
 
 /* base sidenav */
@@ -11,17 +14,31 @@ mat-sidenav {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  transition: width 0.25s ease;
   overflow: hidden; /* hide labels when collapsed */
 }
 
-/* widths */
-mat-sidenav.collapsed {
-  width: 72px;   /* rail mode */
+mat-sidenav,
+mat-sidenav-content {
+  transition: width 0.28s ease-in-out, margin-left 0.28s ease-in-out;
 }
 
-mat-sidenav.expanded {
-  width: 220px;  /* full sidebar */
+/* widths controlled by container state */
+.app-shell.is-collapsed mat-sidenav {
+  width: var(--sidenav-collapsed-width);   /* rail mode */
+}
+
+.app-shell.is-expanded mat-sidenav {
+  width: var(--sidenav-expanded-width);    /* full sidebar */
+}
+
+/* shift content so it never overlaps */
+
+.app-shell.is-collapsed mat-sidenav-content {
+  margin-left: var(--sidenav-collapsed-width) !important;
+}
+
+.app-shell.is-expanded mat-sidenav-content {
+  margin-left: var(--sidenav-expanded-width) !important;
 }
 
 /* top logo + toggle */
@@ -33,6 +50,21 @@ mat-sidenav.expanded {
   padding: 0 12px 24px;
 }
 
+/* logo button */
+.logo-btn {
+  background: transparent;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  outline: none;
+}
+
+.logo-btn:hover .logo {
+  transform: scale(1.05);
+  transition: 0.2s ease;
+}
+
+/* logo circle */
 .logo {
   width: 32px;
   height: 32px;
@@ -43,6 +75,7 @@ mat-sidenav.expanded {
   justify-content: center;
   font-weight: 700;
   color: white;
+  transition: transform 0.2s ease;
 }
 
 /* nav items */
@@ -60,7 +93,8 @@ mat-sidenav.expanded {
   min-width: 0;
 }
 
-mat-sidenav.expanded .nav-item {
+/* when expanded, align text to the left */
+.app-shell.is-expanded .nav-item {
   justify-content: flex-start;      /* expanded */
 }
 
@@ -88,33 +122,7 @@ mat-sidenav.expanded .nav-item {
   margin-top: auto;
 }
 
-
-.logo-btn {
-  background: transparent;
-  border: none;
-  padding: 0;
-  cursor: pointer;
-  outline: none;
-}
-
-.logo-btn:hover .logo {
-  transform: scale(1.05);
-  transition: 0.2s ease;
-}
-
-.logo {
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  background: #f7a94b;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 700;
-  color: white;
-  transition: transform 0.2s ease;
-}
-
+/* content background */
 .page-shell {
   background: #FFFCF8;
   min-height: 100vh;
@@ -124,4 +132,3 @@ mat-sidenav.expanded .nav-item {
   flex-direction: column;
   gap: 24px;
 }
-
