@@ -24,17 +24,7 @@ import { CardPreviewComponent } from '../cardInfo/card-preview.component';
 
         <router-outlet></router-outlet>
 
-         <!-- 🧩 Card de prueba -->
-        <div style="padding: 1.5rem;">
-          <app-card-preview
-            imageSrc="assets/images/pizza.jpg"
-            alt="Pizza bien rica">
-            <h3 style="margin: 0 0 .5rem;">Pizza bien rica ve nomás</h3>
-            <p style="margin: 0; font-size: .75rem; color: #555;">
-              recuento de ingredientes corto...
-            </p>
-          </app-card-preview>
-        </div>
+         
       </mat-sidenav-content>
     </mat-sidenav-container>
   `,
