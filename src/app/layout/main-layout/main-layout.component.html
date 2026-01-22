@@ -1,0 +1,83 @@
+<mat-sidenav-container class="app-shell"
+    [class.is-expanded]="isSideNavExpanded"
+    [class.is-collapsed]="!isSideNavExpanded"
+>
+  <!-- SIDENAV -->
+  <mat-sidenav 
+    mode="side"
+    [opened]="true"
+  >
+
+    <!-- LOGO + TOGGLE -->
+    <div class="side-header">
+        <button class="logo-btn" (click)="toggleSideNav()">
+            <div class="logo">NF</div>
+        </button>
+    </div>
+
+    <!-- NAV ICONS -->
+    <nav class="side-nav">
+        <a mat-button class="nav-item active"
+         routerLink="/healthInfo"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }">
+            <mat-icon>dashboard</mat-icon>
+            <span class="nav-label" *ngIf="isSideNavExpanded">Dashboard</span>
+        </a>
+
+    </nav>
+    <nav class="side-nav">
+        <a mat-button class="nav-item">
+            <mat-icon>calendar_today</mat-icon>
+            <span class="nav-label" *ngIf="isSideNavExpanded">Calendario</span>
+        </a>
+
+    </nav>
+    <nav class="side-nav">
+        <a mat-button class="nav-item">
+            <mat-icon>folder_shared</mat-icon>
+            <span class="nav-label" *ngIf="isSideNavExpanded">Pacientes</span>
+        </a>
+
+    </nav>
+    <nav class="side-nav">
+        <a mat-button class="nav-item"
+        routerLink="/recetas"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }">
+            <mat-icon>book</mat-icon>
+            <span class="nav-label" *ngIf="isSideNavExpanded">Recetario</span>
+        </a>
+
+    </nav>
+
+    <!-- LOGOUT AT BOTTOM-->
+    <div class="side-footer">
+        <a mat-button class="nav-item">
+            <mat-icon>logout</mat-icon>
+            <span class="nav-label" *ngIf="isSideNavExpanded">Salir</span>
+        </a>
+    </div>
+    
+  </mat-sidenav>
+
+  <!-- MAIN AREA -->
+  <mat-sidenav-content>
+
+    <!-- Header card going to be here-->
+
+    <div class="page-shell">
+        <app-user-header-card
+        [userName]="'Dr. Nunez'"
+        [phrase]="'Tu dia en equilibrio'"
+        [avatarUrl]="'../../assets/privado.png'">
+    </app-user-header-card>
+
+        <main class="page-content">
+            <router-outlet></router-outlet>
+        </main>
+    </div>
+
+   
+  </mat-sidenav-content>
+</mat-sidenav-container>

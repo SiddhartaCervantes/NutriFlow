@@ -1,0 +1,178 @@
+<section class="report">
+ 
+  <div class="report__layout">
+    <!-- COLUMNA IZQUIERDA -->
+    <div class="report__left">
+      <div class="report__header-inline">
+        <div>
+          <h1 class="report__title">Informe de bienestar</h1>
+          <p class="report__date">{{ today }}</p>
+        </div>
+
+        <button class="report__bell" aria-label="Notificaciones">🔔</button>
+      </div>
+
+      <!-- Tarjetas superiores -->
+      <div class="report__cards">
+        <!-- Card 1 -->
+        <article class="card card--orange">
+          <div class="card__icon">
+            <span class="card__icon-circle">💉</span>
+          </div>
+          <p class="card__subtitle">Has bajado</p>
+          <p class="card__value">80 <span class="card__unit">mg / dL</span></p>
+          <span class="card__badge card__badge--orange"> desde que comenzaste el 3/12 </span>
+          <div class="card__chart card__chart--orange"></div>
+        </article>
+
+        <!-- Card 2 -->
+        <article class="card">
+          <div class="card__icon card__icon--red">
+            <span class="card__icon-circle">❤️</span>
+          </div>
+          <p class="card__subtitle">Tu conteo de calorías promedio (semanal)</p>
+          <p class="card__value">98 <span class="card__unit">bpm</span></p>
+          <span class="card__badge">Normal</span>
+          <div class="card__chart card__chart--red"></div>
+        </article>
+
+        <!-- Card 3 -->
+        <article class="card card--blue">
+          <div class="card__icon card__icon--blue">
+            <span class="card__icon-circle">💧</span>
+          </div>
+          <p class="card__subtitle">Déficit Calórico para tu objetivo</p>
+          <p class="card__value">102 <span class="card__unit">/ 72 mmhg</span></p>
+          <span class="card__badge card__badge--blue">Normal</span>
+          <div class="card__chart card__chart--blue"></div>
+        </article>
+      </div>
+
+      <div class="report__left-body">
+        <!-- Progreso mensual -->
+        <section class="panel">
+          <header class="panel__header">
+            <div>
+              <h2 class="panel__title">Progreso mensual</h2>
+            </div>
+            <button class="panel__select">
+              Jan 2021
+              <span class="panel__chevron">▾</span>
+            </button>
+          </header>
+
+          <div class="progress-chart">
+            <div class="progress-chart__bars">
+              <div class="progress-chart__bar -aerobics" style="height: 65%"></div>
+              <div class="progress-chart__bar -yoga" style="height: 40%"></div>
+              <div class="progress-chart__bar -meditation" style="height: 25%"></div>
+
+              <div class="progress-chart__bar -aerobics" style="height: 55%"></div>
+              <div class="progress-chart__bar -yoga" style="height: 48%"></div>
+              <div class="progress-chart__bar -meditation" style="height: 20%"></div>
+
+              <div class="progress-chart__bar -aerobics" style="height: 70%"></div>
+              <div class="progress-chart__bar -yoga" style="height: 50%"></div>
+              <div class="progress-chart__bar -meditation" style="height: 35%"></div>
+            </div>
+
+            <div class="progress-chart__legend">
+              <span><span class="dot dot--red"></span>Aerobics</span>
+              <span><span class="dot dot--yellow"></span>Yoga</span>
+              <span><span class="dot dot--blue"></span>Meditation</span>
+            </div>
+          </div>
+        </section>
+
+        <!-- Próxima cita -->
+        <section class="panel appointment">
+          <div class="appointment__title">Upcoming Appointment</div>
+          <div class="appointment__body">
+            <span class="appointment__date">August 14, 2021</span>
+            <span class="appointment__text">Consultation with Dr. James</span>
+          </div>
+        </section>
+      </div>
+    </div>
+
+    <!-- COLUMNA DERECHA (panel oscuro) -->
+    <div class="report__right">
+      <!-- BMI -->
+      <section class="bmi">
+        <header class="bmi__header">
+          <h2 class="bmi__title">BMI Calculator</h2>
+          <button class="bmi__select">
+            Last Week
+            <span>▾</span>
+          </button>
+        </header>
+
+        <div class="bmi__grid">
+          <div class="bmi__tile bmi__tile--beige">
+            <p class="bmi__label">Height</p>
+            <p class="bmi__value">170 cm</p>
+            <div class="bmi__ruler"></div>
+          </div>
+          <div class="bmi__tile bmi__tile--blue">
+            <p class="bmi__label">Weight</p>
+            <p class="bmi__value">72 kg</p>
+            <div class="bmi__ruler"></div>
+          </div>
+
+          <div class="bmi__tile bmi__tile--wide">
+            <p class="bmi__label">Body Mass Index (BMI)</p>
+            <div class="bmi__bignumber">
+              24.9
+              <span class="bmi__tag">You're Healthy</span>
+            </div>
+            <div class="bmi__scale">
+              <div class="bmi__scale-color -low"></div>
+              <div class="bmi__scale-color -mid"></div>
+              <div class="bmi__scale-color -high"></div>
+              <span class="bmi__indicator" style="left: 55%"></span>
+            </div>
+            <div class="bmi__scale-labels">
+              <span>15</span>
+              <span>18.5</span>
+              <span>25</span>
+              <span>30</span>
+              <span>40</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Body measurements -->
+      <section class="body">
+        <header class="body__header">
+          <h3>Body Measurements</h3>
+          <p>Last checked 2 Days Ago</p>
+        </header>
+
+        <div class="body__content">
+          <div class="body__shape-tag">Inverted Triangle Body Shape</div>
+
+          <div class="body__grid">
+            <div class="body__metric">
+              <p class="body__metric-label">Chest (in)</p>
+              <div class="body__metric-value">44.5 <span class="up">↑</span></div>
+            </div>
+            <div class="body__metric">
+              <p class="body__metric-label">Waist (in)</p>
+              <div class="body__metric-value">34 <span class="down">↓</span></div>
+            </div>
+            <div class="body__metric">
+              <p class="body__metric-label">Hip (in)</p>
+              <div class="body__metric-value">42.5</div>
+            </div>
+          </div>
+
+          <div class="body__figure">
+            <div class="body__dummy"></div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+  <!-- /report__layout -->
+</section>
