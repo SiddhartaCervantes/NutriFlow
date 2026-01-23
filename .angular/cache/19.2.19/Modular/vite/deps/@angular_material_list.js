@@ -1,10 +1,10 @@
-import "./chunk-FI2K6HEN.js";
 import {
   MAT_RIPPLE_GLOBAL_OPTIONS,
   MatRippleModule,
   RippleRenderer,
   _StructuralStylesLoader
 } from "./chunk-GDKUADU6.js";
+import "./chunk-FI2K6HEN.js";
 import {
   coerceBooleanProperty
 } from "./chunk-AGZFHLKA.js";

@@ -1,0 +1,94 @@
+.header-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 20px 24px;
+  border-radius: 24px;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  background: #ffffff;
+  box-shadow: 0 22px 45px rgba(0, 0, 0, 0.05);
+}
+
+/* Left side: avatar + text */
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.avatar {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.text-block {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.greeting {
+  margin: 0;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #9a8c7c;
+}
+
+.title {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 700;
+  color: #303030;
+}
+
+.subtitle {
+  margin: 0;
+  font-size: 14px;
+  color: #6a665f;
+}
+
+/* Right side: icons + date */
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.icon-group {
+  display: flex;
+  gap: 12px;
+}
+
+.icon-pill {
+  border-radius: 999px;
+  background: #fff5ea;
+}
+
+.icon-pill mat-icon {
+  font-size: 20px;
+}
+
+.date {
+  margin: 0;
+  font-size: 14px;
+  color: #6a665f;
+  white-space: nowrap;
+  align-content: center;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .header-card {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .header-right {
+    width: 100%;
+    justify-content: space-between;
+  }
+}
