@@ -1,0 +1,29 @@
+@rootURL = http://localhost:5143
+
+GET {{rootURL}}/weatherforecast/
+Accept: application/json
+
+###
+GET {{rootURL}}/api/users
+Accept: application/json
+###
+GET {{rootURL}}/api/users/2
+Accept: application/json
+
+###
+POST {{rootURL}}/api/users
+Content-Type: application/json
+{
+  "email": "email.exampple@help.com",
+  "password": "Contrasenia"
+}
+###
+PUT {{rootURL}}/api/users/4
+Content-Type: application/json
+{
+  "id": 4,
+  "email": "email.exampple5@help.com",
+  "password": "Contrasenia4"
+}
+###
+DELETE {{rootURL}}/api/users/4
