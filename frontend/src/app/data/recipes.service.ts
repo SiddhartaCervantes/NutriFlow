@@ -13,8 +13,8 @@ export type Recipe = {
 export class RecipesService {
   private readonly recetas: Recipe[] = [
     {
-      id: '1 ',
-      image: '../assets/images/pizza.jpg',
+      id: '1',
+      image: '../assets/images/pizza.jpg', 
       title: 'Pizza Margarita',
       description: 'Una clásica pizza italiana con mozzarella y albahaca fresca.',
       duration: '40 min',
@@ -22,13 +22,13 @@ export class RecipesService {
     },
     {
       id: '2',
-      image: '../assets/images/ensalada.jpg',
+      image: 'assets/images/ensalada.jpg',
       title: 'Ensalada Verde',
       description: 'Fresca y ligera, ideal para acompañar tus comidas.',
       duration: '15 min',
       difficulty: 'Muy fácil',
     },
-    {
+      {
       id: '3',
       image: '../assets/images/Super_Berry_Smoothie.jpg',
       title: 'Smoothie de Frutas',
@@ -131,7 +131,8 @@ export class RecipesService {
       description: 'Pasta fresca con albahaca, ajo y piñones.',
       duration: '30 min',
       difficulty: 'Fácil',
-    },
+    }
+    // ... el resto igual (cambia ../assets -> assets)
   ];
 
   getAll(): Recipe[] {
