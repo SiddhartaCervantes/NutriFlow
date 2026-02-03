@@ -6,7 +6,8 @@ export type Recipe = {
   title: string;
   description: string;
   duration: string;
-  difficulty: string;
+  tags: string;
+  instructions: string;
 };
 
 @Injectable({ providedIn: 'root' })
@@ -18,7 +19,8 @@ export class RecipesService {
       title: 'Pizza Margarita',
       description: 'Una clásica pizza italiana con mozzarella y albahaca fresca.',
       duration: '40 min',
-      difficulty: 'Fácil',
+      instructions: 'HOLA MUCHO GUSTO',
+      tags: 'Fácil',
     },
     {
       id: '2',
@@ -26,7 +28,8 @@ export class RecipesService {
       title: 'Ensalada Verde',
       description: 'Fresca y ligera, ideal para acompañar tus comidas.',
       duration: '15 min',
-      difficulty: 'Muy fácil',
+      tags: 'Muy fácil',
+      instructions: 'HOLA MUCHO GUSTO',
     },
       {
       id: '3',
@@ -34,7 +37,8 @@ export class RecipesService {
       title: 'Smoothie de Frutas',
       description: 'Delicioso batido natural con plátano, fresa y avena.',
       duration: '10 min',
-      difficulty: 'Fácil',
+      tags: 'Fácil',
+      instructions: 'HOLA MUCHO GUSTO',
     },
     {
       id: '4',
@@ -42,7 +46,8 @@ export class RecipesService {
       title: 'Sushi Roll Clásico',
       description: 'Arroz, alga nori y pescado fresco, preparado con precisión.',
       duration: '55 min',
-      difficulty: 'Medio',
+      tags: 'Medio',
+      instructions: 'HOLA MUCHO GUSTO',
     },
     {
       id: '5',
@@ -50,7 +55,8 @@ export class RecipesService {
       title: 'Pasta al Pesto',
       description: 'Pasta fresca con albahaca, ajo y piñones.',
       duration: '30 min',
-      difficulty: 'Fácil',
+      tags: 'Fácil',
+      instructions: 'HOLA MUCHO GUSTO',
     },
     {
       id: '6',
@@ -58,7 +64,8 @@ export class RecipesService {
       title: 'Pizza Margarita',
       description: 'Una clásica pizza italiana con mozzarella y albahaca fresca.',
       duration: '40 min',
-      difficulty: 'Fácil',
+      tags: 'Fácil',
+      instructions: 'HOLA MUCHO GUSTO',
     },
     {
       id: '7',
@@ -66,7 +73,8 @@ export class RecipesService {
       title: 'Ensalada Verde',
       description: 'Fresca y ligera, ideal para acompañar tus comidas.',
       duration: '15 min',
-      difficulty: 'Muy fácil',
+      tags: 'Muy fácil',
+      instructions: 'HOLA MUCHO GUSTO',
     },
     {
       id: '8',
@@ -74,7 +82,8 @@ export class RecipesService {
       title: 'Smoothie de Frutas',
       description: 'Delicioso batido natural con plátano, fresa y avena.',
       duration: '10 min',
-      difficulty: 'Fácil',
+      tags: 'Fácil',
+      instructions: 'HOLA MUCHO GUSTO',
     },
     {
       id: '9',
@@ -82,7 +91,8 @@ export class RecipesService {
       title: 'Sushi Roll Clásico',
       description: 'Arroz, alga nori y pescado fresco, preparado con precisión.',
       duration: '55 min',
-      difficulty: 'Medio',
+      tags: 'Medio',
+      instructions: 'HOLA MUCHO GUSTO',
     },
     {
       id: '10',
@@ -90,7 +100,8 @@ export class RecipesService {
       title: 'Pasta al Pesto',
       description: 'Pasta fresca con albahaca, ajo y piñones.',
       duration: '30 min',
-      difficulty: 'Fácil',
+      tags: 'Fácil',
+      instructions: 'HOLA MUCHO GUSTO',
     },
     {
       id: '11',
@@ -98,7 +109,8 @@ export class RecipesService {
       title: 'Pizza Margarita',
       description: 'Una clásica pizza italiana con mozzarella y albahaca fresca.',
       duration: '40 min',
-      difficulty: 'Fácil',
+      tags: 'Fácil',
+      instructions: 'HOLA MUCHO GUSTO',
     },
     {
       id: '12',
@@ -106,7 +118,8 @@ export class RecipesService {
       title: 'Ensalada Verde',
       description: 'Fresca y ligera, ideal para acompañar tus comidas.',
       duration: '15 min',
-      difficulty: 'Muy fácil',
+      tags: 'Muy fácil',
+      instructions: 'HOLA MUCHO GUSTO',
     },
     {
       id: '13',
@@ -114,7 +127,8 @@ export class RecipesService {
       title: 'Smoothie de Frutas',
       description: 'Delicioso batido natural con plátano, fresa y avena.',
       duration: '10 min',
-      difficulty: 'Fácil',
+      tags: 'Fácil',
+      instructions: 'HOLA MUCHO GUSTO',
     },
     {
       id: '14',
@@ -122,7 +136,8 @@ export class RecipesService {
       title: 'Sushi Roll Clásico',
       description: 'Arroz, alga nori y pescado fresco, preparado con precisión.',
       duration: '55 min',
-      difficulty: 'Medio',
+      tags: 'Medio',
+      instructions: 'HOLA MUCHO GUSTO',
     },
     {
       id: '15',
@@ -130,7 +145,8 @@ export class RecipesService {
       title: 'Pasta al Pesto',
       description: 'Pasta fresca con albahaca, ajo y piñones.',
       duration: '30 min',
-      difficulty: 'Fácil',
+      tags: 'Fácil',
+      instructions: 'HOLA MUCHO GUSTO',
     }
     // ... el resto igual (cambia ../assets -> assets)
   ];

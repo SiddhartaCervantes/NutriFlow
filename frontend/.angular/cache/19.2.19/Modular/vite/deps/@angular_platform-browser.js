@@ -34,7 +34,7 @@ import {
   withI18nSupport,
   withIncrementalHydration,
   withNoHttpTransferCache
-} from "./chunk-SCDPCQCD.js";
+} from "./chunk-WPQPID6D.js";
 import {
   getDOM
 } from "./chunk-FU4CUM5R.js";

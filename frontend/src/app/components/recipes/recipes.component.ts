@@ -15,20 +15,11 @@ import { RecipesService, Recipe } from '../../data/recipes.service';
 export class RecipesComponent {
   recetas: Recipe[] = [];
 
-  // ✅ equivalente a useState
   searchQuery = '';
   selectedCategory = 'Todas';
 
   // ✅ puedes hardcodear o generarlas desde tags
-  categories: string[] = [
-    'Todas',
-    'Española',
-    'Mexicana',
-    'Italiana',
-    'Japonesa',
-    'Peruana',
-    'Tailandesa',
-  ];
+  categories: string[] = ['Todas'];
 
   constructor(private recipesService: RecipesService) {
     this.recetas = this.recipesService.getAll();
@@ -41,28 +32,21 @@ export class RecipesComponent {
     this.selectedCategory = cat;
   }
 
-  // ✅ equivalente a filteredRecipes en React
   get filteredRecipes(): Recipe[] {
     const q = this.searchQuery.trim().toLowerCase();
     const cat = this.selectedCategory;
 
-    return this.recetas.filter((recipe) => {
+    return this.recetas.filter((r) => {
       const matchesSearch =
         !q ||
-        recipe.title.toLowerCase().includes(q) ||
-        (recipe.tags ?? []).some((tag) => tag.toLowerCase().includes(q));
+        r.title.toLowerCase().includes(q) ||
+       r.description.toLowerCase().includes(q);
 
-      const matchesCategory =
-        cat === 'Todas' || (recipe.tags ?? []).includes(cat);
+      const matchesCategory = cat === 'Todas' || r.tags === cat;
 
       return matchesSearch && matchesCategory;
     });
   }
 
-  // Si quieres categorías dinámicas (opcional)
-  private buildCategories(recipes: Recipe[]): string[] {
-    const set = new Set<string>();
-    recipes.forEach(r => (r.tags ?? []).forEach(t => set.add(t)));
-    return ['Todas', ...Array.from(set).sort()];
-  }
+  
 }
