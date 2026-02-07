@@ -10,9 +10,10 @@
 
   <section class="patients-list" role="list">
     @for (p of patients; track p.id) {
+        
       <app-patient-card
         [patient]="p"
-        (select)="selectPatient.emit($event)"
+      
         (edit)="onEdit($event)"
         (delete)="onDelete($event)"
       />

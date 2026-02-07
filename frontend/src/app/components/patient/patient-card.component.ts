@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
+import { Router } from '@angular/router';
 
 export type PatientCard = {
   id: string;
@@ -14,26 +15,13 @@ export type PatientCard = {
   standalone: true,
   imports: [MatIconModule],
   template: `
-    <div
-      class="patient-card"
-      role="button"
-      tabindex="0"
-      (click)="select.emit(patient)"
-    >
-      <!-- Icono -->
+    <div class="patient-card" role="button" tabindex="0" (click)="goToCalendar()">
       <div class="patient-card__icon" aria-hidden="true">
         <mat-icon>medical_services</mat-icon>
       </div>
 
-      <!-- Contenido principal -->
       <div class="patient-card__content">
-        <div class="patient-card__header">
-          <div class="patient-card__name">
-            {{ patient.name }}
-          </div>
-
-          
-        </div>
+        <div class="patient-card__name">{{ patient.name }}</div>
 
         <div class="patient-card__meta">
           <span class="status">{{ patient.status }}</span>
@@ -42,10 +30,8 @@ export type PatientCard = {
           <span class="dot">•</span>
           <span>{{ patient.goal }}</span>
         </div>
-
       </div>
 
-      <!-- Botón de menú (⋮) -->
       <button
         type="button"
         class="patient-card__menu"
@@ -55,12 +41,9 @@ export type PatientCard = {
         <mat-icon>more_vert</mat-icon>
       </button>
 
-      <!-- Menú -->
       <div class="patient-card__dropdown" *ngIf="menuOpen">
         <button type="button" (click)="onEdit($event)">Editar</button>
-        <button type="button" class="danger" (click)="onDelete($event)">
-          Eliminar
-        </button>
+        <button type="button" class="danger" (click)="onDelete($event)">Eliminar</button>
       </div>
     </div>
   `,
@@ -69,11 +52,17 @@ export type PatientCard = {
 export class PatientCardComponent {
   @Input({ required: true }) patient!: PatientCard;
 
-  @Output() select = new EventEmitter<PatientCard>();
   @Output() edit = new EventEmitter<PatientCard>();
   @Output() delete = new EventEmitter<PatientCard>();
 
   menuOpen = false;
+
+  constructor(private router: Router) {}
+
+  goToCalendar() {
+    console.log('NAV -> /calendar'); // 🔥 debug
+    this.router.navigateByUrl('/calendar');
+  }
 
   onMenuClick(e: MouseEvent) {
     e.stopPropagation();
