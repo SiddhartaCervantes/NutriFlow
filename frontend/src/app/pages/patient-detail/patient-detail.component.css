@@ -1,0 +1,187 @@
+.pd {
+  padding: 20px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.muted { opacity: 0.75; }
+.dot { margin: 0 6px; opacity: 0.6; }
+
+.pd__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  margin-bottom: 14px;
+}
+
+.pd__title { margin: 0; font-size: 28px; line-height: 1.15; }
+.pd__titleRow { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+.pd__subtitle { margin-top: 6px; display: flex; gap: 10px; align-items: center; opacity: 0.85; }
+.pd__code { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; }
+.pd__dot { opacity: 0.5; }
+
+.pd__actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  align-items: center;
+
+  button mat-icon { margin-right: 6px; }
+}
+
+.pd__topGrid {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr 1fr;
+  gap: 14px;
+  margin-bottom: 16px;
+}
+
+.pdCard { border-radius: 16px; }
+.pdCard__content { display: grid; gap: 10px; }
+
+.pdCard__meta { display: flex; justify-content: space-between; }
+
+.kv {
+  display: flex; justify-content: space-between; align-items: baseline;
+  padding: 10px 12px;
+  border-radius: 14px;
+  background: rgba(0,0,0,0.03);
+}
+.kv__k { font-size: 12px; opacity: 0.8; }
+.kv__v { font-weight: 700; }
+.kv__meta { font-size: 12px; opacity: 0.7; }
+
+.goalRow {
+  display: grid;
+  grid-template-columns: 28px 1fr;
+  gap: 10px;
+  align-items: start;
+  padding: 8px 0;
+}
+.goalRow__t { font-weight: 700; }
+.goalRow__s { opacity: 0.8; }
+
+.pd__weekBar {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 12px;
+  margin: 10px 0 14px;
+}
+
+.pd__weekTitle { margin: 0; font-size: 18px; }
+.pd__weekActions { display: flex; gap: 10px; flex-wrap: wrap; }
+
+.week {
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid rgba(0,0,0,0.10);
+  background: rgba(0,0,0,0.02);
+}
+
+.week__head {
+  display: grid;
+  grid-template-columns: 160px repeat(7, 1fr);
+  gap: 10px;
+  padding: 12px;
+  background: rgba(0,0,0,0.03);
+  border-bottom: 1px solid rgba(0,0,0,0.08);
+}
+
+.week__corner { display: flex; align-items: center; padding-left: 8px; }
+.week__dayHead {
+  padding: 8px 10px;
+  border-radius: 14px;
+  background: rgba(255,255,255,0.6);
+}
+.week__dayLabel { font-weight: 800; }
+.week__targets { font-size: 12px; margin-top: 2px; }
+
+.week__body {
+  display: grid;
+  gap: 12px;
+  padding: 12px;
+}
+
+.week__row {
+  display: grid;
+  grid-template-columns: 160px repeat(7, 1fr);
+  gap: 10px;
+  align-items: start;
+}
+
+.week__rowLabel {
+  padding: 10px 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: 800;
+}
+
+.week__cell { min-width: 0; }
+
+.cellCard {
+  border-radius: 14px;
+  padding: 10px 10px 8px;
+  background: rgba(255,255,255,0.75);
+}
+
+.cellCard__top {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  align-items: start;
+}
+
+.cellCard__title {
+  font-weight: 700;
+  font-size: 13px;
+  line-height: 1.2;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+.cellCard__meta { font-size: 12px; margin-top: 6px; }
+.cellCard__notes { font-size: 12px; margin-top: 6px; }
+
+.cellCard--notes .cellCard__title {
+  font-weight: 600;
+  opacity: 0.85;
+}
+
+.iconMini {
+  width: 32px;
+  height: 32px;
+  line-height: 32px;
+}
+
+/* Bottom */
+.pd__bottomGrid {
+  margin-top: 14px;
+}
+
+.note {
+  padding: 10px 12px;
+  border-radius: 14px;
+  background: rgba(0,0,0,0.03);
+  display: grid;
+  gap: 6px;
+}
+.note__date { font-size: 12px; }
+.note__text { font-weight: 600; }
+
+/* Responsive */
+@media (max-width: 1200px) {
+  .pd__topGrid { grid-template-columns: 1fr; }
+  .week__head, .week__row { grid-template-columns: 160px repeat(7, minmax(180px, 1fr)); }
+  .week { overflow-x: auto; }
+}
+
+@media (max-width: 720px) {
+  .pd__header { flex-direction: column; }
+  .week__head, .week__row { grid-template-columns: 140px repeat(7, minmax(160px, 1fr)); }
+}

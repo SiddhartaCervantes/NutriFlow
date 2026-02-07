@@ -1,0 +1,253 @@
+<!-- src/app/pages/patient-detail/patient-detail.component.html -->
+
+<section class="pd">
+  <!-- Header -->
+  <header class="pd__header">
+    <div class="pd__titleWrap">
+      <div class="pd__titleRow">
+        <h1 class="pd__title">{{ patient.name }}</h1>
+
+        <mat-chip-set class="pd__chips">
+          <mat-chip>{{ patient.status }}</mat-chip>
+          <mat-chip>{{ patient.goal }}</mat-chip>
+          <mat-chip>Últ. act: {{ patient.lastUpdate }}</mat-chip>
+        </mat-chip-set>
+      </div>
+
+      <div class="pd__subtitle">
+        <span class="pd__code">{{ patient.code }}</span>
+        <span class="pd__dot">•</span>
+        <span>{{ patient.age }} años</span>
+      </div>
+    </div>
+
+    <div class="pd__actions">
+
+      <button mat-raised-button color="primary" (click)="onEditPatient()">
+        <mat-icon>edit</mat-icon>
+        Editar
+      </button>
+
+      <button mat-icon-button [matMenuTriggerFor]="menu">
+        <mat-icon>more_vert</mat-icon>
+      </button>
+
+      <mat-menu #menu="matMenu">
+        <button mat-menu-item>
+          <mat-icon>delete</mat-icon>
+          <span>Eliminar</span>
+        </button>
+      </mat-menu>
+    </div>
+  </header>
+
+  <!-- Top summary row -->
+  <section class="pd__topGrid">
+    <mat-card class="pdCard">
+      <mat-card-header>
+        <mat-card-title>Adherencia semanal</mat-card-title>
+        <mat-card-subtitle>
+          {{ adherence.mealsLogged }} / {{ adherence.mealsPlanned }} comidas registradas
+        </mat-card-subtitle>
+      </mat-card-header>
+
+      <mat-card-content class="pdCard__content">
+        <mat-progress-bar mode="determinate" [value]="adherence.week * 100"></mat-progress-bar>
+
+        <div class="pdCard__meta">
+          <span>{{ (adherence.week * 100) | number:'1.0-0' }}%</span>
+          <span class="muted">Meta: 80%</span>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="pdCard">
+      <mat-card-header>
+        <mat-card-title>Mediciones</mat-card-title>
+        <mat-card-subtitle>Últimos cambios</mat-card-subtitle>
+      </mat-card-header>
+
+      <mat-card-content class="pdCard__content">
+        <div class="kv" *ngFor="let m of measurements">
+          <div class="kv__left">
+            <div class="kv__k">{{ m.label }}</div>
+            <div class="kv__v">{{ m.value }}</div>
+          </div>
+          <div class="kv__meta">{{ m.meta }}</div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="pdCard">
+      <mat-card-header>
+        <mat-card-title>Objetivos</mat-card-title>
+        <mat-card-subtitle>Nutrición y hábitos</mat-card-subtitle>
+      </mat-card-header>
+
+      <mat-card-content class="pdCard__content">
+        <div class="goalRow">
+          <mat-icon>local_fire_department</mat-icon>
+          <div>
+            <div class="goalRow__t">Calorías objetivo</div>
+            <div class="goalRow__s">1,800–2,000 kcal (según día)</div>
+          </div>
+        </div>
+
+        <div class="goalRow">
+          <mat-icon>fitness_center</mat-icon>
+          <div>
+            <div class="goalRow__t">Proteína objetivo</div>
+            <div class="goalRow__s">120 g / día</div>
+          </div>
+        </div>
+
+        <div class="goalRow">
+          <mat-icon>water_drop</mat-icon>
+          <div>
+            <div class="goalRow__t">Hidratación</div>
+            <div class="goalRow__s">2.0 L / día</div>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </section>
+
+  <!-- Week controls -->
+  <div class="pd__weekBar">
+    <div class="pd__weekLeft">
+      <h2 class="pd__weekTitle">{{ weekLabel }}</h2>
+      <div class="pd__weekHint muted">Estructura semanal (plan + notas + recetas)</div>
+    </div>
+
+    <div class="pd__weekActions">
+      <button mat-stroked-button (click)="onPrevWeek()">
+        <mat-icon>chevron_left</mat-icon>
+        Anterior
+      </button>
+
+      <button mat-stroked-button (click)="onNextWeek()">
+        Siguiente
+        <mat-icon>chevron_right</mat-icon>
+      </button>
+
+      <button mat-raised-button color="primary" (click)="onNewWeek()">
+        <mat-icon>add</mat-icon>
+        Nueva semana
+      </button>
+    </div>
+  </div>
+
+  <!-- Weekly plan grid (table-like) -->
+  <section class="week">
+    <!-- Header row -->
+    <div class="week__head">
+      <div class="week__corner">
+        <span class="muted">Plan</span>
+      </div>
+
+      <div class="week__dayHead" *ngFor="let d of days">
+        <div class="week__dayLabel">{{ d.label }}</div>
+        <div class="week__targets muted">
+          <span>{{ dayPlans[d.key].targetKcal || '—' }} kcal</span>
+          <span class="dot">•</span>
+          <span>{{ dayPlans[d.key].targetProtein || '—' }} g prot</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Body rows -->
+    <div class="week__body">
+      <!-- Meal rows -->
+      <div class="week__row" *ngFor="let slotLabel of ['Desayuno','Comida','Cena']">
+        <div class="week__rowLabel">
+          <span>{{ slotLabel }}</span>
+          <button mat-icon-button class="iconMini" disabled>
+            <mat-icon>info</mat-icon>
+          </button>
+        </div>
+
+        <div class="week__cell" *ngFor="let d of days">
+          <mat-card class="cellCard" appearance="outlined">
+            <ng-container *ngIf="getSlot(d.key, slotLabel) as slot; else emptySlot">
+              <div class="cellCard__top">
+                <div class="cellCard__title">{{ slot.recipe || 'Asignar receta' }}</div>
+                <button mat-icon-button class="iconMini" (click)="onAddMeal(d.key)">
+                  <mat-icon>add</mat-icon>
+                </button>
+              </div>
+
+              <div class="cellCard__meta muted">
+                <ng-container *ngIf="slot.kcal as kcal">
+                  <span>{{ kcal }} kcal</span>
+                  <span class="dot">•</span>
+                </ng-container>
+
+                <ng-container *ngIf="slot.protein_g as p">
+                  <span>{{ p }} g prot</span>
+                </ng-container>
+
+                <ng-container *ngIf="!(slot.kcal || slot.protein_g)">
+                  <span>—</span>
+                </ng-container>
+              </div>
+
+              <div class="cellCard__notes muted" *ngIf="slot.notes as n">
+                {{ n }}
+              </div>
+            </ng-container>
+
+            <ng-template #emptySlot>
+              <div class="cellCard__top">
+                <div class="cellCard__title">Asignar receta</div>
+                <button mat-icon-button class="iconMini" (click)="onAddMeal(d.key)">
+                  <mat-icon>add</mat-icon>
+                </button>
+              </div>
+
+              <div class="cellCard__meta muted">—</div>
+            </ng-template>
+          </mat-card>
+        </div>
+      </div>
+
+      <!-- Notes row -->
+      <div class="week__row week__row--notes">
+        <div class="week__rowLabel">
+          <span>Notas del día</span>
+        </div>
+
+        <div class="week__cell" *ngFor="let d of days">
+          <mat-card class="cellCard cellCard--notes" appearance="outlined">
+            <div class="cellCard__title">
+              {{ dayPlans[d.key].generalNotes || 'Agregar nota (hidratación, suplementos, actividad, etc.)' }}
+            </div>
+          </mat-card>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Bottom notes -->
+  <section class="pd__bottomGrid">
+    <mat-card class="pdCard">
+      <mat-card-header>
+        <mat-card-title>Notas clínicas</mat-card-title>
+        <mat-card-subtitle>Historial de observaciones</mat-card-subtitle>
+      </mat-card-header>
+
+      <mat-card-content class="pdCard__content">
+        <div class="note" *ngFor="let n of notes">
+          <div class="note__date muted">{{ n.date }}</div>
+          <div class="note__text">{{ n.text }}</div>
+        </div>
+      </mat-card-content>
+
+      <mat-card-actions align="end">
+        <button mat-button>
+          <mat-icon>add</mat-icon>
+          Agregar nota
+        </button>
+      </mat-card-actions>
+    </mat-card>
+  </section>
+</section>
