@@ -1,4 +1,4 @@
-// node_modules/@angular/cdk/fesm2022/boolean-property-DaaVhX5A.mjs
+// ../node_modules/@angular/cdk/fesm2022/boolean-property-DaaVhX5A.mjs
 function coerceBooleanProperty(value) {
   return value != null && `${value}` !== "false";
 }
@@ -6,4 +6,4 @@ function coerceBooleanProperty(value) {
 export {
   coerceBooleanProperty
 };
-//# sourceMappingURL=chunk-AGZFHLKA.js.map
+//# sourceMappingURL=chunk-KM4UIVDE.js.map

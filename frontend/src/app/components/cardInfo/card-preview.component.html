@@ -1,5 +1,8 @@
-<div class="recipe-card">
-  <div class="recipe-card__image-wrap">
+<a class="recipe-card"
+  [routerLink]="['/recetas', id]"
+  role="button"
+>
+<div class="recipe-card__image-wrap">
     <img [src]="imageSrc" [alt]="alt" class="recipe-card__image" />
   </div>
 
@@ -23,4 +26,5 @@
       </div>
     </div>
   </div>
-</div>
+
+</a>

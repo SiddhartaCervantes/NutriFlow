@@ -8,11 +8,12 @@
   <section class="recipes-grid">
     @for (receta of recetas; track receta.title) {
       <app-card-preview
+        [id]="receta.id"
         [imageSrc]="receta.image"
         [title]="receta.title"
         [description]="receta.description"
         [duration]="receta.duration"
-        [difficulty]="receta.difficulty"
+        [difficulty]="receta.tags"
       ></app-card-preview>
     }
   </section>

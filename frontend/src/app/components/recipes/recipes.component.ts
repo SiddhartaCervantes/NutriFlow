@@ -1,119 +1,52 @@
 import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+
 import { CardPreviewComponent } from '../../components/cardInfo/card-preview.component';
+import { RecipesService, Recipe } from '../../data/recipes.service';
 
 @Component({
   selector: 'app-recipes',
   standalone: true,
-  imports: [CardPreviewComponent],
+  imports: [CommonModule, FormsModule, CardPreviewComponent],
   templateUrl: './recipes.component.html',
   styleUrls: ['./recipes.component.scss'],
 })
 export class RecipesComponent {
-  recetas = [
-    {
-      image: '../assets/images/pizza.jpg',
-      title: 'Pizza Margarita',
-      description: 'Una clásica pizza italiana con mozzarella y albahaca fresca.',
-      duration: '40 min',
-      difficulty: 'Fácil',
-    },
-    {
-      image: '../assets/images/ensalada.jpg',
-      title: 'Ensalada Verde',
-      description: 'Fresca y ligera, ideal para acompañar tus comidas.',
-      duration: '15 min',
-      difficulty: 'Muy fácil',
-    },
-    {
-      image: '../assets/images/Super_Berry_Smoothie.jpg',
-      title: 'Smoothie de Frutas',
-      description: 'Delicioso batido natural con plátano, fresa y avena.',
-      duration: '10 min',
-      difficulty: 'Fácil',
-    },
-    {
-      image: '../assets/images/california-roll.jpg',
-      title: 'Sushi Roll Clásico',
-      description: 'Arroz, alga nori y pescado fresco, preparado con precisión.',
-      duration: '55 min',
-      difficulty: 'Medio',
-    },
-    {
-      image: '../assets/images/margarita.jpg',
-      title: 'Pasta al Pesto',
-      description: 'Pasta fresca con albahaca, ajo y piñones.',
-      duration: '30 min',
-      difficulty: 'Fácil',
-    },
-    {
-      image: '../assets/images/pizza.jpg',
-      title: 'Pizza Margarita',
-      description: 'Una clásica pizza italiana con mozzarella y albahaca fresca.',
-      duration: '40 min',
-      difficulty: 'Fácil',
-    },
-    {
-      image: '../assets/images/ensalada.jpg',
-      title: 'Ensalada Verde',
-      description: 'Fresca y ligera, ideal para acompañar tus comidas.',
-      duration: '15 min',
-      difficulty: 'Muy fácil',
-    },
-    {
-      image: '../assets/images/Super_Berry_Smoothie.jpg',
-      title: 'Smoothie de Frutas',
-      description: 'Delicioso batido natural con plátano, fresa y avena.',
-      duration: '10 min',
-      difficulty: 'Fácil',
-    },
-    {
-      image: '../assets/images/california-roll.jpg',
-      title: 'Sushi Roll Clásico',
-      description: 'Arroz, alga nori y pescado fresco, preparado con precisión.',
-      duration: '55 min',
-      difficulty: 'Medio',
-    },
-    {
-      image: '../assets/images/margarita.jpg',
-      title: 'Pasta al Pesto',
-      description: 'Pasta fresca con albahaca, ajo y piñones.',
-      duration: '30 min',
-      difficulty: 'Fácil',
-    },
-    {
-      image: '../assets/images/pizza.jpg',
-      title: 'Pizza Margarita',
-      description: 'Una clásica pizza italiana con mozzarella y albahaca fresca.',
-      duration: '40 min',
-      difficulty: 'Fácil',
-    },
-    {
-      image: '../assets/images/ensalada.jpg',
-      title: 'Ensalada Verde',
-      description: 'Fresca y ligera, ideal para acompañar tus comidas.',
-      duration: '15 min',
-      difficulty: 'Muy fácil',
-    },
-    {
-      image: '../assets/images/Super_Berry_Smoothie.jpg',
-      title: 'Smoothie de Frutas',
-      description: 'Delicioso batido natural con plátano, fresa y avena.',
-      duration: '10 min',
-      difficulty: 'Fácil',
-    },
-    {
-      image: '../assets/images/california-roll.jpg',
-      title: 'Sushi Roll Clásico',
-      description: 'Arroz, alga nori y pescado fresco, preparado con precisión.',
-      duration: '55 min',
-      difficulty: 'Medio',
-    },
-    {
-      image: '../assets/images/margarita.jpg',
-      title: 'Pasta al Pesto',
-      description: 'Pasta fresca con albahaca, ajo y piñones.',
-      duration: '30 min',
-      difficulty: 'Fácil',
-    },
-  ];
+  recetas: Recipe[] = [];
+
+  searchQuery = '';
+  selectedCategory = 'Todas';
+
+  // ✅ puedes hardcodear o generarlas desde tags
+  categories: string[] = ['Todas'];
+
+  constructor(private recipesService: RecipesService) {
+    this.recetas = this.recipesService.getAll();
+
+    // opcional: si quieres categorías dinámicas desde tags:
+    // this.categories = this.buildCategories(this.recetas);
+  }
+
+  setCategory(cat: string) {
+    this.selectedCategory = cat;
+  }
+
+  get filteredRecipes(): Recipe[] {
+    const q = this.searchQuery.trim().toLowerCase();
+    const cat = this.selectedCategory;
+
+    return this.recetas.filter((r) => {
+      const matchesSearch =
+        !q ||
+        r.title.toLowerCase().includes(q) ||
+       r.description.toLowerCase().includes(q);
+
+      const matchesCategory = cat === 'Todas' || r.tags === cat;
+
+      return matchesSearch && matchesCategory;
+    });
+  }
+
+  
 }

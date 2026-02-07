@@ -6,6 +6,7 @@ import { MainLayoutComponent } from './layout/main-layout/main-layout.component'
 import { healthInfoComp } from './components/healthInfo/healthInfo';
 import { mainComponent } from './components/mainInterface/mainInterface';
 import { RecipesComponent } from './components/recipes/recipes.component';
+import { RecipeDetailComponent } from './components/recipeDetails/recipe-detail.component';
 
 
 
@@ -16,7 +17,8 @@ export const routes: Routes = [
         component: MainLayoutComponent,
         children: [
             { path: 'healthInfo', component: healthInfoComp},
-            { path: 'recetas', component: RecipesComponent},   
+            { path: 'recetas', component: RecipesComponent},
+            { path: 'recetas/:id', component: RecipeDetailComponent},    
 
         ],
     },
