@@ -1,0 +1,40 @@
+<mat-card class="grid">
+  <div class="grid__head">
+    <div class="grid__dow" *ngFor="let w of weekdays">{{ w }}</div>
+  </div>
+
+  <div class="grid__body">
+    <button
+      type="button"
+      class="cell"
+      *ngFor="let c of cells"
+      [class.cell--muted]="!c.inMonth"
+      (click)="onCellClick(c)"
+    >
+      <div class="cell__top">
+        <div class="cell__day">{{ c.dayNumber }}</div>
+      </div>
+
+      <div class="cell__events">
+        <ng-container *ngFor="let ev of getEventsForCell(c); let i = index">
+          <!-- Show max 2 events -->
+          <button
+            type="button"
+            class="ev"
+            *ngIf="i < 2"
+            (click)="onEventClick(ev, $event)"
+          >
+            <span class="ev__title">{{ ev.title }}</span>
+            <mat-chip-set *ngIf="ev.badge" class="ev__chip">
+              <mat-chip>{{ ev.badge }}</mat-chip>
+            </mat-chip-set>
+          </button>
+        </ng-container>
+
+        <div class="more muted" *ngIf="getEventsForCell(c).length > 2">
+          +{{ getEventsForCell(c).length - 2 }} más
+        </div>
+      </div>
+    </button>
+  </div>
+</mat-card>

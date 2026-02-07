@@ -1,0 +1,43 @@
+<mat-card class="next">
+  <mat-card-header>
+    <mat-card-title>Próxima cita</mat-card-title>
+    <mat-card-subtitle>Lo siguiente en tu agenda</mat-card-subtitle>
+  </mat-card-header>
+
+  <mat-card-content class="next__content" *ngIf="appointment; else empty">
+    <div class="row">
+      <mat-icon>person</mat-icon>
+      <div>
+        <div class="t">{{ appointment.patient }}</div>
+        <div class="s">{{ formatDate(appointment.dateTime) }} · {{ formatTime(appointment.dateTime) }}</div>
+      </div>
+      <mat-chip-set class="chips">
+        <mat-chip>{{ appointment.mode }}</mat-chip>
+      </mat-chip-set>
+    </div>
+
+    <mat-divider></mat-divider>
+
+    <div class="note" *ngIf="appointment.note">
+      <mat-icon>notes</mat-icon>
+      <span>{{ appointment.note }}</span>
+    </div>
+  </mat-card-content>
+
+  <ng-template #empty>
+    <mat-card-content class="next__empty">
+      <mat-icon>event</mat-icon>
+      <div>
+        <div class="t">No hay citas próximas</div>
+        <div class="s">Cuando agendes una cita aparecerá aquí.</div>
+      </div>
+    </mat-card-content>
+  </ng-template>
+
+  <mat-card-actions align="end">
+    <button mat-button>
+      <mat-icon>open_in_new</mat-icon>
+      Ver agenda
+    </button>
+  </mat-card-actions>
+</mat-card>

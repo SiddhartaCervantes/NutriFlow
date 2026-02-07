@@ -1,0 +1,17 @@
+<section class="cal">
+  <app-next-appointment-card [appointment]="nextAppointment"></app-next-appointment-card>
+
+  <app-calendar-toolbar
+    [monthLabel]="monthLabel"
+    (prev)="onPrevMonth()"
+    (today)="onToday()"
+    (next)="onNextMonth()"
+  ></app-calendar-toolbar>
+
+  <app-month-grid
+    [monthAnchor]="monthAnchor"
+    [events]="eventsForGrid"
+    (selectCell)="onSelectCell($event)"
+    (selectEvent)="onSelectEvent($event)"
+  ></app-month-grid>
+</section>

@@ -27,7 +27,10 @@
 
     </nav>
     <nav class="side-nav">
-        <a mat-button class="nav-item">
+        <a mat-button class="nav-item"
+        routerLink="/calendar"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }">
             <mat-icon>calendar_today</mat-icon>
             <span class="nav-label" *ngIf="isSideNavExpanded">Calendario</span>
         </a>

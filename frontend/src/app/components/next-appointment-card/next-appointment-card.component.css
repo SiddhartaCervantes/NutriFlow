@@ -1,0 +1,28 @@
+.next { border-radius: 16px; }
+.next__content { display: grid; gap: 10px; }
+
+.row {
+  display: grid;
+  grid-template-columns: 28px 1fr auto;
+  gap: 10px;
+  align-items: center;
+}
+
+.t { font-weight: 800; }
+.s { opacity: 0.75; font-size: 13px; }
+
+.note {
+  display: grid;
+  grid-template-columns: 28px 1fr;
+  gap: 10px;
+  align-items: start;
+  opacity: 0.85;
+}
+
+.next__empty {
+  display: grid;
+  grid-template-columns: 28px 1fr;
+  gap: 10px;
+  align-items: center;
+  opacity: 0.85;
+}

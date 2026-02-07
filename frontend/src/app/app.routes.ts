@@ -9,6 +9,7 @@ import { PatientsComponent } from './pages/patient-list/patients.component';
 import { mainComponent } from './components/mainInterface/mainInterface';
 import { RecipesComponent } from './components/recipes/recipes.component';
 import { RecipeDetailComponent } from './components/recipeDetails/recipe-detail.component';
+import { CalendarPageComponent } from './pages/calendar-page/calendar-page.component';
 
 //Testing of MainLayout
 export const routes: Routes = [
@@ -19,7 +20,8 @@ export const routes: Routes = [
       { path: 'patients', component: PatientsComponent },  
       { path: 'recetas', component: RecipesComponent },
       { path: 'recetas/:id', component: RecipeDetailComponent },
-      { path: '', redirectTo: 'patients', pathMatch: 'full' }, 
+      { path: '', redirectTo: 'patients', pathMatch: 'full' },
+      { path: 'calendar', component: CalendarPageComponent },
     ],
   },
   { path: '**', redirectTo: 'patients' }, // ✅ fallback

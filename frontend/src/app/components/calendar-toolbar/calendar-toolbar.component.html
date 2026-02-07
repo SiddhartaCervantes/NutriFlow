@@ -1,0 +1,22 @@
+<mat-card class="bar">
+  <div class="bar__left">
+    <button mat-stroked-button (click)="prev.emit()">
+      <mat-icon>chevron_left</mat-icon>
+      Mes anterior
+    </button>
+
+    <button mat-stroked-button (click)="today.emit()">
+      <mat-icon>today</mat-icon>
+      Hoy
+    </button>
+
+    <button mat-stroked-button (click)="next.emit()">
+      Mes siguiente
+      <mat-icon>chevron_right</mat-icon>
+    </button>
+  </div>
+
+  <div class="bar__right">
+    <div class="label">{{ monthLabel }}</div>
+  </div>
+</mat-card>
