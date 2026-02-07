@@ -4,25 +4,27 @@ import { MainLayoutComponent } from './layout/main-layout/main-layout.component'
 
 ////COMPONENTES AGREGADOS POR JOAHAN
 import { healthInfoComp } from './components/healthInfo/healthInfo';
+import { PatientsComponent } from './pages/patient-list/patients.component';
+
 import { mainComponent } from './components/mainInterface/mainInterface';
 import { RecipesComponent } from './components/recipes/recipes.component';
 import { RecipeDetailComponent } from './components/recipeDetails/recipe-detail.component';
 
-
-
 //Testing of MainLayout
 export const routes: Routes = [
-    {   
-        path:'', 
-        component: MainLayoutComponent,
-        children: [
-            { path: 'healthInfo', component: healthInfoComp},
-            { path: 'recetas', component: RecipesComponent},
-            { path: 'recetas/:id', component: RecipeDetailComponent},    
-
-        ],
-    },
+  {
+    path: '',
+    component: MainLayoutComponent,
+    children: [
+      { path: 'patients', component: PatientsComponent },  
+      { path: 'recetas', component: RecipesComponent },
+      { path: 'recetas/:id', component: RecipeDetailComponent },
+      { path: '', redirectTo: 'patients', pathMatch: 'full' }, 
+    ],
+  },
+  { path: '**', redirectTo: 'patients' }, // ✅ fallback
 ];
+
 /*
 export const routes: Routes = [
     {path:'', component:LoginComponent},
