@@ -48,3 +48,6 @@ node_modules
 
 frontend/.angular/cache/
 frontend/node_modules/
+frontend/.angular/cache/19.2.19/Modular/.tsbuildinfo
+frontend/.angular/cache/19.2.19/Modular/.tsbuildinfo
+/frontend/.angular/cache
