@@ -1,6 +1,6 @@
 :host {
   display: block;
-  background: #f6f1ea;
+  
   padding: clamp(16px, 2vw, 28px);
   box-sizing: border-box;
 }
