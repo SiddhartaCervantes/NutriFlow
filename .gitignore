@@ -32,7 +32,7 @@ yarn-error.log
 .vs/
 
 # Miscellaneous
-/.angular/cache
+.angular/
 .sass-cache/
 /connect.lock
 /coverage
@@ -44,3 +44,7 @@ testem.log
 .DS_Store
 Thumbs.db
 node_modules
+
+
+frontend/.angular/cache/
+frontend/node_modules/
