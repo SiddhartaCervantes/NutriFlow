@@ -61,7 +61,7 @@ export class PatientCardComponent {
 
   goToCalendar() {
     console.log('NAV -> /calendar'); // 🔥 debug
-    this.router.navigateByUrl('/calendar');
+    this.router.navigateByUrl('/patient-detail');
   }
 
   onMenuClick(e: MouseEvent) {
