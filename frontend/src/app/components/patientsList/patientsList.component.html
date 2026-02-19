@@ -1,0 +1,24 @@
+<section class="patients-page" style="padding-right: 50px;">
+  <header class="patients-header">
+    <h1 class="patients-title">{{ title }}</h1>
+
+    <button type="button" class="add-btn" (click)="goToNewPatient()">
+      <span class="add-btn__plus">+</span>
+      Nuevo paciente
+    </button>
+  </header>
+
+  <section class="patients-list" role="list">
+    @for (p of patients; track p.id) {
+        
+      <app-patient-card
+        [patient]="p"
+      
+        (edit)="onEdit($event)"
+        (delete)="onDelete($event)"
+      />
+    } @empty {
+      <div class="empty">No hay pacientes registrados.</div>
+    }
+  </section>
+</section>

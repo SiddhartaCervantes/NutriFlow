@@ -1,0 +1,272 @@
+<!-- Success overlay -->
+@if (showSuccess) {
+  <div class="success-wrap">
+    <div class="success-card">
+      <div class="success-icon">
+        <mat-icon>check_circle</mat-icon>
+      </div>
+      <h2>Creando paciente...</h2>
+      <p>
+        Preparando el perfil de
+        <strong>{{ form.value.nombre }} {{ form.value.apellido }}</strong>
+      </p>
+      <div class="bar">
+        <div class="bar__fill"></div>
+      </div>
+    </div>
+  </div>
+} @else {
+  <div class="npf">
+    <!-- Header -->
+    <div class="npf__header">
+      <button
+      type="button"
+      class="icon-btn"
+      (click)="goToList()"
+      aria-label="Volver a lista de pacientes">
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+
+
+      <div>
+        <h1>NUEVO PACIENTE</h1>
+        <p>Completa la información del nuevo paciente</p>
+      </div>
+    </div>
+
+    <!-- Step indicator -->
+    <div class="steps">
+      @for (s of steps; track s.id; let i = $index) {
+        <div class="steps__item">
+          <button
+            type="button"
+            class="steps__pill"
+            [class.active]="currentStep === s.id"
+            [class.done]="currentStep > s.id"
+            (click)="goToStep(s.id)"
+          >
+            <mat-icon class="steps__icon">
+              {{ currentStep > s.id ? 'check_circle' : s.icon }}
+            </mat-icon>
+            <span class="steps__label">{{ s.label }}</span>
+          </button>
+
+          @if (i < steps.length - 1) {
+            <mat-icon class="steps__chev" [class.done]="currentStep > s.id">chevron_right</mat-icon>
+          }
+        </div>
+      }
+    </div>
+
+    <!-- Progress bar -->
+    <div class="progress">
+      <div class="progress__fill" [style.width.%]="progressPct"></div>
+    </div>
+
+    <!-- Form -->
+    <form class="card" [formGroup]="form" (ngSubmit)="next()">
+
+      <!-- STEP 1 -->
+      @if (currentStep === 1) {
+        <div class="card__title">
+          <div class="card__badge"><mat-icon>person_add</mat-icon></div>
+          <div>
+            <h2>Información Personal</h2>
+            <p>Datos básicos del paciente</p>
+          </div>
+        </div>
+
+        <div class="grid">
+          <div class="field">
+            <label>Nombre <span>*</span></label>
+            <input formControlName="nombre" placeholder="Ej: María" />
+            @if (err('nombre')) { <small class="err">{{ err('nombre') }}</small> }
+          </div>
+
+          <div class="field">
+            <label>Apellido <span>*</span></label>
+            <input formControlName="apellido" placeholder="Ej: López" />
+            @if (err('apellido')) { <small class="err">{{ err('apellido') }}</small> }
+          </div>
+
+          <div class="field">
+            <label>Email</label>
+            <input type="email" formControlName="email" placeholder="Ej: maria@email.com" />
+            @if (err('email')) { <small class="err">{{ err('email') }}</small> }
+          </div>
+
+          <div class="field">
+            <label>Teléfono</label>
+            <input type="tel" formControlName="telefono" placeholder="Ej: +52 33 1234 5678" />
+          </div>
+
+          <div class="field">
+            <label>Edad <span>*</span></label>
+            <input type="number" formControlName="edad" placeholder="Ej: 28" />
+            @if (err('edad')) { <small class="err">{{ err('edad') }}</small> }
+          </div>
+
+          <div class="field">
+            <label>Género <span>*</span></label>
+            <select formControlName="genero">
+              <option value="" disabled>Seleccionar...</option>
+              <option value="Masculino">Masculino</option>
+              <option value="Femenino">Femenino</option>
+              <option value="Otro">Otro</option>
+            </select>
+            @if (err('genero')) { <small class="err">{{ err('genero') }}</small> }
+          </div>
+        </div>
+      }
+
+      <!-- STEP 2 -->
+      @if (currentStep === 2) {
+        <div class="card__title">
+          <div class="card__badge"><mat-icon>favorite</mat-icon></div>
+          <div>
+            <h2>Información de Salud</h2>
+            <p>Datos físicos y objetivos</p>
+          </div>
+        </div>
+
+        <div class="grid">
+          <div class="field">
+            <label>Peso (kg)</label>
+            <input type="number" formControlName="peso" placeholder="Ej: 70.5" />
+          </div>
+
+          <div class="field">
+            <label>Altura (cm)</label>
+            <input type="number" formControlName="altura" placeholder="Ej: 165" />
+          </div>
+
+          <div class="field">
+            <label>Objetivo <span>*</span></label>
+            <select formControlName="objetivo">
+              <option value="" disabled>Seleccionar objetivo...</option>
+              <option value="Pérdida de grasa">Pérdida de grasa</option>
+              <option value="Aumento de masa muscular">Aumento de masa muscular</option>
+              <option value="Mejorar hábitos alimenticios">Mejorar hábitos alimenticios</option>
+              <option value="Mantenimiento">Mantenimiento</option>
+              <option value="Control de peso">Control de peso</option>
+              <option value="Nutrición deportiva">Nutrición deportiva</option>
+            </select>
+            @if (err('objetivo')) { <small class="err">{{ err('objetivo') }}</small> }
+          </div>
+
+          <div class="field">
+            <label>Estado</label>
+            <select formControlName="estado">
+              <option value="Activo">Activo</option>
+              <option value="Inactivo">Inactivo</option>
+            </select>
+          </div>
+        </div>
+
+        @if (bmiValue) {
+          <div class="bmi">
+            <div>
+              <div class="bmi__label">IMC estimado</div>
+              <div class="bmi__value">{{ bmiValue.toFixed(1) }}</div>
+              <div class="bmi__hint">{{ bmiLabel }}</div>
+            </div>
+          </div>
+        }
+      }
+
+      <!-- STEP 3 -->
+      @if (currentStep === 3) {
+        <div class="card__title">
+          <div class="card__badge"><mat-icon>description</mat-icon></div>
+          <div>
+            <h2>Notas adicionales</h2>
+            <p>Información complementaria</p>
+          </div>
+        </div>
+
+        <div class="field">
+          <label>Notas</label>
+          <textarea rows="5" formControlName="notas"
+            placeholder="Alergias, condiciones médicas, preferencias alimentarias..."></textarea>
+        </div>
+
+        <div class="summary">
+          <h3>Resumen del paciente</h3>
+
+          <div class="summary__grid">
+            <div class="summary__item">
+              <span>Nombre</span>
+              <strong>{{ form.value.nombre }} {{ form.value.apellido }}</strong>
+            </div>
+
+            @if (form.value.email) {
+              <div class="summary__item">
+                <span>Email</span>
+                <strong>{{ form.value.email }}</strong>
+              </div>
+            }
+
+            @if (form.value.telefono) {
+              <div class="summary__item">
+                <span>Teléfono</span>
+                <strong>{{ form.value.telefono }}</strong>
+              </div>
+            }
+
+            <div class="summary__item">
+              <span>Edad</span>
+              <strong>{{ form.value.edad }} años</strong>
+            </div>
+
+            <div class="summary__item">
+              <span>Género</span>
+              <strong>{{ form.value.genero }}</strong>
+            </div>
+
+            @if ((form.value.peso ?? 0) > 0) {
+              <div class="summary__item">
+                <span>Peso</span>
+                <strong>{{ form.value.peso }} kg</strong>
+              </div>
+            }
+
+            @if ((form.value.altura ?? 0) > 0) {
+              <div class="summary__item">
+                <span>Altura</span>
+                <strong>{{ form.value.altura }} cm</strong>
+              </div>
+            }
+
+            <div class="summary__item">
+              <span>Objetivo</span>
+              <strong>{{ form.value.objetivo }}</strong>
+            </div>
+
+            <div class="summary__item">
+              <span>Estado</span>
+              <strong>{{ form.value.estado }}</strong>
+            </div>
+          </div>
+        </div>
+      }
+
+      <!-- Navigation -->
+      <div class="nav">
+        <button type="button" class="btn secondary" (click)="prev()">
+          <mat-icon>arrow_back</mat-icon>
+          {{ currentStep > 1 ? 'Anterior' : 'Cancelar' }}
+        </button>
+
+        <button type="submit" class="btn primary">
+          @if (currentStep < 3) {
+            <span>Siguiente</span>
+            <mat-icon>chevron_right</mat-icon>
+          } @else {
+            <mat-icon>save</mat-icon>
+            <span>Guardar Paciente</span>
+          }
+        </button>
+      </div>
+    </form>
+  </div>
+}
