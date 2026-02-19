@@ -15,6 +15,6 @@ export class PatientsComponent {
   patients: PatientCard[] = [];
 
   constructor(private patientsSvc: PatientsService) {
-    this.patients = this.patientsSvc.getAll(); // ✅ ya debe regresar PatientCard[]
+    this.patients = this.patientsSvc.getAll(); 
   }
 }

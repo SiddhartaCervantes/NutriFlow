@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { PatientCardComponent, PatientCard } from '../patient/patient-card.component';
-
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-patient-list',
   standalone: true,
@@ -16,6 +16,8 @@ export class PatientListComponent {
   @Output() selectPatient = new EventEmitter<PatientCard>();
   @Output() addPatient = new EventEmitter<void>();
 
+  constructor(private router: Router) {}
+
   onEdit(p: PatientCard) {
     console.log('EDIT', p);
   }
@@ -23,4 +25,8 @@ export class PatientListComponent {
   onDelete(p: PatientCard) {
     console.log('DELETE', p);
   }
+
+  goToNewPatient() {
+  this.router.navigate(['/patients/new']);
+}
 }

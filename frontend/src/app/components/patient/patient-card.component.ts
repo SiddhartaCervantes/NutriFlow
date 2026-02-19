@@ -1,4 +1,5 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { Component, ElementRef, EventEmitter, HostListener, Input, Output } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { Router } from '@angular/router';
 
@@ -13,9 +14,9 @@ export type PatientCard = {
 @Component({
   selector: 'app-patient-card',
   standalone: true,
-  imports: [MatIconModule],
+  imports: [CommonModule, MatIconModule],
   template: `
-    <div class="patient-card" role="button" tabindex="0" (click)="goToCalendar()">
+    <div class="patient-card" role="button" tabindex="0" (click)="goToDetail()">
       <div class="patient-card__icon" aria-hidden="true">
         <mat-icon>medical_services</mat-icon>
       </div>
@@ -32,16 +33,22 @@ export type PatientCard = {
         </div>
       </div>
 
+      <!-- botón ⋮ -->
       <button
         type="button"
         class="patient-card__menu"
         aria-label="Opciones del paciente"
-        (click)="onMenuClick($event)"
+        (click)="toggleMenu($event)"
       >
         <mat-icon>more_vert</mat-icon>
       </button>
 
-      <div class="patient-card__dropdown" *ngIf="menuOpen">
+      <!-- dropdown -->
+      <div
+        class="patient-card__dropdown"
+        *ngIf="menuOpen"
+        (click)="$event.stopPropagation()"
+      >
         <button type="button" (click)="onEdit($event)">Editar</button>
         <button type="button" class="danger" (click)="onDelete($event)">Eliminar</button>
       </div>
@@ -57,15 +64,20 @@ export class PatientCardComponent {
 
   menuOpen = false;
 
-  constructor(private router: Router) {}
+  constructor(
+    private router: Router,
+    private elRef: ElementRef<HTMLElement>
+  ) {}
 
-  goToCalendar() {
-    console.log('NAV -> /calendar'); // 🔥 debug
-    this.router.navigateByUrl('/patient-detail');
+  goToDetail() {
+    // ✅ si el menú está abierto, NO navegues
+    if (this.menuOpen) return;
+
+    this.router.navigateByUrl('/patdetail');
   }
 
-  onMenuClick(e: MouseEvent) {
-    e.stopPropagation();
+  toggleMenu(e: MouseEvent) {
+    e.stopPropagation(); // ✅ clave
     this.menuOpen = !this.menuOpen;
   }
 
@@ -79,5 +91,12 @@ export class PatientCardComponent {
     e.stopPropagation();
     this.menuOpen = false;
     this.delete.emit(this.patient);
+  }
+
+  // ✅ click afuera lo cierra, click adentro NO
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: MouseEvent) {
+    const clickedInside = this.elRef.nativeElement.contains(event.target as Node);
+    if (!clickedInside) this.menuOpen = false;
   }
 }
