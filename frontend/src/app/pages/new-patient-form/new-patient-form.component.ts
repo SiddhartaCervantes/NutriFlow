@@ -2,7 +2,8 @@ import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Output, inject } from '@angular/core';
 import { ReactiveFormsModule, Validators, FormBuilder } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
-import { Router, RouterModule} from '@angular/router';
+import { Router } from '@angular/router';
+import { PatientsSupabaseService } from '../../data/patients.supabase.service';
 
 export type PatientFormData = {
   nombre: string;
@@ -28,21 +29,23 @@ type StepId = 1 | 2 | 3;
   styleUrls: ['./new-patient-form.component.scss'],
 })
 export class NewPatientFormComponent {
-
   private fb = inject(FormBuilder);
   private router = inject(Router);
+  private patientsApi = inject(PatientsSupabaseService);
 
+  // (si aún quieres mantenerlos, no estorban)
   @Output() back = new EventEmitter<void>();
   @Output() save = new EventEmitter<PatientFormData>();
 
   currentStep: StepId = 1;
   showSuccess = false;
-  
+
+  saving = false;
+  errorMsg = '';
+
   goToList() {
     this.router.navigate(['/patients']);
-    
-    }
-
+  }
 
   readonly steps = [
     { id: 1 as StepId, label: 'Personal', icon: 'person_add' },
@@ -110,20 +113,21 @@ export class NewPatientFormComponent {
   }
 
   goToStep(step: StepId) {
-    if (step < this.currentStep) {
-      this.currentStep = step;
-    }
+    if (step < this.currentStep) this.currentStep = step;
   }
 
   prev() {
     if (this.currentStep > 1) {
       this.currentStep = (this.currentStep - 1) as StepId;
     } else {
+      // si prefieres navegar directo:
+      // this.goToList();
       this.back.emit();
     }
   }
 
-  next() {
+  async next() {
+    this.errorMsg = '';
     if (!this.validateStep(this.currentStep)) return;
 
     if (this.currentStep < 3) {
@@ -131,8 +135,11 @@ export class NewPatientFormComponent {
       return;
     }
 
-    // Success animation
-    this.showSuccess = true;
+    // Paso 3: Guardar
+    if (this.form.invalid) {
+      this.form.markAllAsTouched();
+      return;
+    }
 
     const payload: PatientFormData = {
       nombre: this.form.value.nombre ?? '',
@@ -148,17 +155,37 @@ export class NewPatientFormComponent {
       notas: this.form.value.notas ?? '',
     };
 
-    setTimeout(() => {
-      this.save.emit(payload);
-      this.showSuccess = false;
-      this.currentStep = 1;
-      this.form.reset({
-        edad: 0,
-        peso: 0,
-        altura: 0,
-        estado: 'Activo'
+    try {
+      this.saving = true;
+      this.showSuccess = true;
+
+      // 🔥 Supabase insert
+      await this.patientsApi.create({
+        nombre: payload.nombre,
+        apellido: payload.apellido,
+        email: payload.email || undefined,
+        telefono: payload.telefono || undefined,
+        edad: payload.edad || undefined,
+        genero: payload.genero || undefined,
+        peso: payload.peso || undefined,
+        altura: payload.altura || undefined,
+        objetivo: payload.objetivo || undefined,
+        estado: payload.estado,
+        notas: payload.notas || undefined,
       });
-    }, 1200);
+
+      // opcional: mantener tu output (por si la página padre escucha)
+      this.save.emit(payload);
+
+      // vuelve a lista
+      setTimeout(() => this.goToList(), 700);
+    } catch (e: any) {
+      this.showSuccess = false;
+      this.errorMsg = e?.message ?? 'Error al guardar paciente';
+      console.error(e);
+    } finally {
+      this.saving = false;
+    }
   }
 
   // ===== Error helper =====

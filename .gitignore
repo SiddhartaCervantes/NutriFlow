@@ -45,6 +45,29 @@ testem.log
 Thumbs.db
 node_modules
 
+# Ignorar carpetas de salida de compilación
+[Bb]in/
+[Oo]bj/
+
+# Ignorar archivos de configuración local y secretos
+backend/Nutriflow.api/appsettings.json
+backend/Nutriflow.api/appsettings.Development.json
+backend/Nutriflow.api/appsettings.Production.json
+
+# Archivos de usuario de Visual Studio
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# ==========================================
+# LIMPIEZA DE FRONTEND (General)
+# ==========================================
+# Esto cubre cualquier carpeta node_modules en cualquier nivel
+**/node_modules/
+**/dist/
+**/.angular/
+
 
 frontend/.angular/cache/
 frontend/node_modules/

@@ -2,7 +2,6 @@
   <div class="slide imagen1"></div>
   <div class="slide imagen2"></div>
   <div class="slide imagen3"></div>
-  <!-- <div class="slide imagen4"></div> -->
 
   <div class="light-leak"></div>
   <div class="light-leak"></div>
@@ -15,23 +14,49 @@
   <div class="particle"></div>
 </div>
 
-<img src="assets/logoSF.png" alt="logo" class="logo-fijo">
+<img src="assets/logoSF.png" alt="logo" class="logo-fijo" />
 
 <div class="login-backdrop">
   <div class="login-container">
     <div class="login-top">
-      <img src="assets/privado.png" alt="logo" class="login-logo">
+      <img src="assets/privado.png" alt="logo" class="login-logo" />
       <h1 class="nombre-sistema">SMR</h1>
     </div>
+
     <div class="login-bottom">
-      <form>
-        <label for="numeroEmpleado">Numero de Empleado</label>
-        <input id="numeroEmpleado" type="text" name="numeroEmpleado" placeholder="Número de empleado" required>
+      <form (ngSubmit)="submit()">
+        <label for="numeroEmpleado">Email</label>
+        <input
+          id="numeroEmpleado"
+          type="email"
+          name="email"
+          placeholder="correo@ejemplo.com"
+          required
+          [(ngModel)]="email"
+        />
 
         <label for="password">Contraseña</label>
-        <input id="password" type="password" name="password" placeholder="Contraseña" required>
+        <input
+          id="password"
+          type="password"
+          name="password"
+          placeholder="Contraseña"
+          required
+          [(ngModel)]="password"
+        />
 
-        <button type="submit">Ingresar</button>
+        <button type="submit" [disabled]="loading">
+          {{ loading ? 'Ingresando...' : 'Ingresar' }}
+        </button>
+
+        <!-- Opcional: crear cuenta -->
+        <button type="button" (click)="onSignUp()" [disabled]="loading" style="margin-top: 10px;">
+          Crear cuenta
+        </button>
+
+        <p *ngIf="errorMsg" style="margin-top: 10px; color: #b42318; font-weight: 700;">
+          {{ errorMsg }}
+        </p>
       </form>
     </div>
   </div>

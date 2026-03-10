@@ -262,6 +262,9 @@
             <span>Siguiente</span>
             <mat-icon>chevron_right</mat-icon>
           } @else {
+            <div *ngIf="errorMsg" class="error-banner">
+              {{ errorMsg }}
+            </div>
             <mat-icon>save</mat-icon>
             <span>Guardar Paciente</span>
           }

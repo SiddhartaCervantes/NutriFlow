@@ -243,3 +243,12 @@ input:focus, select:focus, textarea:focus {
   0% { transform: translateX(-80%); }
   100% { transform: translateX(220%); }
 }
+
+.error-banner{
+  margin-top: 10px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: rgba(180, 35, 24, 0.10);
+  color: #b42318;
+  font-weight: 700;
+}
