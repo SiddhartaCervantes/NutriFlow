@@ -49,14 +49,16 @@
           {{ loading ? 'Ingresando...' : 'Ingresar' }}
         </button>
 
-        <!-- Opcional: crear cuenta -->
         <button type="button" (click)="onSignUp()" [disabled]="loading" style="margin-top: 10px;">
           Crear cuenta
         </button>
 
-        <p *ngIf="errorMsg" style="margin-top: 10px; color: #b42318; font-weight: 700;">
-          {{ errorMsg }}
-        </p>
+        <button type="button" class="forgot-btn" (click)="onForgotPassword()" [disabled]="loading">
+          ¿Olvidaste tu contraseña?
+        </button>
+
+        @if (errorMsg)   { <p class="msg msg--error">{{ errorMsg }}</p> }
+        @if (successMsg) { <p class="msg msg--success">{{ successMsg }}</p> }
       </form>
     </div>
   </div>

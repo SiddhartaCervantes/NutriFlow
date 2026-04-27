@@ -1,32 +1,46 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { PatientListComponent } from '../patientsList/patientsList.component';
-import { PatientsService } from '../../data/patients.service';
+import { PatientsSupabaseService } from '../../data/patients.supabase.service';
+import { PatientCard } from './patient-card.component';
 
 @Component({
   selector: 'app-patients-page',
   standalone: true,
-  imports: [PatientListComponent],
+  imports: [CommonModule, PatientListComponent],
   template: `
-    <app-patient-list
-      [patients]="patientsUi"
-      (selectPatient)="onSelect($event.id)"
-    />
+    @if (loading) {
+      <div style="padding:40px; text-align:center; opacity:.6">Cargando pacientes...</div>
+    }
+    @if (error) {
+      <div style="padding:40px; color:#c62828">{{ error }}</div>
+    }
+    @if (!loading && !error) {
+      <app-patient-list [patients]="patients" />
+    }
   `,
 })
-export class PatientsPageComponent {
-  patientsUi: { id: string; fullName: string; subtitle: string }[] = [];
+export class PatientsPageComponent implements OnInit {
+  patients: PatientCard[] = [];
+  loading = true;
+  error = '';
 
-  constructor(private patientsSvc: PatientsService) {
-    this.patientsUi = this.patientsSvc.getAll().map(p => ({
-      id: String(p.id), 
-      fullName: p.fullName,
-      subtitle: p.subtitle ?? 'datos de PACIENTE',
-    }));
+  constructor(private patientsSvc: PatientsSupabaseService) {}
 
-    console.log('patientsUi:', this.patientsUi);
-  }
-
-  onSelect(id: string) {
-    console.log('Paciente seleccionado:', this.patientsSvc.getById(id));
+  async ngOnInit(): Promise<void> {
+    try {
+      const rows = await this.patientsSvc.getAll();
+      this.patients = rows.map(p => ({
+        id:     p.id,
+        name:   `${p.nombre} ${p.apellido}`,
+        age:    p.edad ?? 0,
+        goal:   p.objetivo ?? '—',
+        status: p.estado,
+      }));
+    } catch (e: any) {
+      this.error = e?.message ?? 'Error al cargar pacientes.';
+    } finally {
+      this.loading = false;
+    }
   }
 }

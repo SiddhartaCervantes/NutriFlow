@@ -25,7 +25,12 @@ export type PatientCard = {
         <div class="patient-card__name">{{ patient.name }}</div>
 
         <div class="patient-card__meta">
-          <span class="status">{{ patient.status }}</span>
+          <span class="status-badge"
+                [class.status-badge--active]="patient.status === 'Activo'"
+                [class.status-badge--inactive]="patient.status === 'Inactivo'">
+            <span class="status-badge__dot"></span>
+            {{ patient.status }}
+          </span>
           <span class="dot">•</span>
           <span>{{ patient.age }} años</span>
           <span class="dot">•</span>
@@ -70,10 +75,8 @@ export class PatientCardComponent {
   ) {}
 
   goToDetail() {
-    // ✅ si el menú está abierto, NO navegues
     if (this.menuOpen) return;
-
-    this.router.navigateByUrl('/patdetail');
+    this.router.navigate(['/patients', this.patient.id]);
   }
 
   toggleMenu(e: MouseEvent) {

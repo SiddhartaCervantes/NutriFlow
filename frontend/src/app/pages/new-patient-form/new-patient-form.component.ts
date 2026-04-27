@@ -15,6 +15,7 @@ export type PatientFormData = {
   peso: number;
   altura: number;
   objetivo: string;
+  actividad: string;
   estado: 'Activo' | 'Inactivo';
   notas: string;
 };
@@ -63,6 +64,7 @@ export class NewPatientFormComponent {
     peso: [0],
     altura: [0],
     objetivo: ['', Validators.required],
+    actividad: ['Ligero', Validators.required],
     estado: ['Activo' as 'Activo' | 'Inactivo'],
     notas: [''],
   });
@@ -151,6 +153,7 @@ export class NewPatientFormComponent {
       peso: Number(this.form.value.peso ?? 0),
       altura: Number(this.form.value.altura ?? 0),
       objetivo: this.form.value.objetivo ?? '',
+      actividad: this.form.value.actividad ?? 'Ligero',
       estado: this.form.value.estado as 'Activo' | 'Inactivo',
       notas: this.form.value.notas ?? '',
     };
@@ -170,6 +173,7 @@ export class NewPatientFormComponent {
         peso: payload.peso || undefined,
         altura: payload.altura || undefined,
         objetivo: payload.objetivo || undefined,
+        actividad: payload.actividad || 'Ligero',
         estado: payload.estado,
         notas: payload.notas || undefined,
       });

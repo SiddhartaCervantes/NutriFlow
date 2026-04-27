@@ -3,84 +3,88 @@
     [class.is-collapsed]="!isSideNavExpanded"
 >
   <!-- SIDENAV -->
-  <mat-sidenav 
-    mode="side"
-    [opened]="true"
-  >
+  <mat-sidenav mode="side" [opened]="true">
 
     <!-- LOGO + TOGGLE -->
     <div class="side-header">
-        <button class="logo-btn" (click)="toggleSideNav()">
-            <div class="logo">NF</div>
-        </button>
+      <button class="logo-btn" (click)="toggleSideNav()">
+        <div class="logo">NF</div>
+      </button>
+      @if (isSideNavExpanded) {
+        <span class="logo-text">NutriFlow</span>
+      }
     </div>
 
-    <!-- NAV ICONS -->
+    <!-- MAIN NAV -->
     <nav class="side-nav">
-        <a mat-button class="nav-item active"
+      @if (isSideNavExpanded) {
+        <span class="nav-section-label">Principal</span>
+      }
+
+      <a mat-button class="nav-item"
          routerLink="/patients"
-        routerLinkActive="active"
-        [routerLinkActiveOptions]="{ exact: true }">
-            <mat-icon>dashboard</mat-icon>
-            <span class="nav-label" *ngIf="isSideNavExpanded">Dashboard</span>
-        </a>
+         routerLinkActive="nav-item--active">
+        <mat-icon>people</mat-icon>
+        @if (isSideNavExpanded) {
+          <span class="nav-label">Pacientes</span>
+        }
+      </a>
 
-    </nav>
-    <nav class="side-nav">
-        <a mat-button class="nav-item"
-        routerLink="/calendar"
-        routerLinkActive="active"
-        [routerLinkActiveOptions]="{ exact: true }">
-            <mat-icon>calendar_today</mat-icon>
-            <span class="nav-label" *ngIf="isSideNavExpanded">Calendario</span>
-        </a>
+      <a mat-button class="nav-item"
+         routerLink="/recetas"
+         routerLinkActive="nav-item--active">
+        <mat-icon>menu_book</mat-icon>
+        @if (isSideNavExpanded) {
+          <span class="nav-label">Recetario</span>
+        }
+      </a>
 
-    </nav>
-    <nav class="side-nav">
-        <a mat-button class="nav-item">
-            <mat-icon>folder_shared</mat-icon>
-            <span class="nav-label" *ngIf="isSideNavExpanded">Pacientes</span>
-        </a>
-
-    </nav>
-    <nav class="side-nav">
-        <a mat-button class="nav-item"
-        routerLink="/recetas"
-        routerLinkActive="active"
-        [routerLinkActiveOptions]="{ exact: true }">
-            <mat-icon>book</mat-icon>
-            <span class="nav-label" *ngIf="isSideNavExpanded">Recetario</span>
-        </a>
-
+      <a mat-button class="nav-item"
+         routerLink="/calendar"
+         routerLinkActive="nav-item--active">
+        <mat-icon>calendar_month</mat-icon>
+        @if (isSideNavExpanded) {
+          <span class="nav-label">Calendario</span>
+        }
+      </a>
     </nav>
 
-    <!-- LOGOUT AT BOTTOM-->
+    <!-- BOTTOM: PROFILE + LOGOUT -->
     <div class="side-footer">
-        <a mat-button class="nav-item">
-            <mat-icon>logout</mat-icon>
-            <span class="nav-label" *ngIf="isSideNavExpanded">Salir</span>
-        </a>
+      <div class="side-divider"></div>
+
+      <a mat-button class="nav-item"
+         routerLink="/profile"
+         routerLinkActive="nav-item--active"
+         [routerLinkActiveOptions]="{ exact: true }">
+        <mat-icon>manage_accounts</mat-icon>
+        @if (isSideNavExpanded) {
+          <span class="nav-label">Mi perfil</span>
+        }
+      </a>
+
+      <button mat-button class="nav-item nav-item--logout" (click)="logout()">
+        <mat-icon>logout</mat-icon>
+        @if (isSideNavExpanded) {
+          <span class="nav-label">Cerrar sesión</span>
+        }
+      </button>
     </div>
-    
+
   </mat-sidenav>
 
   <!-- MAIN AREA -->
   <mat-sidenav-content>
-
-    <!-- Header card going to be here-->
-
     <div class="page-shell">
-        <app-user-header-card
-        [userName]="'Dr. Nunez'"
-        [phrase]="'Tu dia en equilibrio'"
-        [avatarUrl]="'../../assets/privado.png'">
-    </app-user-header-card>
+      <app-user-header-card
+        [userName]="userName"
+        [phrase]="phrase"
+        [avatarUrl]="avatarUrl">
+      </app-user-header-card>
 
-        <main class="page-content">
-            <router-outlet></router-outlet>
-        </main>
+      <main class="page-content">
+        <router-outlet></router-outlet>
+      </main>
     </div>
-
-   
   </mat-sidenav-content>
 </mat-sidenav-container>

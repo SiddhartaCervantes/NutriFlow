@@ -2,23 +2,81 @@
   <header class="patients-header">
     <h1 class="patients-title">{{ title }}</h1>
 
-    <button type="button" class="add-btn" (click)="goToNewPatient()">
-      <span class="add-btn__plus">+</span>
-      Nuevo paciente
-    </button>
+    <div class="patients-header__right">
+      <div class="search-wrap">
+        <mat-icon class="search-icon">search</mat-icon>
+        <input
+          class="search-input"
+          type="text"
+          placeholder="Buscar paciente..."
+          [(ngModel)]="query"
+        />
+        @if (query) {
+          <button class="search-clear" (click)="query = ''">
+            <mat-icon>close</mat-icon>
+          </button>
+        }
+      </div>
+
+      <button type="button" class="add-btn" (click)="goToNewPatient()">
+        <span class="add-btn__plus">+</span>
+        Nuevo paciente
+      </button>
+    </div>
   </header>
 
+  <!-- Filtros -->
+  <div class="filters-bar">
+    <div class="filter-group">
+      <span class="filter-label">Estado</span>
+      @for (s of statusOptions; track s.value) {
+        <button class="filter-chip"
+                [class.filter-chip--active]="statusFilter === s.value"
+                (click)="statusFilter = s.value">
+          {{ s.label }}
+        </button>
+      }
+    </div>
+
+    <div class="filter-group">
+      <span class="filter-label">Objetivo</span>
+      @for (g of goalOptions; track g.value) {
+        <button class="filter-chip"
+                [class.filter-chip--active]="goalFilter === g.value"
+                (click)="goalFilter = g.value">
+          {{ g.label }}
+        </button>
+      }
+    </div>
+
+    @if (hasActiveFilters) {
+      <button class="filter-reset" (click)="resetFilters()">
+        <mat-icon>filter_alt_off</mat-icon>
+        Limpiar filtros
+      </button>
+    }
+  </div>
+
+  <!-- Contador -->
+  <p class="filter-count">
+    {{ filtered.length }} paciente{{ filtered.length !== 1 ? 's' : '' }}
+  </p>
+
   <section class="patients-list" role="list">
-    @for (p of patients; track p.id) {
-        
+    @for (p of filtered; track p.id) {
       <app-patient-card
         [patient]="p"
-      
         (edit)="onEdit($event)"
         (delete)="onDelete($event)"
       />
     } @empty {
-      <div class="empty">No hay pacientes registrados.</div>
+      <div class="empty">
+        @if (hasActiveFilters || query) {
+          No hay pacientes que coincidan con los filtros aplicados.
+        } @else {
+          No hay pacientes registrados.
+        }
+      </div>
     }
   </section>
 </section>

@@ -191,3 +191,27 @@
   margin-bottom: 0.3rem;
   text-shadow: 0 0 8px rgba(0,0,0,0.5);
 }
+
+.forgot-btn {
+  background: none;
+  border: none;
+  color: #4827AF;
+  font-size: 13px;
+  cursor: pointer;
+  display: block;
+  margin: 8px auto 0;
+  padding: 4px 8px;
+  text-decoration: underline;
+  width: auto;
+}
+.forgot-btn:hover { color: #FF4208; }
+.forgot-btn:disabled { opacity: .5; cursor: not-allowed; }
+
+.msg {
+  margin-top: 10px;
+  font-size: 13px;
+  font-weight: 600;
+  text-align: center;
+}
+.msg--error   { color: #b42318; }
+.msg--success { color: #2e7d32; }

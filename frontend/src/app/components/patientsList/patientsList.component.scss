@@ -1,8 +1,129 @@
 .patients-header {
   display: flex;
   align-items: center;
-  justify-content: space-between; /* 👈 se queda así */
+  justify-content: space-between;
   margin-bottom: 18px;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.patients-header__right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.search-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.search-icon {
+  position: absolute;
+  left: 10px;
+  font-size: 20px;
+  color: #888;
+  pointer-events: none;
+}
+
+.search-input {
+  padding: 9px 36px 9px 36px;
+  border: 1.5px solid #ddd;
+  border-radius: 10px;
+  font-size: 14px;
+  outline: none;
+  width: 220px;
+  transition: border-color .2s;
+}
+.search-input:focus { border-color: #4827AF; }
+
+.search-clear {
+  position: absolute;
+  right: 4px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  color: #888;
+  padding: 4px;
+  border-radius: 50%;
+}
+.search-clear:hover { color: #333; background: rgba(0,0,0,0.06); }
+.search-clear mat-icon { font-size: 18px; width: 18px; height: 18px; }
+
+.empty {
+  padding: 40px;
+  text-align: center;
+  opacity: .6;
+  font-size: 14px;
+}
+
+/* ── Filtros ─────────────────────────────────────────────── */
+.filters-bar {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 12px;
+}
+
+.filter-group {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.filter-label {
+  font-size: 12px;
+  font-weight: 700;
+  color: #888;
+  text-transform: uppercase;
+  letter-spacing: .5px;
+  margin-right: 2px;
+}
+
+.filter-chip {
+  padding: 5px 14px;
+  border: 1.5px solid #ddd;
+  border-radius: 20px;
+  background: #fff;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all .15s;
+  color: #444;
+}
+.filter-chip:hover { border-color: #4827AF; color: #4827AF; }
+.filter-chip--active {
+  background: #4827AF;
+  border-color: #4827AF;
+  color: #fff;
+  font-weight: 600;
+}
+
+.filter-reset {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 5px 12px;
+  border: none;
+  background: none;
+  color: #e53935;
+  font-size: 13px;
+  cursor: pointer;
+  border-radius: 20px;
+  transition: background .15s;
+}
+.filter-reset:hover { background: rgba(229, 57, 53, 0.08); }
+.filter-reset mat-icon { font-size: 16px; width: 16px; height: 16px; }
+
+.filter-count {
+  font-size: 12px;
+  color: #888;
+  margin: 0 0 10px;
 }
 
 /* Botón verde */

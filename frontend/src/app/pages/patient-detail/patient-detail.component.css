@@ -159,20 +159,98 @@
   line-height: 32px;
 }
 
+/* ── IA Section ─────────────────────────────────────────── */
+.pd__aiSection { margin-bottom: 16px; }
+
+.pdCard--ai mat-card-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.aiEmpty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 20px 0;
+  text-align: center;
+}
+.aiEmpty__icon { font-size: 40px; width: 40px; height: 40px; opacity: 0.3; }
+
+.aiLoading { display: grid; gap: 12px; padding: 8px 0; }
+
+.aiError {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #d32f2f;
+  padding: 8px 0;
+}
+
+.aiSummary {
+  font-weight: 600;
+  margin: 4px 0 12px;
+}
+
+.aiTargets {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 10px;
+  margin-bottom: 4px;
+}
+
+.aiTarget {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px 14px;
+  border-radius: 14px;
+  background: rgba(0,0,0,0.04);
+  gap: 4px;
+}
+.aiTarget--highlight { background: rgba(25, 118, 210, 0.1); }
+.aiTarget__label { font-size: 11px; opacity: 0.7; text-transform: uppercase; letter-spacing: 0.5px; }
+.aiTarget__value { font-size: 18px; font-weight: 800; }
+
+.aiMeals { display: grid; gap: 12px; }
+
+.aiMeal {
+  display: grid;
+  grid-template-columns: 100px 1fr;
+  align-items: start;
+  gap: 12px;
+  padding: 10px 12px;
+  border-radius: 14px;
+  background: rgba(0,0,0,0.03);
+}
+
+.aiMeal__slot { font-weight: 800; font-size: 13px; padding-top: 2px; }
+
+.aiMeal__card { display: grid; gap: 4px; }
+.aiMeal__name { font-weight: 700; }
+.aiMeal__meta { font-size: 12px; display: flex; flex-wrap: wrap; gap: 4px; align-items: center; }
+.aiMeal__diff { font-size: 12px; opacity: 0.75; }
+
 /* Bottom */
 .pd__bottomGrid {
   margin-top: 14px;
 }
 
 .note {
-  padding: 10px 12px;
-  border-radius: 14px;
-  background: rgba(0,0,0,0.03);
+  padding: 10px 4px;
   display: grid;
-  gap: 6px;
+  gap: 4px;
+}
+.note__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 .note__date { font-size: 12px; }
-.note__text { font-weight: 600; }
+.note__text  { font-size: 14px; line-height: 1.5; white-space: pre-wrap; }
+.note__del   { opacity: 0; transition: opacity .15s; color: #e53935; }
+.note:hover .note__del { opacity: 1; }
 
 /* Responsive */
 @media (max-width: 1200px) {

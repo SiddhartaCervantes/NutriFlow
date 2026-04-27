@@ -145,13 +145,23 @@
             <select formControlName="objetivo">
               <option value="" disabled>Seleccionar objetivo...</option>
               <option value="Pérdida de grasa">Pérdida de grasa</option>
-              <option value="Aumento de masa muscular">Aumento de masa muscular</option>
-              <option value="Mejorar hábitos alimenticios">Mejorar hábitos alimenticios</option>
+              <option value="Ganancia muscular">Ganancia muscular</option>
               <option value="Mantenimiento">Mantenimiento</option>
-              <option value="Control de peso">Control de peso</option>
-              <option value="Nutrición deportiva">Nutrición deportiva</option>
             </select>
             @if (err('objetivo')) { <small class="err">{{ err('objetivo') }}</small> }
+          </div>
+
+          <div class="field">
+            <label>Nivel de actividad <span>*</span></label>
+            <select formControlName="actividad">
+              <option value="" disabled>Seleccionar...</option>
+              <option value="Sedentario">Sedentario (sin ejercicio)</option>
+              <option value="Ligero">Ligero (1–3 días/semana)</option>
+              <option value="Moderado">Moderado (3–5 días/semana)</option>
+              <option value="Activo">Activo (6–7 días/semana)</option>
+              <option value="Muy activo">Muy activo (ejercicio intenso diario)</option>
+            </select>
+            @if (err('actividad')) { <small class="err">{{ err('actividad') }}</small> }
           </div>
 
           <div class="field">
@@ -240,6 +250,11 @@
             <div class="summary__item">
               <span>Objetivo</span>
               <strong>{{ form.value.objetivo }}</strong>
+            </div>
+
+            <div class="summary__item">
+              <span>Actividad</span>
+              <strong>{{ form.value.actividad }}</strong>
             </div>
 
             <div class="summary__item">

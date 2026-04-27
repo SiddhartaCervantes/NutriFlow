@@ -2,22 +2,23 @@ import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from './services/auth.service';
+import { supabase } from '../data/supabase.client';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule, FormsModule], 
+  imports: [CommonModule, FormsModule],
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css'], 
+  styleUrls: ['./login.component.css'],
 })
 export class LoginComponent {
-  loading = false;
-  errorMsg = '';
+  loading    = false;
+  errorMsg   = '';
+  successMsg = '';
 
-  email = '';
+  email    = '';
   password = '';
 
-  // Inyectamos el AuthService en lugar del Router (el servicio manejará la navegación)
   constructor(private authService: AuthService) {}
 
   async submit() {
@@ -25,35 +26,50 @@ export class LoginComponent {
   }
 
   async onLogin() {
-    this.errorMsg = '';
-    this.loading = true;
-
+    this.errorMsg   = '';
+    this.successMsg = '';
+    this.loading    = true;
     try {
-      // Llamamos al método login de nuestro servicio experto
       await this.authService.login(this.email, this.password);
-      console.log('Login exitoso y perfil cargado desde .NET');
     } catch (e: any) {
-      // Si el error viene de Supabase o de tu API, lo capturamos aquí
       this.errorMsg = e?.message ?? 'Error al iniciar sesión';
-      console.error('Error en login:', e);
     } finally {
       this.loading = false;
     }
   }
 
   async onSignUp() {
-    this.errorMsg = '';
-    this.loading = true;
-
+    this.errorMsg   = '';
+    this.successMsg = '';
+    this.loading    = true;
     try {
-      // También delegamos el registro al servicio si decides implementarlo ahí
-      const { data, error } = await this.authService.signUp(this.email, this.password);
-      
+      const { error } = await this.authService.signUp(this.email, this.password);
       if (error) throw error;
-
-      this.errorMsg = 'Cuenta creada. Revisa tu correo para confirmar.';
+      this.successMsg = 'Cuenta creada. Revisa tu correo para confirmar.';
     } catch (e: any) {
       this.errorMsg = e?.message ?? 'Error al crear cuenta';
+    } finally {
+      this.loading = false;
+    }
+  }
+
+  async onForgotPassword() {
+    this.errorMsg   = '';
+    this.successMsg = '';
+
+    if (!this.email.trim()) {
+      this.errorMsg = 'Escribe tu correo antes de continuar.';
+      return;
+    }
+
+    this.loading = true;
+    try {
+      const redirectTo = `${window.location.origin}/reset-password`;
+      const { error } = await supabase.auth.resetPasswordForEmail(this.email.trim(), { redirectTo });
+      if (error) throw error;
+      this.successMsg = 'Te enviamos un correo para restablecer tu contraseña.';
+    } catch (e: any) {
+      this.errorMsg = e?.message ?? 'Error al enviar el correo.';
     } finally {
       this.loading = false;
     }

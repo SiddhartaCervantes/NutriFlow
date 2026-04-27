@@ -1,0 +1,94 @@
+<div class="profile-wrap">
+
+  <div class="profile-card">
+
+    <!-- Header -->
+    <div class="profile-header">
+      <button class="back-btn" (click)="goBack()">
+        <mat-icon>arrow_back</mat-icon>
+      </button>
+      <div>
+        <h1 class="profile-title">Mi perfil</h1>
+        <p class="profile-sub">Información de tu cuenta de nutriólogo</p>
+      </div>
+    </div>
+
+    @if (loading) {
+      <mat-progress-bar mode="indeterminate" style="margin-bottom:20px"></mat-progress-bar>
+    }
+
+    @if (!loading) {
+      <!-- Avatar -->
+      <div class="avatar-section">
+        <div class="avatar-upload-wrap" (click)="fileInput.click()" [class.uploading]="uploading">
+          <img [src]="photoUrl || 'assets/privado.png'"
+               alt="Avatar"
+               class="avatar-preview"
+               (error)="photoUrl = ''">
+          <div class="avatar-overlay">
+            @if (uploading) {
+              <mat-icon class="spin">autorenew</mat-icon>
+            } @else {
+              <mat-icon>photo_camera</mat-icon>
+            }
+          </div>
+        </div>
+        <input #fileInput type="file" accept="image/*" hidden (change)="onFileSelected($event)" />
+        <div class="avatar-info">
+          <p class="avatar-name">{{ name }} {{ lastName }}</p>
+          <p class="avatar-email muted">{{ email }}</p>
+          <small class="muted">Haz clic en la foto para cambiarla</small>
+        </div>
+      </div>
+
+      <!-- Form -->
+      <div class="form-grid">
+        <div class="field">
+          <label>Nombre</label>
+          <input type="text" [(ngModel)]="name" placeholder="Tu nombre" />
+        </div>
+
+        <div class="field">
+          <label>Apellido</label>
+          <input type="text" [(ngModel)]="lastName" placeholder="Tu apellido" />
+        </div>
+
+        <div class="field">
+          <label>Teléfono</label>
+          <input type="tel" [(ngModel)]="phone" placeholder="Ej. 3312345678" />
+        </div>
+
+        <div class="field">
+          <label>Email</label>
+          <input type="email" [value]="email" disabled class="disabled-input" />
+          <small class="muted">El email no se puede cambiar desde aquí</small>
+        </div>
+      </div>
+
+      <!-- Feedback -->
+      @if (success) {
+        <div class="feedback success">
+          <mat-icon>check_circle</mat-icon>
+          Perfil actualizado correctamente
+        </div>
+      }
+      @if (errorMsg) {
+        <div class="feedback error">
+          <mat-icon>error_outline</mat-icon>
+          {{ errorMsg }}
+        </div>
+      }
+
+      <!-- Actions -->
+      <div class="profile-actions">
+        <button mat-stroked-button (click)="goBack()">Cancelar</button>
+        <button mat-raised-button color="primary"
+                [disabled]="saving"
+                (click)="save()">
+          <mat-icon>save</mat-icon>
+          {{ saving ? 'Guardando...' : 'Guardar cambios' }}
+        </button>
+      </div>
+    }
+  </div>
+</div>

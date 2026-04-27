@@ -1,0 +1,26 @@
+<div class="setup-wrap">
+  <div class="setup-card">
+    <h1 class="setup-title">Completa tu perfil</h1>
+    <p class="setup-sub">Es la primera vez que ingresas. Cuéntanos quién eres.</p>
+
+    <form (ngSubmit)="submit()">
+      <label for="name">Nombre *</label>
+      <input id="name" type="text" [(ngModel)]="name" name="name"
+             placeholder="Ej. Carlos" required />
+
+      <label for="lastName">Apellido *</label>
+      <input id="lastName" type="text" [(ngModel)]="lastName" name="lastName"
+             placeholder="Ej. Ramírez" required />
+
+      <label for="phone">Teléfono (opcional)</label>
+      <input id="phone" type="tel" [(ngModel)]="phone" name="phone"
+             placeholder="Ej. 3312345678" />
+
+      <button type="submit" [disabled]="loading">
+        {{ loading ? 'Guardando...' : 'Guardar y continuar' }}
+      </button>
+
+      <p *ngIf="errorMsg" class="setup-error">{{ errorMsg }}</p>
+    </form>
+  </div>
+</div>
