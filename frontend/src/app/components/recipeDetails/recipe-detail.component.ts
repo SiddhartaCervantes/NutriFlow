@@ -41,7 +41,7 @@ type RecipeUI = Recipe & {
       <h1>{{ recipe.title }}</h1>
 
       <div class="chips">
-        <span class="chip" *ngFor="let t of recipe.tags ?? []">{{ t }}</span>
+        <span class="chip" *ngFor="let t of recipe.tags">{{ t }}</span>
       </div>
 
       <div class="meta">
@@ -79,7 +79,7 @@ type RecipeUI = Recipe & {
   <section class="panel">
     <h3 class="panel__title">Instrucciones</h3>
 
-    <ol class="steps" *ngIf="(recipe.instructions?.length ?? 0) > 0; else noSteps">
+    <ol class="steps" *ngIf="recipe.instructions.length > 0; else noSteps">
       <li class="step" *ngFor="let step of recipe.instructions; let i = index">
         <span class="step__num">{{ i + 1 }}</span>
         <p class="step__text">{{ step }}</p>
