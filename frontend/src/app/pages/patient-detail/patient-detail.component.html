@@ -191,6 +191,10 @@
         @if (aiPlan && !isLoadingPlan) {
 
           <p class="aiSummary">{{ aiPlan.summary }}</p>
+          <p class="aiMeta muted">
+            Precisión del plan: <strong>{{ aiPlan.overallAccuracyPct }}%</strong>
+            &nbsp;·&nbsp; Base de conocimiento: <strong>{{ aiPlan.knowledgeBaseSize }} recetas</strong>
+          </p>
 
           <!-- Metas nutricionales -->
           <div class="aiTargets">
@@ -241,8 +245,9 @@
                       <span>{{ meal.recipe.prepTimeMin }} min</span>
                     </div>
                     <div class="aiMeal__diff">
-                      Diferencia vs objetivo ({{ meal.targetCalories }} kcal):
-                      <strong>{{ calorieAccuracy(meal.recipe.calories, meal.targetCalories) }} kcal</strong>
+                      Objetivo: {{ meal.targetCalories }} kcal &nbsp;·&nbsp;
+                      Desviación: <strong>{{ meal.calorieDeviation }} kcal</strong> &nbsp;·&nbsp;
+                      Precisión: <strong>{{ meal.calorieAccuracyPct }}%</strong>
                     </div>
                   </div>
                 } @else {

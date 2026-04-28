@@ -29,6 +29,8 @@ export type MealRecommendation = {
   slot: string;
   targetCalories: number;
   recipe: RecipeDto | null;
+  calorieDeviation: number;
+  calorieAccuracyPct: number;
 };
 
 export type NutritionalTargets = {
@@ -44,6 +46,8 @@ export type RecommendationResponse = {
   targets: NutritionalTargets;
   meals: MealRecommendation[];
   summary: string;
+  overallAccuracyPct: number;
+  knowledgeBaseSize: number;
 };
 
 @Injectable({ providedIn: 'root' })

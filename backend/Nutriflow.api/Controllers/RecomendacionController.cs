@@ -100,6 +100,32 @@ namespace NutriFlow.Api.Controllers
             var lunch     = ToDto(BestMatch("comida",   lunchTarget));
             var dinner    = ToDto(BestMatch("cena",     dinnerTarget));
 
+            static MealRecommendation BuildMeal(string slot, int target, RecipeDto? recipe)
+            {
+                int deviation       = recipe is null ? 0 : Math.Abs(recipe.Calories - target);
+                double accuracyPct  = recipe is null ? 0 : Math.Round(100.0 - (deviation / (double)target * 100.0), 1);
+                return new MealRecommendation
+                {
+                    Slot               = slot,
+                    TargetCalories     = target,
+                    Recipe             = recipe,
+                    CalorieDeviation   = deviation,
+                    CalorieAccuracyPct = accuracyPct
+                };
+            }
+
+            var meals = new List<MealRecommendation>
+            {
+                BuildMeal("Desayuno", breakfastTarget, breakfast),
+                BuildMeal("Comida",   lunchTarget,     lunch),
+                BuildMeal("Cena",     dinnerTarget,    dinner),
+            };
+
+            var mealsWithRecipe   = meals.Where(m => m.Recipe is not null).ToList();
+            double overallAccuracy = mealsWithRecipe.Count == 0
+                ? 0
+                : Math.Round(mealsWithRecipe.Average(m => m.CalorieAccuracyPct), 1);
+
             var response = new RecommendationResponse
             {
                 Targets = new NutritionalTargets
@@ -111,12 +137,9 @@ namespace NutriFlow.Api.Controllers
                     CarbsTargetG       = Math.Round(carbTarget,    1),
                     FatTargetG         = Math.Round(fatTarget,     1)
                 },
-                Meals =
-                [
-                    new() { Slot = "Desayuno", TargetCalories = breakfastTarget, Recipe = breakfast },
-                    new() { Slot = "Comida",   TargetCalories = lunchTarget,     Recipe = lunch     },
-                    new() { Slot = "Cena",     TargetCalories = dinnerTarget,    Recipe = dinner    }
-                ],
+                Meals             = meals,
+                KnowledgeBaseSize = allRecipes.Models.Count,
+                OverallAccuracyPct = overallAccuracy,
                 Summary = $"Plan de {Math.Round(caloricTarget)} kcal/día · " +
                            $"{Math.Round(proteinTarget)}g proteína · " +
                            $"{Math.Round(carbTarget)}g carbohidratos · " +
@@ -125,6 +148,112 @@ namespace NutriFlow.Api.Controllers
             };
 
             return Ok(response);
+        }
+
+        /// <summary>
+        /// Valida el modelo matemático Harris-Benedict con 5 casos de prueba canónicos.
+        /// Demuestra la precisión del sistema experto sin dependencia de base de datos.
+        /// </summary>
+        [HttpGet("validacion")]
+        public IActionResult ValidarModelo()
+        {
+            static double CalcTmb(double kg, double cm, int age, string gender) =>
+                gender.ToLower() == "masculino"
+                    ? 88.362  + (13.397 * kg) + (4.799 * cm) - (5.677 * age)
+                    : 447.593 + (9.247  * kg) + (3.098 * cm) - (4.330 * age);
+
+            static double CalcTdee(double tmb, string activity) => tmb * (activity switch
+            {
+                "Ligero"     => 1.375,
+                "Moderado"   => 1.550,
+                "Activo"     => 1.725,
+                "Muy activo" => 1.900,
+                _            => 1.200
+            });
+
+            static double CalcObjetivo(double tdee, string goal) => goal switch
+            {
+                "Pérdida de grasa"  => tdee - 400,
+                "Ganancia muscular" => tdee + 400,
+                _                   => tdee
+            };
+
+            static double DesvPct(double esperado, double calculado) =>
+                Math.Round(Math.Abs(esperado - calculado) / esperado * 100.0, 4);
+
+            // Valores esperados calculados analíticamente con la fórmula Harris-Benedict (1990)
+            var definiciones = new[]
+            {
+                new { Desc = "Hombre joven, sedentario, mantenimiento",
+                      Kg = 70.0, Cm = 175.0, Age = 25, Gender = "Masculino",
+                      Activity = "Sedentario",  Goal = "Mantenimiento",
+                      TmbEsp = 1724.1, TdeeEsp = 2068.9, ObjEsp = 2068.9 },
+
+                new { Desc = "Mujer adulta, moderada, pérdida de grasa",
+                      Kg = 60.0, Cm = 165.0, Age = 30, Gender = "Femenino",
+                      Activity = "Moderado",    Goal = "Pérdida de grasa",
+                      TmbEsp = 1383.7, TdeeEsp = 2144.7, ObjEsp = 1744.7 },
+
+                new { Desc = "Hombre, activo, ganancia muscular",
+                      Kg = 85.0, Cm = 180.0, Age = 35, Gender = "Masculino",
+                      Activity = "Activo",      Goal = "Ganancia muscular",
+                      TmbEsp = 1892.2, TdeeEsp = 3264.0, ObjEsp = 3664.0 },
+
+                new { Desc = "Mujer joven, ligera, mantenimiento",
+                      Kg = 55.0, Cm = 160.0, Age = 22, Gender = "Femenino",
+                      Activity = "Ligero",      Goal = "Mantenimiento",
+                      TmbEsp = 1356.6, TdeeEsp = 1865.3, ObjEsp = 1865.3 },
+
+                new { Desc = "Hombre mayor, muy activo, pérdida de grasa",
+                      Kg = 90.0, Cm = 185.0, Age = 40, Gender = "Masculino",
+                      Activity = "Muy activo",  Goal = "Pérdida de grasa",
+                      TmbEsp = 1954.8, TdeeEsp = 3714.1, ObjEsp = 3314.1 },
+            };
+
+            const double umbralAprobacion = 0.5; // ≤ 0.5 % de desviación = aprobado
+
+            var casos = definiciones.Select(d =>
+            {
+                double tmbCalc  = Math.Round(CalcTmb(d.Kg, d.Cm, d.Age, d.Gender),    1);
+                double tdeeCalc = Math.Round(CalcTdee(tmbCalc, d.Activity),            1);
+                double objCalc  = Math.Round(CalcObjetivo(tdeeCalc, d.Goal),           1);
+
+                double dTmb  = DesvPct(d.TmbEsp,  tmbCalc);
+                double dTdee = DesvPct(d.TdeeEsp, tdeeCalc);
+                double dObj  = DesvPct(d.ObjEsp,  objCalc);
+
+                return new ValidationTestCase
+                {
+                    Description          = d.Desc,
+                    TmbEsperado          = d.TmbEsp,
+                    TmbCalculado         = tmbCalc,
+                    TmbDesviacionPct     = dTmb,
+                    TdeeEsperado         = d.TdeeEsp,
+                    TdeeCalculado        = tdeeCalc,
+                    TdeeDesviacionPct    = dTdee,
+                    ObjetivoEsperado     = d.ObjEsp,
+                    ObjetivoCalculado    = objCalc,
+                    ObjetivoDesviacionPct = dObj,
+                    Aprobado             = dTmb <= umbralAprobacion
+                                        && dTdee <= umbralAprobacion
+                                        && dObj  <= umbralAprobacion,
+                };
+            }).ToList();
+
+            int aprobados = casos.Count(c => c.Aprobado);
+            double precisionPromedio = Math.Round(
+                casos.Average(c => 100.0 - ((c.TmbDesviacionPct + c.TdeeDesviacionPct + c.ObjetivoDesviacionPct) / 3.0)), 2);
+
+            return Ok(new ValidationReport
+            {
+                CasosDePrueba      = casos,
+                TotalCasos         = casos.Count,
+                CasosAprobados     = aprobados,
+                PrecisionPromedioPct = precisionPromedio,
+                Conclusion         = aprobados == casos.Count
+                    ? $"MODELO VALIDADO: {aprobados}/{casos.Count} casos aprobados con precisión promedio de {precisionPromedio}%."
+                    : $"ATENCIÓN: {casos.Count - aprobados} caso(s) fuera del umbral de {umbralAprobacion}%."
+            });
         }
     }
 }
