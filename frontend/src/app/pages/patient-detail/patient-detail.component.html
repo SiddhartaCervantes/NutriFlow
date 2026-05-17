@@ -1,42 +1,53 @@
 <!-- src/app/pages/patient-detail/patient-detail.component.html -->
 
 <section class="pd">
-  <!-- Header -->
-  <header class="pd__header">
-    <div class="pd__titleWrap">
-      <div class="pd__titleRow">
-        <h1 class="pd__title">{{ patient.name }}</h1>
+  <!-- Hero header -->
+  <header class="pd__hero">
+    <div class="pd__hero-left">
 
-        <mat-chip-set class="pd__chips">
-          <mat-chip>{{ patient.status }}</mat-chip>
-          <mat-chip>{{ patient.goal }}</mat-chip>
-          <mat-chip>Últ. act: {{ patient.lastUpdate }}</mat-chip>
-        </mat-chip-set>
-      </div>
+      <label class="pd__avatar" title="Cambiar foto del paciente">
+        <input type="file" accept="image/*" (change)="onPhotoSelected($event)" hidden />
+        @if (patientPhotoUrl) {
+          <img class="pd__avatar-img" [src]="patientPhotoUrl" [alt]="patient.name" />
+        } @else {
+          <span class="pd__avatar-initials">{{ patient.name.charAt(0) }}</span>
+        }
+        <span class="pd__avatar-overlay">
+          <mat-icon>{{ uploadingPhoto ? 'refresh' : 'photo_camera' }}</mat-icon>
+        </span>
+      </label>
 
-      <div class="pd__subtitle">
-        <span class="pd__code">{{ patient.code }}</span>
-        <span class="pd__dot">•</span>
-        <span>{{ patient.age }} años</span>
+      @if (photoUploadError) {
+      <span class="pd__photoError">{{ photoUploadError }}</span>
+    }
+
+    <div class="pd__heroInfo">
+        <div class="pd__heroName">{{ patient.name }}</div>
+        <div class="pd__heroMeta">
+          <span class="pd__statusBadge" [class.pd__statusBadge--active]="patient.status === 'Activo'">
+            {{ patient.status }}
+          </span>
+          <span class="pd__heroDot">·</span>
+          <span>{{ patient.goal }}</span>
+          <span class="pd__heroDot">·</span>
+          <span>{{ patient.age }} años</span>
+        </div>
+        <div class="pd__heroCode">{{ patient.code }} · Últ. act: {{ patient.lastUpdate }}</div>
       </div>
     </div>
 
-    <div class="pd__actions">
-
+    <div class="pd__heroActions">
       <button mat-stroked-button (click)="openScheduleAppointment()">
         <mat-icon>event</mat-icon>
         Agendar cita
       </button>
-
       <button mat-raised-button color="primary" (click)="onEditPatient()">
         <mat-icon>edit</mat-icon>
         Editar
       </button>
-
       <button mat-icon-button [matMenuTriggerFor]="menu">
         <mat-icon>more_vert</mat-icon>
       </button>
-
       <mat-menu #menu="matMenu">
         <button mat-menu-item (click)="onDeletePatient()">
           <mat-icon color="warn">delete</mat-icon>
@@ -46,25 +57,8 @@
     </div>
   </header>
 
-  <!-- Top summary row -->
+  <!-- Stats row -->
   <section class="pd__topGrid">
-    <mat-card class="pdCard">
-      <mat-card-header>
-        <mat-card-title>Adherencia semanal</mat-card-title>
-        <mat-card-subtitle>
-          {{ adherence.mealsLogged }} / {{ adherence.mealsPlanned }} comidas registradas
-        </mat-card-subtitle>
-      </mat-card-header>
-
-      <mat-card-content class="pdCard__content">
-        <mat-progress-bar mode="determinate" [value]="adherence.week * 100"></mat-progress-bar>
-
-        <div class="pdCard__meta">
-          <span>{{ (adherence.week * 100) | number:'1.0-0' }}%</span>
-          <span class="muted">Meta: 80%</span>
-        </div>
-      </mat-card-content>
-    </mat-card>
 
     <mat-card class="pdCard">
       <mat-card-header>

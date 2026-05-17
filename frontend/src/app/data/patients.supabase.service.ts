@@ -16,6 +16,7 @@ export type PatientRow = {
   actividad: string | null;
   estado: 'Activo' | 'Inactivo';
   notas: string | null;
+  photo_url: string | null;
   created_at: string;
 };
 
@@ -32,6 +33,7 @@ export type PatientInsert = {
   actividad?: string | null;
   estado?: 'Activo' | 'Inactivo';
   notas?: string | null;
+  photo_url?: string | null;
 };
 
 @Injectable({ providedIn: 'root' })
@@ -81,6 +83,29 @@ export class PatientsSupabaseService {
 
     if (error) throw error;
     return row;
+  }
+
+  async uploadPhoto(patientId: string, file: File): Promise<string> {
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) throw new Error('No hay sesión activa.');
+
+    const ext = file.name.split('.').pop() ?? 'jpg';
+    const path = `${user.id}/${patientId}.${ext}`;
+
+    const { error: uploadError } = await supabase.storage
+      .from('patient-photos')
+      .upload(path, file, { upsert: true, contentType: file.type });
+
+    if (uploadError) throw uploadError;
+
+    const { data } = supabase.storage
+      .from('patient-photos')
+      .getPublicUrl(path);
+
+    const photoUrl = data.publicUrl;
+
+    await this.update(patientId, { photo_url: photoUrl });
+    return photoUrl;
   }
 
   async create(patient: PatientInsert): Promise<PatientRow> {

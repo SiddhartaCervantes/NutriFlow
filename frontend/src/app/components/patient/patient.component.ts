@@ -31,12 +31,14 @@ export class PatientsPageComponent implements OnInit {
     try {
       const rows = await this.patientsSvc.getAll();
       this.patients = rows.map(p => ({
-        id:     p.id,
-        name:   `${p.nombre} ${p.apellido}`,
-        age:    p.edad ?? 0,
-        goal:   p.objetivo ?? '—',
-        status: p.estado,
+        id:       p.id,
+        name:     `${p.nombre} ${p.apellido}`,
+        age:      p.edad ?? 0,
+        goal:     p.objetivo ?? '—',
+        status:   p.estado,
+        photoUrl: p.photo_url,
       }));
+      console.log('[PatientsPage] photoUrls:', this.patients.map(p => ({ name: p.name, photoUrl: p.photoUrl })));
     } catch (e: any) {
       this.error = e?.message ?? 'Error al cargar pacientes.';
     } finally {

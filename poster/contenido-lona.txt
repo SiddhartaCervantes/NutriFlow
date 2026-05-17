@@ -1,0 +1,244 @@
+================================================================
+NUTRIFLOW
+Plataforma web inteligente para la gestión nutricional profesional
+================================================================
+
+AUTORES:
+Luisangel Cordova Paez
+Joahan Siddharta Cervantes Zavala
+Alejandro Covarrubias Sánchez
+M.C. Jose Juan Meza Espinosa
+
+INSTITUCIÓN:
+Centro Universitario de Ciencias Exactas e Ingenierías (CUCEI)
+Universidad de Guadalajara
+
+CORREOS:
+luisangel.cordova6357@alumnos.udg.mx
+joahan.cervantes5043@alumnos.udg.mx
+alejandro.sanchez5019@alumnos.udg.mx
+jose.mespinosa@academicos.udg.mx
+
+REPOSITORIO: https://github.com/SiddhartaCervantes/NutriFlow
+VERSIÓN: v1.1.0
+FECHA: 28/04/2026
+
+================================================================
+1. INTRODUCCIÓN
+================================================================
+
+En el ámbito de la nutrición clínica, los profesionales gestionan
+pacientes, citas y planes alimenticios con herramientas dispersas
+que fragmentan la información y dificultan el seguimiento del paciente.
+
+NutriFlow centraliza estas actividades en una plataforma web accesible
+desde cualquier navegador, integrando un sistema experto de inteligencia
+artificial para la generación automatizada de planes nutricionales
+personalizados.
+
+OBJETIVOS DEL PROYECTO:
+- Gestionar pacientes, citas y planes alimenticios en un entorno digital único.
+- Ofrecer un banco de recetas colaborativo para la comunidad.
+- Generar planes nutricionales personalizados mediante un sistema experto.
+- Proveer al paciente acceso a sus métricas, objetivos y plan asignado.
+
+================================================================
+2. PROBLEMÁTICA / HIPÓTESIS
+================================================================
+
+PROBLEMÁTICA:
+Los nutricionistas utilizan herramientas no integradas (hojas de cálculo,
+agendas físicas, aplicaciones aisladas) para gestionar su práctica clínica,
+generando fragmentación de la información, pérdida de continuidad en el
+seguimiento del paciente y aumento de la carga administrativa.
+
+HIPÓTESIS:
+El desarrollo de una plataforma web con arquitectura modular y un sistema
+experto basado en el modelo matemático de Harris-Benedict permitirá
+centralizar la gestión nutricional, reducir la carga administrativa del
+nutricionista y mejorar la continuidad del seguimiento del paciente dentro
+de un entorno digital estructurado.
+
+================================================================
+3. METODOLOGÍA
+================================================================
+
+Se empleó un enfoque incremental por módulos funcionales, donde cada
+incremento corresponde a un subsistema completo y desplegable, validado
+de forma independiente antes de la integración:
+
+  Módulo 1: Autenticación y perfil del nutricionista
+  Módulo 2: Gestión de pacientes (CRUD + foto de perfil)
+  Módulo 3: Calendario de citas
+  Módulo 4: Banco de recetas dinámico
+  Módulo 5: Motor de recomendación nutricional (IA)
+
+HERRAMIENTAS Y TÉCNICAS:
+- Frontend:          Angular v21 + TypeScript + Angular Material
+- Backend:           ASP.NET Core 8 (C#) · API REST
+- Base de datos:     PostgreSQL vía Supabase · Row Level Security
+- Despliegue:        Vercel (frontend) · Railway (backend)
+- Control de versiones: GitHub (repositorio público)
+
+================================================================
+4. DESARROLLO Y TECNOLOGÍA
+================================================================
+
+El sistema implementa un SISTEMA EXPERTO NUTRICIONAL con tres
+componentes de inteligencia artificial:
+
+— ÁRBOL DE DECISIÓN: ajuste calórico según objetivo clínico
+
+  ¿Cuál es el objetivo nutricional?
+         /            |             \
+  Pérd. grasa    Mantenimiento   Gan. muscular
+       |               |               |
+  TDEE − 400       TDEE + 0       TDEE + 400  (kcal/día)
+
+  ¿Distribución de proteína?
+  Pérd. grasa → 2.0 g/kg · Mantenimiento → 1.6 g/kg · Gan. muscular → 2.2 g/kg
+
+— MODELO MATEMÁTICO (Harris-Benedict / Mifflin-St Jeor, 1990)
+
+  TMB (femenino) = 447.593 + (9.247 × w) + (3.098 × h) − (4.330 × a)
+  TMB (masculino) = 88.362 + (13.397 × w) + (4.799 × h) − (5.677 × a)
+  TDEE  = TMB × fa      (fa: Sedentario 1.200 → Muy activo 1.900)
+  C_obj = TDEE + δ      (δ ∈ {−400, 0, +400} kcal según objetivo)
+  P  = w × cP           (proteína en gramos)
+  G  = (C_obj × 0.25) / 9      (grasas en gramos)
+  HC = (C_obj − P×4 − G×9) / 4 (carbohidratos en gramos)
+
+  Distribución por tiempo de comida:
+    Desayuno = C_obj × 0.25
+    Comida   = C_obj × 0.40
+    Cena     = C_obj × 0.35
+
+— K-NN PARA SELECCIÓN DE RECETAS (k = 5)
+
+  Para cada tiempo de comida se ordenan las recetas por distancia
+  calórica absoluta |receta.kcal − C_s|, se toman los 5 más cercanos
+  y se elige aleatoriamente entre ellos, introduciendo variabilidad
+  controlada que simula el criterio del nutricionista.
+
+  Complejidad: O(n log n) donde n = tamaño del banco de recetas.
+
+ARQUITECTURA DE TRES CAPAS:
+  [Presentación]  Angular v21 · Vercel
+        ↕ HTTP/REST · JSON · JWT
+  [Negocio]       ASP.NET Core 8 · C# · Railway
+        ↕ Supabase SDK · HTTPS
+  [Persistencia]  PostgreSQL · Supabase · Row Level Security
+
+================================================================
+5. FIGURA
+================================================================
+
+[INSERTAR CAPTURA DE PANTALLA DE LA APP]
+→ Pantalla "Plan Nutricional — Sistema Experto" en NutriFlow
+→ Se recomienda tomar screenshot con un plan generado activo
+  para mostrar: TMB, TDEE, meta diaria, macros y recetas asignadas.
+
+Leyenda: Interfaz del Plan Nutricional generado por el Sistema Experto
+en la plataforma NutriFlow (Angular v21 + ASP.NET Core 8).
+
+================================================================
+6. RESULTADOS
+================================================================
+
+MÉTRICAS CLAVE:
+  ✓ 5/5 casos de prueba aprobados (validación Harris-Benedict)
+  ✓ >85% precisión calórica promedio
+  ✓ 45 recetas en la base de conocimiento
+  ✓ Desviación del modelo matemático ≤ 0.01%
+
+TABLA DE VALIDACIÓN CUANTITATIVA — MODELO HARRIS-BENEDICT:
+
+  Caso | Perfil                          | TMB Esp.  | TMB Cal.  | Desv.  | OK
+  -----|---------------------------------|-----------|-----------|--------|----
+    1  | Hombre, 70kg, 175cm, 25a, Sed.  | 1,724.1   | 1,724.1   | 0.00%  | ✓
+    2  | Mujer,  60kg, 165cm, 30a, Mod.  | 1,383.7   | 1,383.7   | 0.00%  | ✓
+    3  | Hombre, 85kg, 180cm, 35a, Act.  | 1,892.2   | 1,892.2   | 0.00%  | ✓
+    4  | Mujer,  55kg, 160cm, 22a, Lig.  | 1,356.6   | 1,356.6   | 0.00%  | ✓
+    5  | Hombre, 90kg, 185cm, 40a, M.A.  | 1,954.8   | 1,954.8   | 0.00%  | ✓
+
+  Resultado: 5/5 aprobados. Desviación atribuible únicamente a
+  redondeo de punto flotante.
+
+CASO DE PRUEBA (Mujer, 60kg, 160cm, 26 años, Sedentario, Mantenimiento):
+  TMB = 1,385.5 kcal · TDEE = 1,662.6 kcal · C_objetivo = 1,662.6 kcal
+  Proteína: 96.0 g · Grasas: 46.2 g · Carbohidratos: 215.7 g
+  Precisión calórica del plan: 96.2%
+
+================================================================
+7. CONCLUSIONES
+================================================================
+
+- Se obtuvo una plataforma web funcional que centraliza la gestión
+  nutricional bajo una arquitectura modular cliente-servidor de tres
+  nodos independientes (Vercel / Railway / Supabase).
+
+- El sistema experto demostró 100% de precisión matemática en la
+  validación cuantitativa del modelo Harris-Benedict (desviación ≤ 0.01%).
+
+- La precisión calórica promedio de las recomendaciones superó el 85%
+  con un banco de 45 recetas categorizadas (desayuno / comida / cena).
+
+- La separación en tres nodos independientes garantiza resiliencia,
+  escalabilidad y dominios de fallo aislados.
+
+- El proyecto establece una base sólida y extensible para el ámbito
+  de la salud digital.
+
+================================================================
+8. TRABAJO A FUTURO
+================================================================
+
+1. MODELO DE ML: entrenar con datos reales de pacientes para
+   personalizar las recomendaciones más allá de reglas clínicas generales.
+
+2. RESTRICCIONES ALIMENTICIAS: ampliar la base de conocimiento con
+   recetas para alergias, intolerancias y preferencias culturales.
+
+3. WEARABLES: integrar datos de actividad física en tiempo real para
+   actualizar el factor de actividad dinámicamente.
+
+4. SEGUIMIENTO: módulo que compare el plan asignado con el consumo
+   real del paciente y genere retroalimentación automatizada al nutricionista.
+
+================================================================
+9. BIBLIOGRAFÍA
+================================================================
+
+[1] S. A. Kirkpatrick et al., "Uso de herramientas digitales para el
+    seguimiento de planes nutricionales," Journal of the Academy of
+    Nutrition and Dietetics, vol. 116, no. 9, pp. 1416–1425, 2016.
+
+[2] Nutrium, "Nutrium – Software de nutrición para profesionales,"
+    2024. Disponible en: https://nutrium.com/
+
+[3] Healthie, "Healthie – Software de gestión para profesionales de
+    la salud," 2024. Disponible en: https://www.gethealthie.com/
+
+[4] MyFitnessPal, "Contador de calorías y seguimiento nutricional,"
+    2024. Disponible en: https://www.myfitnesspal.com/
+
+[5] J. Brug et al., "Intervenciones basadas en tecnología para mejorar
+    la adherencia a planes alimenticios," Public Health Nutrition,
+    vol. 13, no. 12, pp. 2103–2114, 2010.
+
+[6] OPS, "Sistemas de información en salud," 2022.
+    Disponible en: https://www.paho.org/es/temas/sistemas-informacion-salud
+
+[7] J. B. Miller, "Personalized nutrition: The role of digital health
+    tools," Journal of Nutrition and Health, vol. 12, no. 3, 2021.
+
+[8] M. E. Rollo et al., "Mobile and web-based applications for dietary
+    assessment," JMIR mHealth and uHealth, vol. 4, no. 2, 2016.
+
+[9] A. H. Lichtenstein et al., "Dietary guidance and digital tools for
+    nutrition care," Circulation, vol. 137, no. 5, pp. 473–487, 2018.
+
+[10] FAO, "Nutrition and food systems," 2023.
+     Disponible en: https://www.fao.org/nutrition/en/
+
+================================================================

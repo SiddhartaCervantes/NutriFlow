@@ -1,20 +1,56 @@
-<!-- src/app/pages/recipes/recipes.component.html -->
 <section class="recipes-page">
   <div class="recipes-header">
     <h1 class="recipes-title">Recetas Recomendadas</h1>
     <p class="recipes-subtitle">Explora nuevas ideas saludables cada día 🍽️</p>
   </div>
 
-  <section class="recipes-grid">
-    @for (receta of recetas; track receta.title) {
-      <app-card-preview
-        [id]="receta.id"
-        [imageSrc]="receta.image"
-        [title]="receta.title"
-        [description]="receta.description"
-        [duration]="receta.duration"
-        [difficulty]="receta.tags"
-      ></app-card-preview>
-    }
-  </section>
+  <div class="recipes-filters">
+    <div class="recipes-categories">
+      @for (cat of categories; track cat) {
+        <button
+          class="cat-btn"
+          [class.active]="selectedCategory === cat"
+          (click)="setCategory(cat)"
+        >{{ cat }}</button>
+      }
+    </div>
+
+    <input
+      type="text"
+      placeholder="Buscar receta..."
+      [(ngModel)]="searchQuery"
+      class="search-input"
+    />
+  </div>
+
+  @if (loading) {
+    <div class="recipes-state">
+      <p>Cargando recetas...</p>
+    </div>
+  }
+
+  @if (!loading && error) {
+    <div class="recipes-state recipes-state--error">
+      <p>No se pudieron cargar las recetas. Intenta de nuevo más tarde.</p>
+    </div>
+  }
+
+  @if (!loading && !error) {
+    <section class="recipes-grid">
+      @for (receta of filteredRecipes; track receta.id) {
+        <app-card-preview
+          [id]="receta.id"
+          [imageSrc]="getImage(receta)"
+          [title]="receta.name"
+          [description]="receta.description ?? ''"
+          [duration]="formatDuration(receta.prep_time_min)"
+          [difficulty]="receta.difficulty ?? ''"
+        ></app-card-preview>
+      }
+
+      @if (filteredRecipes.length === 0) {
+        <p class="recipes-empty">No se encontraron recetas con esos filtros.</p>
+      }
+    </section>
+  }
 </section>

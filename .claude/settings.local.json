@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(grep -E \"\\\\.\\(md|txt|sql\\)$\")",
+      "Bash(Get-ChildItem -Path \"c:\\\\Users\\\\joaha\\\\Desktop\\\\NUTRIFLOW MODULAR\\\\NutriFlow\" -Depth 2)",
+      "Bash(Select-Object FullName)"
+    ]
+  }
+}

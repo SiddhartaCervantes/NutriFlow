@@ -9,6 +9,7 @@ export type PatientCard = {
   age: number;
   goal: string;
   status: 'Activo' | 'Inactivo';
+  photoUrl?: string | null;
 };
 
 @Component({
@@ -17,8 +18,15 @@ export type PatientCard = {
   imports: [CommonModule, MatIconModule],
   template: `
     <div class="patient-card" role="button" tabindex="0" (click)="goToDetail()">
-      <div class="patient-card__icon" aria-hidden="true">
-        <mat-icon>medical_services</mat-icon>
+      <div class="patient-card__avatar" aria-hidden="true">
+        @if (patient.photoUrl && !imgFailed) {
+          <img class="patient-card__avatar-img"
+               [src]="patient.photoUrl"
+               [alt]="patient.name"
+               (error)="onImgError()" />
+        } @else {
+          <span class="patient-card__avatar-initials">{{ patient.name.charAt(0) }}</span>
+        }
       </div>
 
       <div class="patient-card__content">
@@ -67,7 +75,13 @@ export class PatientCardComponent {
   @Output() edit = new EventEmitter<PatientCard>();
   @Output() delete = new EventEmitter<PatientCard>();
 
-  menuOpen = false;
+  menuOpen  = false;
+  imgFailed = false;
+
+  onImgError(): void {
+    console.warn('[PatientCard] imagen no cargó:', this.patient.photoUrl);
+    this.imgFailed = true;
+  }
 
   constructor(
     private router: Router,

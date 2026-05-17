@@ -83,6 +83,9 @@ export class PatientDetailComponent implements OnInit {
   patientId = '';
   loadingPatient = true;
   patientError = '';
+  patientPhotoUrl = '';
+  uploadingPhoto = false;
+  photoUploadError = '';
   private rawPatient: PatientRow | null = null;
 
   patient = {
@@ -193,6 +196,7 @@ export class PatientDetailComponent implements OnInit {
     try {
       const p: PatientRow = await this.patientsService.getById(this.patientId);
       this.rawPatient = p;
+      this.patientPhotoUrl = p.photo_url ?? '';
       this.patient = {
         name:          `${p.nombre} ${p.apellido}`,
         code:          `NF-${p.id.slice(0, 6).toUpperCase()}`,
@@ -419,6 +423,21 @@ export class PatientDetailComponent implements OnInit {
 
   calorieAccuracy(recommended: number, target: number): number {
     return Math.round(Math.abs(recommended - target));
+  }
+
+  async onPhotoSelected(event: Event): Promise<void> {
+    const file = (event.target as HTMLInputElement).files?.[0];
+    if (!file) return;
+
+    this.uploadingPhoto = true;
+    this.photoUploadError = '';
+    try {
+      this.patientPhotoUrl = await this.patientsService.uploadPhoto(this.patientId, file);
+    } catch (e: any) {
+      this.photoUploadError = e?.message ?? 'Error al subir la foto.';
+    } finally {
+      this.uploadingPhoto = false;
+    }
   }
 
   onEditPatient(): void {

@@ -26,6 +26,61 @@
   margin: 0;
 }
 
+.recipes-filters {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-bottom: 1.5rem;
+}
+
+.recipes-categories {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.cat-btn {
+  padding: 0.35rem 1rem;
+  border: 1.5px solid #ddd;
+  border-radius: 999px;
+  background: #fff;
+  cursor: pointer;
+  font-size: 0.875rem;
+  color: #555;
+  transition: all 0.15s;
+
+  &:hover { border-color: #4caf50; color: #4caf50; }
+  &.active { background: #4caf50; border-color: #4caf50; color: #fff; font-weight: 600; }
+}
+
+.search-input {
+  flex: 1;
+  min-width: 180px;
+  padding: 0.4rem 0.9rem;
+  border: 1.5px solid #ddd;
+  border-radius: 999px;
+  font-size: 0.875rem;
+  outline: none;
+
+  &:focus { border-color: #4caf50; }
+}
+
+.recipes-state {
+  text-align: center;
+  padding: 3rem 0;
+  color: #888;
+
+  &--error { color: #e53935; }
+}
+
+.recipes-empty {
+  grid-column: 1 / -1;
+  text-align: center;
+  color: #999;
+  padding: 2rem 0;
+}
+
 .recipes-grid {
   display: grid;
   ///ALTERNATIVA A UTILIZAR 5 columnas fijas
