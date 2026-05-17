@@ -241,8 +241,14 @@ export class PatientDetailComponent implements OnInit {
         goal:          this.patient.goal,
         activityLevel: this.patient.activityLevel,
       });
-    } catch {
-      this.aiError = 'No se pudo conectar con el sistema de recomendación. Verifica que el backend esté activo.';
+    } catch (err: any) {
+      if (err?.status === 400) {
+        this.aiError = 'Datos del paciente incompletos. Verifica que tenga peso, altura y edad registrados.';
+      } else if (err?.status > 0) {
+        this.aiError = `Error del servidor (${err.status}). Intenta de nuevo.`;
+      } else {
+        this.aiError = 'No se pudo conectar con el sistema de recomendación. Verifica que el backend esté activo.';
+      }
     } finally {
       this.isLoadingPlan = false;
     }

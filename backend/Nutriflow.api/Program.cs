@@ -32,8 +32,8 @@ if (app.Environment.IsDevelopment()) {
     app.UseSwaggerUI();
 }
 
-app.UseCors(myAllowSpecificOrigins); // Activar CORS antes de las rutas
-app.UseHttpsRedirection();
-app.MapControllers(); // <--- Esto es lo que conecta con tu carpeta Controllers
+app.UseRouting();
+app.UseCors(myAllowSpecificOrigins);
+app.MapControllers();
 
 app.Run();

@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
+import { environment } from '../../environments/environment';
 
 export type RecommendationRequest = {
   weightKg: number;
@@ -47,7 +48,7 @@ export type RecommendationResponse = {
 
 @Injectable({ providedIn: 'root' })
 export class RecommendationService {
-  private readonly apiUrl = 'http://localhost:5105/api/recomendacion/plan';
+  private readonly apiUrl = `${environment.apiUrl}/api/recomendacion/plan`;
 
   constructor(private http: HttpClient) {}
 

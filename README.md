@@ -92,8 +92,9 @@ dotnet run --project backend/Nutriflow.api
 
 El API estará disponible en:
 - HTTP: **http://localhost:5105**
-- HTTPS: **https://localhost:7166**
-- Swagger (documentación): **https://localhost:7166/swagger**
+- Swagger (documentación): **http://localhost:5105/swagger**
+
+> El backend corre únicamente en HTTP en modo desarrollo. No uses el perfil `https` — el frontend está configurado para conectarse a `http://localhost:5105`.
 
 ---
 

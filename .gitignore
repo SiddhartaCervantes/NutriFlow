@@ -50,7 +50,6 @@ node_modules
 [Oo]bj/
 
 # Ignorar archivos de configuración local y secretos
-backend/Nutriflow.api/appsettings.json
 backend/Nutriflow.api/appsettings.Development.json
 backend/Nutriflow.api/appsettings.Production.json
 
