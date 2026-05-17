@@ -5,9 +5,12 @@ var builder = WebApplication.CreateBuilder(args);
 var myAllowSpecificOrigins = "_myAllowSpecificOrigins";
 
 // 1. Configurar CORS
+var allowedOrigins = builder.Configuration.GetSection("AllowedOrigins").Get<string[]>()
+    ?? new[] { "http://localhost:4200" };
+
 builder.Services.AddCors(options => {
     options.AddPolicy(name: myAllowSpecificOrigins,
-        policy => policy.WithOrigins("http://localhost:4200").AllowAnyHeader().AllowAnyMethod());
+        policy => policy.WithOrigins(allowedOrigins).AllowAnyHeader().AllowAnyMethod());
 });
 
 // 2. Activar Controladores y configurar JSON para evitar errores de metadatos
@@ -36,4 +39,5 @@ app.UseRouting();
 app.UseCors(myAllowSpecificOrigins);
 app.MapControllers();
 
-app.Run();
+var port = Environment.GetEnvironmentVariable("PORT") ?? "5105";
+app.Run($"http://0.0.0.0:{port}");
