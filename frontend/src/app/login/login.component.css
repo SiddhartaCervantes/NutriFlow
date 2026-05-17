@@ -215,3 +215,26 @@
 }
 .msg--error   { color: #b42318; }
 .msg--success { color: #2e7d32; }
+
+@media (max-width: 768px) {
+  .login-container {
+    width: 90%;
+    max-width: 400px;
+  }
+
+  .logo-fijo {
+    width: 160px;
+  }
+
+  .nombre-sistema {
+    font-size: 28px;
+  }
+
+  .login-bottom button {
+    width: 80%;
+  }
+
+  .login-bottom input {
+    width: 86%;
+  }
+}
