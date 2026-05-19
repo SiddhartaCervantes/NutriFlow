@@ -76,3 +76,7 @@ frontend/.angular/cache/19.2.19/Modular/.tsbuildinfo
 node_modules
 node_modules
 node_modules
+
+# Backend secrets
+backend/Nutriflow.api/appsettings.json
+backend/Nutriflow.api/appsettings.Development.json
