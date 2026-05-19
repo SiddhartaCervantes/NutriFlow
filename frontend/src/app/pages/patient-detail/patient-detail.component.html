@@ -41,6 +41,10 @@
         <mat-icon>event</mat-icon>
         Agendar cita
       </button>
+      <button mat-stroked-button (click)="openQrDialog()">
+        <mat-icon>qr_code_2</mat-icon>
+        QR paciente
+      </button>
       <button mat-raised-button color="primary" (click)="onEditPatient()">
         <mat-icon>edit</mat-icon>
         Editar
@@ -89,6 +93,12 @@
         }
       </mat-card-content>
 
+      @if (measurementsForChart.length > 1) {
+        <mat-card-content style="padding: 0 16px 8px">
+          <app-weight-chart [measurements]="measurementsForChart" />
+        </mat-card-content>
+      }
+
       <mat-card-actions align="end">
         <button mat-button (click)="openAddMeasurement()">
           <mat-icon>add</mat-icon>
@@ -136,6 +146,51 @@
           </div>
         </div>
       </mat-card-content>
+    </mat-card>
+
+    <mat-card class="pdCard">
+      <mat-card-header>
+        <mat-card-title>
+          <mat-icon>event_upcoming</mat-icon>
+          Próximas citas
+        </mat-card-title>
+        <mat-card-subtitle>{{ upcomingAppointments.length }} cita{{ upcomingAppointments.length !== 1 ? 's' : '' }} agendada{{ upcomingAppointments.length !== 1 ? 's' : '' }}</mat-card-subtitle>
+      </mat-card-header>
+
+      <mat-card-content class="pdCard__content">
+        @if (upcomingAppointments.length === 0) {
+          <p class="muted" style="font-size:13px; text-align:center; padding:16px 0">
+            No hay citas próximas. Agenda una nueva cita con el botón de arriba.
+          </p>
+        }
+        @for (appt of upcomingAppointments; track appt.id) {
+          <div class="apptRow">
+            <div class="apptRow__icon">
+              <mat-icon>{{ appt.mode === 'Online' ? 'videocam' : 'place' }}</mat-icon>
+            </div>
+            <div class="apptRow__info">
+              <div class="apptRow__date">
+                {{ appt.date_time | date:'EEEE dd MMM yyyy, HH:mm' }}
+              </div>
+              <div class="apptRow__meta muted">
+                {{ appt.mode }}
+                @if (appt.note) { · {{ appt.note }} }
+              </div>
+            </div>
+            <span class="apptRow__badge" [class.apptRow__badge--online]="appt.mode === 'Online'">
+              {{ appt.mode }}
+            </span>
+          </div>
+          <mat-divider></mat-divider>
+        }
+      </mat-card-content>
+
+      <mat-card-actions align="end">
+        <button mat-button (click)="openScheduleAppointment()">
+          <mat-icon>add</mat-icon>
+          Agendar cita
+        </button>
+      </mat-card-actions>
     </mat-card>
   </section>
 
@@ -299,6 +354,11 @@
       <button mat-stroked-button (click)="onNextWeek()">
         Siguiente
         <mat-icon>chevron_right</mat-icon>
+      </button>
+
+      <button mat-stroked-button (click)="exportPlan()" [disabled]="exporting">
+        <mat-icon>picture_as_pdf</mat-icon>
+        {{ exporting ? 'Generando...' : 'Exportar PDF' }}
       </button>
 
       <button mat-raised-button color="primary" (click)="onNewWeek()">

@@ -11,14 +11,21 @@ import { NewPatientFormComponent } from './pages/new-patient-form/new-patient-fo
 import { SetupProfileComponent } from './pages/setup-profile/setup-profile.component';
 import { ProfileEditComponent } from './pages/profile-edit/profile-edit.component';
 import { ResetPasswordComponent } from './pages/reset-password/reset-password.component';
+import { PatientPortalComponent } from './pages/patient-portal/patient-portal.component';
+import { MiPlanComponent } from './pages/mi-plan/mi-plan.component';
+import { WelcomeComponent } from './pages/welcome/welcome.component';
 import { authGuard } from './guards/auth.guard';
+import { patientGuard } from './guards/patient.guard';
+import { DashboardComponent } from './pages/dashboard/dashboard.component';
 
 export const routes: Routes = [
-  { path: '', redirectTo: 'login', pathMatch: 'full' },
+  { path: '', component: WelcomeComponent, pathMatch: 'full' },
 
-  { path: 'login',          component: LoginComponent },
-  { path: 'reset-password', component: ResetPasswordComponent },
-  { path: 'setup-profile',  component: SetupProfileComponent },
+  { path: 'login',           component: LoginComponent },
+  { path: 'reset-password',  component: ResetPasswordComponent },
+  { path: 'setup-profile',   component: SetupProfileComponent },
+  { path: 'patient-portal',  component: PatientPortalComponent },
+  { path: 'mi-plan',         component: MiPlanComponent, canActivate: [patientGuard] },
 
   // Rutas protegidas — requieren sesión activa
   {
@@ -26,6 +33,7 @@ export const routes: Routes = [
     component: MainLayoutComponent,
     canActivate: [authGuard],
     children: [
+      { path: 'dashboard',     component: DashboardComponent },
       { path: 'patients',      component: PatientsComponent },
       { path: 'patients/new',  component: NewPatientFormComponent },
       { path: 'patients/:id',  component: PatientDetailComponent },
@@ -33,7 +41,7 @@ export const routes: Routes = [
       { path: 'recetas/:id',   component: RecipeDetailComponent },
       { path: 'calendar',      component: CalendarPageComponent },
       { path: 'profile',       component: ProfileEditComponent },
-      { path: '', redirectTo: 'patients', pathMatch: 'full' },
+      { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
     ],
   },
 

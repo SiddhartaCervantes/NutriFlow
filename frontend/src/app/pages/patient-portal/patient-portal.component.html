@@ -1,0 +1,46 @@
+<div class="portal-bg">
+  <div class="portal-card">
+    <div class="portal-top">
+      <img src="assets/logoSF.png" alt="NutriFlow" class="portal-logo" />
+      <h1 class="portal-title">Portal del Paciente</h1>
+      <p class="portal-sub">Consulta tu plan nutricional asignado</p>
+    </div>
+
+    <div class="portal-form">
+      <form (ngSubmit)="onLogin()">
+        <label for="email">Correo electrónico</label>
+        <input
+          id="email"
+          type="email"
+          name="email"
+          placeholder="correo@ejemplo.com"
+          required
+          [(ngModel)]="email"
+        />
+
+        <label for="password">Contraseña</label>
+        <input
+          id="password"
+          type="password"
+          name="password"
+          placeholder="Contraseña"
+          required
+          [(ngModel)]="password"
+        />
+
+        <button type="submit" [disabled]="loading">
+          {{ loading ? 'Ingresando...' : 'Ver mi plan' }}
+        </button>
+
+        @if (errorMsg) {
+          <p class="error-msg">{{ errorMsg }}</p>
+        }
+      </form>
+
+      <p class="portal-hint">
+        ¿Eres nutricionista?
+        <a routerLink="/login" href="/login">Accede aquí</a>
+      </p>
+    </div>
+  </div>
+</div>

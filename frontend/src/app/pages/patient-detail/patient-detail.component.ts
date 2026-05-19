@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, ElementRef, inject, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 
@@ -26,6 +26,9 @@ import { ScheduleAppointmentDialogComponent, ScheduleAppointmentData } from './s
 import { RecipeRow } from '../../data/recipe.service';
 import { AppointmentService, NewAppointment } from '../../data/appointment.service';
 import { Router } from '@angular/router';
+import { ExportService } from '../../services/export.service';
+import { QrDialogComponent, QrDialogData } from './qr-dialog.component';
+import { WeightChartComponent } from '../../shared/weight-chart/weight-chart.component';
 
 type DayKey = 'Mon' | 'Tue' | 'Wed' | 'Thu' | 'Fri' | 'Sat' | 'Sun';
 
@@ -63,6 +66,7 @@ const EMPTY_DAY = (key: DayKey): DayPlan => ({
     MatMenuModule,
     MatProgressBarModule,
     MatDialogModule,
+    WeightChartComponent,
   ],
   templateUrl: './patient-detail.component.html',
   styleUrl: './patient-detail.component.css',
@@ -77,6 +81,9 @@ export class PatientDetailComponent implements OnInit {
   private measurementService    = inject(MeasurementService);
   private appointmentService    = inject(AppointmentService);
   private dialog                = inject(MatDialog);
+  private exportService         = inject(ExportService);
+
+  exporting = false;
 
   readonly Math = Math;
 
@@ -150,6 +157,10 @@ export class PatientDetailComponent implements OnInit {
   measurements: { label: string; value: string; meta: string }[] = [];
   lastMeasuredAt: string | null = null;
   private measurementsRaw: MeasurementRow[] = [];
+  get measurementsForChart(): MeasurementRow[] { return this.measurementsRaw; }
+
+  // ── Upcoming appointments ──────────────────────────────────────────────────
+  upcomingAppointments: import('../../data/appointment.service').AppointmentRow[] = [];
 
   private loadMeasurementsDisplay(rows: MeasurementRow[]): void {
     this.measurementsRaw = rows;
@@ -212,14 +223,16 @@ export class PatientDetailComponent implements OnInit {
 
       this.computeGoals();
 
-      const [, measurementsRows, notesRows] = await Promise.all([
+      const [, measurementsRows, notesRows, appointments] = await Promise.all([
         this.loadExistingPlan(),
         this.measurementService.getByPatient(this.patientId),
         this.notesService.getByPatient(this.patientId),
+        this.appointmentService.getUpcoming(this.patientId),
       ]);
 
       this.loadMeasurementsDisplay(measurementsRows);
       this.notes = notesRows;
+      this.upcomingAppointments = appointments;
     } catch (e: any) {
       this.patientError = e?.message ?? 'Error al cargar el paciente.';
     } finally {
@@ -547,6 +560,38 @@ export class PatientDetailComponent implements OnInit {
   onNewWeek() {}
   onPrevWeek() {}
   onNextWeek() {}
+  exportPlan(): void {
+    this.exporting = true;
+    try {
+      this.exportService.exportPlanPdf({
+        patientName: this.patient.name,
+        goal:        this.patient.goal,
+        age:         this.patient.age,
+        ...this.goals,
+        days: this.days.map(d => ({
+          name: this.dayKeyToName[d.key],
+          meals: this.dayPlans[d.key].slots
+            .filter(s => s.recipe)
+            .map(s => ({ slot: s.label, recipe: s.recipe!, kcal: s.kcal ?? 0, protein: s.protein_g ?? 0 })),
+        })),
+      });
+    } finally {
+      this.exporting = false;
+    }
+  }
+
+  openQrDialog(): void {
+    const email = this.rawPatient?.email ?? '';
+    const base  = window.location.origin;
+    const url   = email
+      ? `${base}/patient-portal?e=${btoa(email)}`
+      : `${base}/patient-portal`;
+
+    this.dialog.open<QrDialogComponent, QrDialogData>(QrDialogComponent, {
+      width: '360px',
+      data: { patientName: this.patient.name, url },
+    });
+  }
 
   onAddMeal(day: DayKey, slot: string): void {
     const ref = this.dialog.open(AssignMealDialogComponent, {

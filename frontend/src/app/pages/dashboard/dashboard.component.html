@@ -1,0 +1,142 @@
+@if (loading) {
+  <div class="dash__loading">
+    <mat-spinner diameter="40"></mat-spinner>
+  </div>
+} @else {
+
+<div class="dash">
+
+  <!-- Stat cards -->
+  <section class="dash__stats">
+
+    <mat-card class="statCard">
+      <div class="statCard__icon statCard__icon--blue">
+        <mat-icon>people</mat-icon>
+      </div>
+      <div class="statCard__body">
+        <div class="statCard__value">{{ totalPatients }}</div>
+        <div class="statCard__label">Total pacientes</div>
+      </div>
+    </mat-card>
+
+    <mat-card class="statCard">
+      <div class="statCard__icon statCard__icon--green">
+        <mat-icon>person_check</mat-icon>
+      </div>
+      <div class="statCard__body">
+        <div class="statCard__value">{{ activePatients }}</div>
+        <div class="statCard__label">Pacientes activos</div>
+      </div>
+    </mat-card>
+
+    <mat-card class="statCard">
+      <div class="statCard__icon statCard__icon--orange">
+        <mat-icon>today</mat-icon>
+      </div>
+      <div class="statCard__body">
+        <div class="statCard__value">{{ apptToday }}</div>
+        <div class="statCard__label">Citas hoy</div>
+      </div>
+    </mat-card>
+
+    <mat-card class="statCard">
+      <div class="statCard__icon statCard__icon--purple">
+        <mat-icon>date_range</mat-icon>
+      </div>
+      <div class="statCard__body">
+        <div class="statCard__value">{{ apptWeek }}</div>
+        <div class="statCard__label">Citas esta semana</div>
+      </div>
+    </mat-card>
+
+  </section>
+
+  <!-- Main grid -->
+  <section class="dash__grid">
+
+    <!-- Próximas citas -->
+    <mat-card class="dash__card">
+      <mat-card-header>
+        <mat-card-title>
+          <mat-icon>event_upcoming</mat-icon>
+          Próximas citas
+        </mat-card-title>
+        <mat-card-subtitle>Hasta los próximos 7 días</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        @if (upcomingAppointments.length === 0) {
+          <div class="dash__empty">
+            <mat-icon>event_available</mat-icon>
+            <p>No hay citas agendadas próximamente.</p>
+          </div>
+        }
+        @for (appt of upcomingAppointments; track appt.id) {
+          <div class="apptRow">
+            <div class="apptRow__iconWrap" [class.apptRow__iconWrap--online]="appt.mode === 'Online'">
+              <mat-icon>{{ appt.mode === 'Online' ? 'videocam' : 'place' }}</mat-icon>
+            </div>
+            <div class="apptRow__info">
+              <div class="apptRow__name">{{ appt.patient_name }}</div>
+              <div class="apptRow__date muted">{{ appt.date_time | date:'EEEE dd MMM, HH:mm' }}</div>
+            </div>
+            <span class="apptRow__badge" [class.apptRow__badge--online]="appt.mode === 'Online'">
+              {{ appt.mode }}
+            </span>
+          </div>
+          <mat-divider></mat-divider>
+        }
+      </mat-card-content>
+      <mat-card-actions align="end">
+        <a mat-button routerLink="/calendar">
+          <mat-icon>open_in_new</mat-icon>
+          Ver calendario
+        </a>
+      </mat-card-actions>
+    </mat-card>
+
+    <!-- Pacientes recientes -->
+    <mat-card class="dash__card">
+      <mat-card-header>
+        <mat-card-title>
+          <mat-icon>group</mat-icon>
+          Pacientes recientes
+        </mat-card-title>
+        <mat-card-subtitle>Últimos registrados</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        @if (recentPatients.length === 0) {
+          <div class="dash__empty">
+            <mat-icon>person_add</mat-icon>
+            <p>No hay pacientes registrados aún.</p>
+          </div>
+        }
+        @for (p of recentPatients; track p.id) {
+          <a class="patientRow" [routerLink]="['/patients', p.id]">
+            @if (p.photo_url) {
+              <img class="patientRow__avatar" [src]="p.photo_url" [alt]="p.nombre" />
+            } @else {
+              <div class="patientRow__initials">{{ initials(p) }}</div>
+            }
+            <div class="patientRow__info">
+              <div class="patientRow__name">{{ p.nombre }} {{ p.apellido }}</div>
+              <div class="patientRow__meta muted">{{ p.objetivo ?? 'Mantenimiento' }} · {{ p.edad }} años</div>
+            </div>
+            <span class="patientRow__status" [class.patientRow__status--active]="p.estado === 'Activo'">
+              {{ p.estado }}
+            </span>
+          </a>
+          <mat-divider></mat-divider>
+        }
+      </mat-card-content>
+      <mat-card-actions align="end">
+        <a mat-button routerLink="/patients">
+          <mat-icon>open_in_new</mat-icon>
+          Ver todos
+        </a>
+      </mat-card-actions>
+    </mat-card>
+
+  </section>
+
+</div>
+}

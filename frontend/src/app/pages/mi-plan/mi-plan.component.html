@@ -1,0 +1,193 @@
+@if (loading) {
+  <div class="loading-screen">
+    <div class="spinner"></div>
+    <p>Cargando tu plan...</p>
+  </div>
+} @else if (error) {
+  <div class="error-screen"><p>{{ error }}</p></div>
+} @else if (patient) {
+
+  <div class="mp">
+
+    <!-- Header -->
+    <header class="mp__header">
+      <img src="assets/logoSF.png" alt="NutriFlow" class="mp__logo" />
+      <button class="mp__logout" (click)="logout()">Cerrar sesión</button>
+    </header>
+
+    <!-- Hero -->
+    <div class="pd__hero">
+      <div class="pd__hero-left">
+        @if (patient.photo_url) {
+          <div class="pd__avatar">
+            <img class="pd__avatar-img" [src]="patient.photo_url" [alt]="patient.nombre" />
+          </div>
+        } @else {
+          <div class="pd__avatar">
+            <span class="pd__avatar-initials">{{ patient.nombre.charAt(0) }}</span>
+          </div>
+        }
+        <div class="pd__heroInfo">
+          <div class="pd__heroName">{{ patient.nombre }} {{ patient.apellido }}</div>
+          <div class="pd__heroMeta">
+            <span class="pd__statusBadge pd__statusBadge--active">Activo</span>
+            <span class="pd__heroDot">·</span>
+            <span>{{ patient.objetivo ?? 'Mantenimiento' }}</span>
+            <span class="pd__heroDot">·</span>
+            <span>{{ patient.edad }} años</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Stats row -->
+    <section class="mp__statsRow">
+
+      <mat-card class="pdCard mp__goalsCard">
+        <mat-card-header>
+          <mat-card-title>
+            <mat-icon>psychology</mat-icon>
+            Objetivos Nutricionales
+          </mat-card-title>
+          <mat-card-subtitle>Harris-Benedict · {{ patient.objetivo ?? 'Mantenimiento' }}</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="aiTargets">
+            <div class="aiTarget">
+              <span class="aiTarget__label">TMB</span>
+              <span class="aiTarget__value">{{ goals.tmb | number:'1.0-0' }} kcal</span>
+            </div>
+            <div class="aiTarget">
+              <span class="aiTarget__label">TDEE</span>
+              <span class="aiTarget__value">{{ goals.tdee | number:'1.0-0' }} kcal</span>
+            </div>
+            <div class="aiTarget aiTarget--highlight">
+              <span class="aiTarget__label">Meta diaria</span>
+              <span class="aiTarget__value">{{ goals.calories | number:'1.0-0' }} kcal</span>
+            </div>
+            <div class="aiTarget">
+              <span class="aiTarget__label">Proteína</span>
+              <span class="aiTarget__value">{{ goals.protein | number:'1.0-0' }} g</span>
+            </div>
+            <div class="aiTarget">
+              <span class="aiTarget__label">Carbohidratos</span>
+              <span class="aiTarget__value">{{ goals.carbs | number:'1.0-0' }} g</span>
+            </div>
+            <div class="aiTarget">
+              <span class="aiTarget__label">Grasas</span>
+              <span class="aiTarget__value">{{ goals.fat | number:'1.0-0' }} g</span>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+      @if (latestMeasurement) {
+        <mat-card class="pdCard mp__measCard">
+          <mat-card-header>
+            <mat-card-title>Mediciones</mat-card-title>
+            <mat-card-subtitle>Última registrada por tu nutricionista</mat-card-subtitle>
+          </mat-card-header>
+          <mat-card-content class="pdCard__content">
+            @if (latestMeasurement.weight_kg) {
+              <div class="kv">
+                <div class="kv__left"><div class="kv__k">Peso</div><div class="kv__v">{{ latestMeasurement.weight_kg }} kg</div></div>
+              </div>
+            }
+            @if (latestMeasurement.bmi) {
+              <div class="kv">
+                <div class="kv__left"><div class="kv__k">IMC</div><div class="kv__v">{{ latestMeasurement.bmi }}</div></div>
+              </div>
+            }
+            @if (latestMeasurement.body_fat_pct) {
+              <div class="kv">
+                <div class="kv__left"><div class="kv__k">% Grasa</div><div class="kv__v">{{ latestMeasurement.body_fat_pct }}%</div></div>
+              </div>
+            }
+            @if (measurements.length > 1) {
+              <app-weight-chart [measurements]="measurements" />
+            }
+          </mat-card-content>
+        </mat-card>
+      }
+
+    </section>
+
+    <!-- Próximas citas -->
+    @if (upcomingAppointments.length > 0) {
+      <mat-card class="pdCard mp__apptCard">
+        <mat-card-header>
+          <mat-card-title>
+            <mat-icon>event_upcoming</mat-icon>
+            Próximas citas
+          </mat-card-title>
+          <mat-card-subtitle>Agendadas por tu nutricionista</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          @for (appt of upcomingAppointments; track appt.id) {
+            <div class="mp__apptRow">
+              <mat-icon>{{ appt.mode === 'Online' ? 'videocam' : 'place' }}</mat-icon>
+              <div class="mp__apptInfo">
+                <div class="mp__apptDate">{{ appt.date_time | date:'EEEE dd MMM yyyy, HH:mm' }}</div>
+                <div class="mp__apptMeta muted">{{ appt.mode }}@if (appt.note) { · {{ appt.note }} }</div>
+              </div>
+              <span class="mp__apptBadge" [class.mp__apptBadge--online]="appt.mode === 'Online'">
+                {{ appt.mode }}
+              </span>
+            </div>
+            <mat-divider></mat-divider>
+          }
+        </mat-card-content>
+      </mat-card>
+    }
+
+    <!-- Weekly grid -->
+    <div class="pd__weekBar">
+      <div class="pd__weekLeft">
+        <h2 class="pd__weekTitle">Tu plan semanal</h2>
+        <div class="pd__weekHint muted">{{ weekLabel }}</div>
+      </div>
+      <button class="mp__exportBtn" (click)="exportPlan()" [disabled]="exporting">
+        <mat-icon>picture_as_pdf</mat-icon>
+        {{ exporting ? 'Generando...' : 'Exportar PDF' }}
+      </button>
+    </div>
+
+    <section class="week">
+      <div class="week__head">
+        <div class="week__corner"><span class="muted">Comida</span></div>
+        @for (day of days; track day.label) {
+          <div class="week__dayHead">
+            <div class="week__dayLabel">{{ day.label }}</div>
+          </div>
+        }
+      </div>
+
+      <div class="week__body">
+        @for (slotLabel of slotLabels; track slotLabel) {
+          <div class="week__row">
+            <div class="week__rowLabel"><span>{{ slotLabel }}</span></div>
+            @for (day of days; track day.label) {
+              <div class="week__cell">
+                <mat-card class="cellCard" appearance="outlined">
+                  @if (getSlot(day, slotLabel); as slot) {
+                    <div class="cellCard__title">{{ slot.recipe ?? 'Sin asignar' }}</div>
+                    <div class="cellCard__meta muted">
+                      @if (slot.kcal) {
+                        <span>{{ slot.kcal }} kcal</span>
+                        <span class="dot">•</span>
+                        <span>{{ slot.protein_g }}g prot</span>
+                      } @else {
+                        <span>—</span>
+                      }
+                    </div>
+                  }
+                </mat-card>
+              </div>
+            }
+          </div>
+        }
+      </div>
+    </section>
+
+  </div>
+}

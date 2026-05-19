@@ -22,6 +22,15 @@
       }
 
       <a mat-button class="nav-item"
+         routerLink="/dashboard"
+         routerLinkActive="nav-item--active">
+        <mat-icon>dashboard</mat-icon>
+        @if (isSideNavExpanded) {
+          <span class="nav-label">Dashboard</span>
+        }
+      </a>
+
+      <a mat-button class="nav-item"
          routerLink="/patients"
          routerLinkActive="nav-item--active">
         <mat-icon>people</mat-icon>

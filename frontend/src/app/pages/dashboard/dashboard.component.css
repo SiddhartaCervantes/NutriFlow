@@ -1,0 +1,177 @@
+.dash {
+  padding: 4px 0;
+}
+
+.dash__loading {
+  display: flex;
+  justify-content: center;
+  padding: 80px 0;
+}
+
+/* ── Stat cards ──────────────────────────────────────────────────── */
+.dash__stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.statCard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 28px 24px !important;
+  border-radius: 16px !important;
+  text-align: center;
+}
+
+.statCard__icon {
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.statCard__icon mat-icon { font-size: 26px; width: 26px; height: 26px; }
+
+.statCard__icon--green  { background: #e8f5e9; color: #2e7d32; }
+.statCard__icon--blue   { background: #e3f2fd; color: #1565c0; }
+.statCard__icon--orange { background: #fff3e0; color: #e65100; }
+.statCard__icon--purple { background: #f3e5f5; color: #6a1b9a; }
+
+.statCard__value {
+  font-size: 2.4rem;
+  font-weight: 700;
+  line-height: 1;
+  color: #1a1a1a;
+}
+.statCard__label {
+  font-size: 12px;
+  color: #888;
+  margin-top: 2px;
+}
+
+/* ── Main grid ───────────────────────────────────────────────────── */
+.dash__grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.dash__card {
+  border-radius: 16px !important;
+}
+
+.dash__card mat-card-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 16px !important;
+}
+
+.dash__empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 32px 0;
+  color: #aaa;
+  gap: 8px;
+}
+.dash__empty mat-icon { font-size: 36px; width: 36px; height: 36px; }
+.dash__empty p { margin: 0; font-size: 13px; }
+
+/* ── Appointment rows ────────────────────────────────────────────── */
+.apptRow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 0;
+}
+.apptRow__iconWrap {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: #e8f5e9;
+  color: #2e7d32;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.apptRow__iconWrap mat-icon { font-size: 18px; width: 18px; height: 18px; }
+.apptRow__iconWrap--online { background: #e3f2fd; color: #1565c0; }
+.apptRow__info { flex: 1; }
+.apptRow__name { font-size: 13px; font-weight: 500; }
+.apptRow__date { font-size: 12px; margin-top: 2px; text-transform: capitalize; }
+.apptRow__badge {
+  font-size: 11px;
+  padding: 2px 8px;
+  border-radius: 12px;
+  background: #e8f5e9;
+  color: #2e7d32;
+  font-weight: 500;
+  flex-shrink: 0;
+}
+.apptRow__badge--online { background: #e3f2fd; color: #1565c0; }
+
+/* ── Patient rows ────────────────────────────────────────────────── */
+.patientRow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 0;
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+  transition: background 0.15s;
+  border-radius: 8px;
+}
+.patientRow:hover { background: #f5f5f5; }
+
+.patientRow__avatar {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+.patientRow__initials {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: #e8f5e9;
+  color: #2e7d32;
+  font-weight: 700;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.patientRow__info { flex: 1; }
+.patientRow__name { font-size: 13px; font-weight: 500; }
+.patientRow__meta { font-size: 12px; margin-top: 2px; }
+.patientRow__status {
+  font-size: 11px;
+  padding: 2px 8px;
+  border-radius: 12px;
+  background: #f5f5f5;
+  color: #888;
+  font-weight: 500;
+  flex-shrink: 0;
+}
+.patientRow__status--active { background: #e8f5e9; color: #2e7d32; }
+
+.muted { opacity: 0.7; }
+
+/* ── Responsive ──────────────────────────────────────────────────── */
+@media (max-width: 900px) {
+  .dash__stats { grid-template-columns: repeat(2, 1fr); }
+  .dash__grid  { grid-template-columns: 1fr; }
+}
+@media (max-width: 500px) {
+  .dash__stats { grid-template-columns: 1fr 1fr; gap: 10px; }
+}
