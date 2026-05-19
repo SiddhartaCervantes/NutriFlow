@@ -1,3 +1,17 @@
+.switch-role-hint {
+  margin-top: 16px;
+  font-size: 13px;
+  color: rgba(255,255,255,0.7);
+  text-align: center;
+}
+.switch-role-hint a {
+  color: #fff;
+  font-weight: 600;
+  text-decoration: underline;
+  cursor: pointer;
+}
+.switch-role-hint a:hover { opacity: 0.85; }
+
 .fondo-carrusel {
   position: fixed;
   top: 0;

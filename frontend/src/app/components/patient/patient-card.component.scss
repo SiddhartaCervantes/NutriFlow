@@ -211,3 +211,33 @@
 .patient-card__dropdown button.danger:hover {
   background: rgba(180, 35, 24, 0.08);
 }
+
+/* ── Responsive ─────────────────────────────────────────────── */
+@media (max-width: 480px) {
+  .patient-card {
+    grid-template-columns: 48px 1fr 40px;
+    padding: 14px 12px;
+    gap: 12px;
+    min-height: unset;
+  }
+
+  .patient-card__avatar {
+    width: 44px;
+    height: 44px;
+  }
+
+  .patient-card__name {
+    font-size: 14px;
+    margin-bottom: 4px;
+  }
+
+  .patient-card__meta {
+    flex-wrap: wrap;
+    gap: 6px;
+    font-size: 12px;
+  }
+
+  .patient-card__meta .dot {
+    display: none;
+  }
+}

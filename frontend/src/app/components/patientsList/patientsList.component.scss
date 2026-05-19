@@ -184,3 +184,38 @@
   font-size: 18px;
   line-height: 1;
 }
+
+/* ── Responsive ─────────────────────────────────────────────── */
+@media (max-width: 600px) {
+  .patients-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .patients-header__right {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .search-wrap {
+    width: 100%;
+  }
+
+  .search-input {
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .add-btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .filters-bar {
+    gap: 8px;
+  }
+
+  .filter-group {
+    gap: 6px;
+  }
+}
