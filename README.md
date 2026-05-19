@@ -35,25 +35,42 @@ cd NutriFlow
 
 ## Configuración de credenciales
 
-El proyecto usa **Supabase** como base de datos y autenticación. Las credenciales ya están configuradas en los archivos del repo para el proyecto compartido del equipo. Si necesitas usar tu propio proyecto de Supabase, actualiza estos dos archivos:
+El proyecto usa **Supabase** como base de datos y autenticación. Los archivos con credenciales **no están incluidos en el repositorio** por seguridad — debes crearlos manualmente antes de correr el proyecto.
 
-**Frontend** — [frontend/src/environments/environment.ts](frontend/src/environments/environment.ts):
+**Frontend** — edita [frontend/src/environments/environment.ts](frontend/src/environments/environment.ts):
 ```typescript
 export const environment = {
   supabaseUrl: 'TU_SUPABASE_URL',
-  supabaseKey: 'TU_SUPABASE_ANON_KEY',
+  supabaseAnonKey: 'TU_SUPABASE_PUBLISHABLE_KEY',
+  pexelsApiKey: 'TU_PEXELS_API_KEY',
+  apiUrl: 'http://localhost:5105',
 };
 ```
 
-**Backend** — [backend/Nutriflow.api/appsettings.json](backend/Nutriflow.api/appsettings.json):
+**Backend** — crea el archivo `backend/Nutriflow.api/appsettings.json` basándote en la plantilla [`appsettings.Example.json`](backend/Nutriflow.api/appsettings.Example.json):
 ```json
 {
+  "AllowedHosts": "*",
+  "AllowedOrigins": [ "http://localhost:4200" ],
   "Supabase": {
     "Url": "TU_SUPABASE_URL",
-    "Key": "TU_SUPABASE_ANON_KEY"
+    "Key": "TU_SUPABASE_SECRET_KEY"
   }
 }
 ```
+
+> `appsettings.json` está en `.gitignore` — nunca se sube al repositorio.
+
+### Deploy en producción
+
+- **Vercel (frontend):** las variables de entorno se configuran en el dashboard de Vercel o directamente en `environment.ts`.
+- **Railway (backend):** agrega las variables de entorno en el dashboard de Railway usando la notación de doble guion bajo:
+
+| Variable Railway | Equivalente en appsettings |
+|---|---|
+| `Supabase__Url` | `Supabase.Url` |
+| `Supabase__Key` | `Supabase.Key` |
+| `AllowedOrigins__0` | primer origen CORS permitido |
 
 ---
 
@@ -119,15 +136,26 @@ NutriFlow/
 
 ### Rutas principales (Frontend)
 
+**Nutriólogo**
+
 | Ruta | Descripción |
 |---|---|
-| `/login` | Inicio de sesión |
+| `/` | Pantalla de bienvenida (selección de rol) |
+| `/login` | Inicio de sesión del nutriólogo |
+| `/dashboard` | Dashboard: estadísticas, citas próximas, pacientes recientes |
 | `/patients` | Lista de pacientes |
 | `/patients/new` | Agregar nuevo paciente |
-| `/patients/:id` | Detalle del paciente + plan semanal |
+| `/patients/:id` | Detalle del paciente + plan semanal + QR |
 | `/recetas` | Catálogo de recetas |
 | `/calendar` | Calendario de citas |
 | `/profile` | Perfil del nutriólogo |
+
+**Portal del paciente**
+
+| Ruta | Descripción |
+|---|---|
+| `/patient-portal` | Login del paciente |
+| `/mi-plan` | Vista del plan semanal (solo lectura) |
 
 ---
 
