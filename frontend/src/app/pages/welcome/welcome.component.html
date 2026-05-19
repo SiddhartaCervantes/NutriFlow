@@ -1,0 +1,21 @@
+<div class="welcome-bg">
+  <div class="welcome-content">
+    <img src="assets/logoSF.png" alt="NutriFlow" class="welcome-logo" />
+    <h1 class="welcome-title">Bienvenido a NutriFlow</h1>
+    <p class="welcome-sub">¿Cómo deseas ingresar?</p>
+
+    <div class="role-cards">
+      <button class="role-card" (click)="goToNutritionist()">
+        <span class="role-icon">🥗</span>
+        <span class="role-label">Nutricionista</span>
+        <span class="role-desc">Gestiona pacientes, citas y planes alimenticios</span>
+      </button>
+
+      <button class="role-card" (click)="goToPatient()">
+        <span class="role-icon">👤</span>
+        <span class="role-label">Paciente</span>
+        <span class="role-desc">Consulta tu plan nutricional asignado</span>
+      </button>
+    </div>
+  </div>
+</div>

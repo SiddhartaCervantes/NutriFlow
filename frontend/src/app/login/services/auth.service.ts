@@ -37,7 +37,7 @@ export class AuthService {
     }
 
     this.profileSubject.next(profile);
-    await this.router.navigate(['/patients']);
+    await this.router.navigate(['/dashboard']);
   }
 
   async signUp(email: string, password: string) {

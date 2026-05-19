@@ -26,6 +26,30 @@ export class AppointmentService {
     return data ?? [];
   }
 
+  async getByPatient(patientId: string): Promise<AppointmentRow[]> {
+    const { data, error } = await supabase
+      .from('appointments')
+      .select('*')
+      .eq('patient_id', patientId)
+      .order('date_time', { ascending: true });
+
+    if (error) throw error;
+    return data ?? [];
+  }
+
+  async getUpcoming(patientId: string): Promise<AppointmentRow[]> {
+    const { data, error } = await supabase
+      .from('appointments')
+      .select('*')
+      .eq('patient_id', patientId)
+      .gte('date_time', new Date().toISOString())
+      .order('date_time', { ascending: true })
+      .limit(5);
+
+    if (error) throw error;
+    return data ?? [];
+  }
+
   async add(data: NewAppointment): Promise<AppointmentRow> {
     const { data: row, error } = await supabase
       .from('appointments')

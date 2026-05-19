@@ -4,6 +4,33 @@
   margin: 0 auto;
 }
 
+/* ── Appointment rows ──────────────────────────────────────────── */
+.apptRow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 0;
+}
+.apptRow__icon mat-icon {
+  color: #2e7d32;
+  font-size: 20px;
+}
+.apptRow__info { flex: 1; }
+.apptRow__date { font-size: 13px; font-weight: 500; }
+.apptRow__meta { font-size: 12px; margin-top: 2px; }
+.apptRow__badge {
+  font-size: 11px;
+  padding: 2px 8px;
+  border-radius: 12px;
+  background: #e8f5e9;
+  color: #2e7d32;
+  font-weight: 500;
+}
+.apptRow__badge--online {
+  background: #e3f2fd;
+  color: #1565c0;
+}
+
 .muted { opacity: 0.75; }
 .dot { margin: 0 6px; opacity: 0.6; }
 
@@ -381,6 +408,17 @@
 @media (max-width: 860px) {
   .pd__hero { flex-direction: column; align-items: flex-start; }
   .pd__heroActions { width: 100%; justify-content: flex-end; }
+}
+
+@media print {
+  .no-print { display: none !important; }
+  .pd { padding: 8px; }
+  .pd__hero { box-shadow: none; border: 1px solid #ddd; }
+  .week { overflow: visible; }
+  .week__head, .week__row { grid-template-columns: 160px repeat(7, 1fr); }
+  .cellCard { break-inside: avoid; }
+  mat-card { box-shadow: none !important; border: 1px solid #ddd !important; }
+  .pd__heroActions { display: none; }
 }
 
 @media (max-width: 720px) {
