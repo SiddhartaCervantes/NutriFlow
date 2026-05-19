@@ -2,7 +2,7 @@
     [class.is-expanded]="isSideNavExpanded"
     [class.is-collapsed]="!isSideNavExpanded"
 >
-  <!-- SIDENAV -->
+  <!-- SIDENAV (solo desktop) -->
   <mat-sidenav mode="side" [opened]="true">
 
     <!-- LOGO + TOGGLE -->
@@ -21,40 +21,24 @@
         <span class="nav-section-label">Principal</span>
       }
 
-      <a mat-button class="nav-item"
-         routerLink="/dashboard"
-         routerLinkActive="nav-item--active">
+      <a mat-button class="nav-item" routerLink="/dashboard" routerLinkActive="nav-item--active">
         <mat-icon>dashboard</mat-icon>
-        @if (isSideNavExpanded) {
-          <span class="nav-label">Dashboard</span>
-        }
+        @if (isSideNavExpanded) { <span class="nav-label">Dashboard</span> }
       </a>
 
-      <a mat-button class="nav-item"
-         routerLink="/patients"
-         routerLinkActive="nav-item--active">
+      <a mat-button class="nav-item" routerLink="/patients" routerLinkActive="nav-item--active">
         <mat-icon>people</mat-icon>
-        @if (isSideNavExpanded) {
-          <span class="nav-label">Pacientes</span>
-        }
+        @if (isSideNavExpanded) { <span class="nav-label">Pacientes</span> }
       </a>
 
-      <a mat-button class="nav-item"
-         routerLink="/recetas"
-         routerLinkActive="nav-item--active">
+      <a mat-button class="nav-item" routerLink="/recetas" routerLinkActive="nav-item--active">
         <mat-icon>menu_book</mat-icon>
-        @if (isSideNavExpanded) {
-          <span class="nav-label">Recetario</span>
-        }
+        @if (isSideNavExpanded) { <span class="nav-label">Recetario</span> }
       </a>
 
-      <a mat-button class="nav-item"
-         routerLink="/calendar"
-         routerLinkActive="nav-item--active">
+      <a mat-button class="nav-item" routerLink="/calendar" routerLinkActive="nav-item--active">
         <mat-icon>calendar_month</mat-icon>
-        @if (isSideNavExpanded) {
-          <span class="nav-label">Calendario</span>
-        }
+        @if (isSideNavExpanded) { <span class="nav-label">Calendario</span> }
       </a>
     </nav>
 
@@ -62,21 +46,15 @@
     <div class="side-footer">
       <div class="side-divider"></div>
 
-      <a mat-button class="nav-item"
-         routerLink="/profile"
-         routerLinkActive="nav-item--active"
+      <a mat-button class="nav-item" routerLink="/profile" routerLinkActive="nav-item--active"
          [routerLinkActiveOptions]="{ exact: true }">
         <mat-icon>manage_accounts</mat-icon>
-        @if (isSideNavExpanded) {
-          <span class="nav-label">Mi perfil</span>
-        }
+        @if (isSideNavExpanded) { <span class="nav-label">Mi perfil</span> }
       </a>
 
       <button mat-button class="nav-item nav-item--logout" (click)="logout()">
         <mat-icon>logout</mat-icon>
-        @if (isSideNavExpanded) {
-          <span class="nav-label">Cerrar sesión</span>
-        }
+        @if (isSideNavExpanded) { <span class="nav-label">Cerrar sesión</span> }
       </button>
     </div>
 
@@ -97,3 +75,27 @@
     </div>
   </mat-sidenav-content>
 </mat-sidenav-container>
+
+<!-- Bottom nav (solo móvil) -->
+<nav class="bottom-nav">
+  <a class="bottom-nav__item" routerLink="/dashboard" routerLinkActive="bottom-nav__item--active">
+    <mat-icon>dashboard</mat-icon>
+    <span>Dashboard</span>
+  </a>
+  <a class="bottom-nav__item" routerLink="/patients" routerLinkActive="bottom-nav__item--active">
+    <mat-icon>people</mat-icon>
+    <span>Pacientes</span>
+  </a>
+  <a class="bottom-nav__item" routerLink="/recetas" routerLinkActive="bottom-nav__item--active">
+    <mat-icon>menu_book</mat-icon>
+    <span>Recetas</span>
+  </a>
+  <a class="bottom-nav__item" routerLink="/calendar" routerLinkActive="bottom-nav__item--active">
+    <mat-icon>calendar_month</mat-icon>
+    <span>Calendario</span>
+  </a>
+  <a class="bottom-nav__item" routerLink="/profile" routerLinkActive="bottom-nav__item--active">
+    <mat-icon>manage_accounts</mat-icon>
+    <span>Perfil</span>
+  </a>
+</nav>

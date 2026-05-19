@@ -2,16 +2,16 @@
   <div class="bar__left">
     <button mat-stroked-button (click)="prev.emit()">
       <mat-icon>chevron_left</mat-icon>
-      Mes anterior
+      <span class="btn-label">Mes anterior</span>
     </button>
 
     <button mat-stroked-button (click)="today.emit()">
       <mat-icon>today</mat-icon>
-      Hoy
+      <span class="btn-label">Hoy</span>
     </button>
 
     <button mat-stroked-button (click)="next.emit()">
-      Mes siguiente
+      <span class="btn-label">Mes siguiente</span>
       <mat-icon>chevron_right</mat-icon>
     </button>
   </div>

@@ -5,3 +5,7 @@
   display: grid;
   gap: 14px;
 }
+
+@media (max-width: 480px) {
+  .cal { padding: 8px; gap: 10px; }
+}
