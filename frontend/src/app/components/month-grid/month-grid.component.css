@@ -104,3 +104,39 @@
   .grid__dow { font-size: 12px; padding: 8px 6px; }
   .cell { min-height: 90px; padding: 8px; }
 }
+
+@media (max-width: 480px) {
+  .grid__dow {
+    font-size: 10px;
+    padding: 6px 2px;
+    text-align: center;
+  }
+
+  .cell {
+    min-height: 54px;
+    padding: 4px 3px;
+  }
+
+  .cell__day {
+    font-size: 11px;
+    font-weight: 700;
+  }
+
+  .cell__events {
+    margin-top: 4px;
+    gap: 2px;
+  }
+
+  /* Eventos como barras compactas — sin texto */
+  .ev {
+    padding: 3px 4px;
+    border-radius: 3px;
+    min-height: 6px;
+    background: rgba(25, 118, 210, 0.25);
+  }
+  .ev:hover { background: rgba(25, 118, 210, 0.4); }
+  .ev__title { display: none; }
+  .ev__chip  { display: none; }
+
+  .more { font-size: 9px; }
+}
