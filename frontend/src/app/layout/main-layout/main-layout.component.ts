@@ -71,8 +71,14 @@ export class MainLayoutComponent implements OnInit, OnDestroy {
   private async loadTodayCount(): Promise<void> {
     try {
       const all = await this.appointmentService.getAll();
-      const todayStr = new Date().toISOString().slice(0, 10);
-      this.todayCount = all.filter(a => a.date_time.slice(0, 10) === todayStr).length;
+      const today    = new Date();
+      const tomorrow = new Date(today); tomorrow.setDate(today.getDate() + 1);
+      const todayStr    = today.toISOString().slice(0, 10);
+      const tomorrowStr = tomorrow.toISOString().slice(0, 10);
+      this.todayCount = all.filter(a =>
+        a.date_time.slice(0, 10) === todayStr ||
+        a.date_time.slice(0, 10) === tomorrowStr
+      ).length;
     } catch {
       this.todayCount = 0;
     }
