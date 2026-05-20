@@ -9,8 +9,12 @@
 }
 
 .recipes-header {
-  text-align: left;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
   margin-bottom: 1.5rem;
+  flex-wrap: wrap;
 }
 
 .recipes-title {
@@ -24,6 +28,26 @@
   font-size: 1rem;
   color: #666;
   margin: 0;
+}
+
+.new-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0.45rem 1.1rem;
+  background: #4caf50;
+  color: #fff;
+  border: none;
+  border-radius: 999px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s;
+  white-space: nowrap;
+  flex-shrink: 0;
+
+  mat-icon { font-size: 18px; width: 18px; height: 18px; }
+  &:hover { background: #388e3c; }
 }
 
 .recipes-filters {
@@ -90,6 +114,53 @@
 
   justify-items: stretch;
   width: 100%;
+}
+
+.recipe-wrap {
+  position: relative;
+
+  &:hover .recipe-actions {
+    opacity: 1;
+    pointer-events: auto;
+  }
+}
+
+.recipe-actions {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  display: flex;
+  gap: 6px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.15s;
+  z-index: 2;
+}
+
+.action-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.15s, transform 0.1s;
+
+  mat-icon { font-size: 17px; width: 17px; height: 17px; }
+
+  &--edit {
+    background: rgba(255,255,255,0.92);
+    color: #1565c0;
+    &:hover { background: #e3f2fd; transform: scale(1.08); }
+  }
+
+  &--delete {
+    background: rgba(255,255,255,0.92);
+    color: #c62828;
+    &:hover { background: #ffebee; transform: scale(1.08); }
+  }
 }
 
 @media (max-width: 360px) {

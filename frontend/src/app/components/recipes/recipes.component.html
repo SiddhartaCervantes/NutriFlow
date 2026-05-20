@@ -1,7 +1,13 @@
 <section class="recipes-page">
   <div class="recipes-header">
-    <h1 class="recipes-title">Recetas Recomendadas</h1>
-    <p class="recipes-subtitle">Explora nuevas ideas saludables cada día 🍽️</p>
+    <div>
+      <h1 class="recipes-title">Recetas Recomendadas</h1>
+      <p class="recipes-subtitle">Explora nuevas ideas saludables cada día</p>
+    </div>
+    <button class="new-btn" (click)="openCreate()">
+      <mat-icon>add</mat-icon>
+      <span>Nueva receta</span>
+    </button>
   </div>
 
   <div class="recipes-filters">
@@ -38,14 +44,29 @@
   @if (!loading && !error) {
     <section class="recipes-grid">
       @for (receta of filteredRecipes; track receta.id) {
-        <app-card-preview
-          [id]="receta.id"
-          [imageSrc]="getImage(receta)"
-          [title]="receta.name"
-          [description]="receta.description ?? ''"
-          [duration]="formatDuration(receta.prep_time_min)"
-          [difficulty]="receta.difficulty ?? ''"
-        ></app-card-preview>
+        <div class="recipe-wrap">
+          <app-card-preview
+            [id]="receta.id"
+            [imageSrc]="getImage(receta)"
+            [title]="receta.name"
+            [description]="receta.description ?? ''"
+            [duration]="formatDuration(receta.prep_time_min)"
+            [difficulty]="receta.difficulty ?? ''"
+          ></app-card-preview>
+
+          <div class="recipe-actions">
+            <button class="action-btn action-btn--edit"
+              (click)="openEdit(receta, $event)"
+              matTooltip="Editar">
+              <mat-icon>edit</mat-icon>
+            </button>
+            <button class="action-btn action-btn--delete"
+              (click)="deleteRecipe(receta, $event)"
+              matTooltip="Eliminar">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </div>
+        </div>
       }
 
       @if (filteredRecipes.length === 0) {

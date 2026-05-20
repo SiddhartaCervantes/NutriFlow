@@ -16,6 +16,8 @@ export type RecipeRow = {
   image_url: string | null;
 };
 
+export type RecipeInput = Omit<RecipeRow, 'id'>;
+
 const FIELDS = 'id, name, description, category, calories, protein_g, carbs_g, fat_g, prep_time_min, difficulty, instructions, image_url';
 
 @Injectable({ providedIn: 'root' })
@@ -47,5 +49,34 @@ export class RecipeService {
       .order('name');
     if (error) throw error;
     return data ?? [];
+  }
+
+  async create(input: RecipeInput): Promise<RecipeRow> {
+    const { data, error } = await supabase
+      .from('recipes')
+      .insert(input)
+      .select(FIELDS)
+      .single();
+    if (error) throw error;
+    return data;
+  }
+
+  async update(id: string, input: RecipeInput): Promise<RecipeRow> {
+    const { data, error } = await supabase
+      .from('recipes')
+      .update(input)
+      .eq('id', id)
+      .select(FIELDS)
+      .single();
+    if (error) throw error;
+    return data;
+  }
+
+  async delete(id: string): Promise<void> {
+    const { error } = await supabase
+      .from('recipes')
+      .delete()
+      .eq('id', id);
+    if (error) throw error;
   }
 }
