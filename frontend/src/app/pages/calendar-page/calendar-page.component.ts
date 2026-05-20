@@ -11,6 +11,7 @@ import { CalendarToolbarComponent } from '../../components/calendar-toolbar/cale
 import { MonthGridComponent, CalendarCell, CalendarEvent } from '../../components/month-grid/month-grid.component';
 import { AppointmentService, AppointmentRow } from '../../data/appointment.service';
 import { AppointmentDialogComponent, AppointmentDialogResult } from '../../components/appointment-dialog/appointment-dialog.component';
+import { NewAppointmentDialogComponent } from '../../components/new-appointment-dialog/new-appointment-dialog.component';
 
 @Component({
   selector: 'app-calendar-page',
@@ -84,7 +85,18 @@ export class CalendarPageComponent implements OnInit {
   }
 
   onSelectCell(cell: CalendarCell): void {
-    this.router.navigate(['/patients/new'], { queryParams: { date: cell.iso } });
+    this.dialog
+      .open(NewAppointmentDialogComponent, { data: { isoDate: cell.iso, existing: this.appointments }, width: '420px' })
+      .afterClosed()
+      .subscribe(async (appt) => {
+        if (!appt) return;
+        try {
+          const created = await this.appointmentService.add(appt);
+          this.appointments = [...this.appointments, created];
+        } catch {
+          alert('No se pudo agendar la cita. Intenta de nuevo.');
+        }
+      });
   }
 
   onSelectEvent(event: CalendarEvent): void {
