@@ -37,7 +37,7 @@
       </a>
 
       <a mat-button class="nav-item" routerLink="/calendar" routerLinkActive="nav-item--active">
-        <mat-icon>calendar_month</mat-icon>
+        <mat-icon [matBadge]="todayCount" [matBadgeHidden]="todayCount === 0" matBadgeSize="small" matBadgeColor="warn">calendar_month</mat-icon>
         @if (isSideNavExpanded) { <span class="nav-label">Calendario</span> }
       </a>
     </nav>
@@ -91,7 +91,7 @@
     <span>Recetas</span>
   </a>
   <a class="bottom-nav__item" routerLink="/calendar" routerLinkActive="bottom-nav__item--active">
-    <mat-icon>calendar_month</mat-icon>
+    <mat-icon [matBadge]="todayCount" [matBadgeHidden]="todayCount === 0" matBadgeSize="small" matBadgeColor="warn">calendar_month</mat-icon>
     <span>Calendario</span>
   </a>
   <a class="bottom-nav__item" routerLink="/profile" routerLinkActive="bottom-nav__item--active">

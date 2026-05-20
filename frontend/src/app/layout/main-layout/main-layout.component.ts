@@ -8,8 +8,10 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatListModule } from '@angular/material/list';
+import { MatBadgeModule } from '@angular/material/badge';
 import { UserHeaderCardComponent } from '../../components/user-header-card/user-header-card.component';
 import { AuthService } from '../../login/services/auth.service';
+import { AppointmentService } from '../../data/appointment.service';
 
 @Component({
   selector: 'app-main-layout',
@@ -23,6 +25,7 @@ import { AuthService } from '../../login/services/auth.service';
     MatIconModule,
     MatButtonModule,
     MatListModule,
+    MatBadgeModule,
     UserHeaderCardComponent,
   ],
   templateUrl: './main-layout.component.html',
@@ -31,6 +34,7 @@ import { AuthService } from '../../login/services/auth.service';
 export class MainLayoutComponent implements OnInit, OnDestroy {
   isSideNavExpanded = false;
   isMobile          = false;
+  todayCount        = 0;
 
   userName  = 'Cargando...';
   avatarUrl = 'assets/privado.png';
@@ -39,8 +43,9 @@ export class MainLayoutComponent implements OnInit, OnDestroy {
   private sub = new Subscription();
 
   constructor(
-    private authService:        AuthService,
-    private breakpointObserver: BreakpointObserver,
+    private authService:         AuthService,
+    private breakpointObserver:  BreakpointObserver,
+    private appointmentService:  AppointmentService,
   ) {}
 
   async ngOnInit(): Promise<void> {
@@ -59,8 +64,18 @@ export class MainLayoutComponent implements OnInit, OnDestroy {
         }
       })
     );
-    // Trigger initial load if subject is still null
     await this.authService.getProfile();
+    this.loadTodayCount();
+  }
+
+  private async loadTodayCount(): Promise<void> {
+    try {
+      const all = await this.appointmentService.getAll();
+      const todayStr = new Date().toISOString().slice(0, 10);
+      this.todayCount = all.filter(a => a.date_time.slice(0, 10) === todayStr).length;
+    } catch {
+      this.todayCount = 0;
+    }
   }
 
   ngOnDestroy(): void {
