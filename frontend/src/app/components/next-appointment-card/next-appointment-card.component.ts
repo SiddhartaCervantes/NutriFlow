@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { MatCardModule } from '@angular/material/card';
@@ -6,14 +6,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatDividerModule } from '@angular/material/divider';
-
-type Appointment = {
-  id: string;
-  patient: string;
-  dateTime: Date;
-  mode: 'Online' | 'Presencial';
-  note?: string;
-};
+import { AppointmentRow } from '../../data/appointment.service';
 
 @Component({
   selector: 'app-next-appointment-card',
@@ -23,13 +16,14 @@ type Appointment = {
   styleUrl: './next-appointment-card.component.css',
 })
 export class NextAppointmentCardComponent {
-  @Input({ required: true }) appointment: Appointment | null = null;
+  @Input({ required: true }) appointment: AppointmentRow | null = null;
+  @Output() edit = new EventEmitter<void>();
 
-  formatDate(dt: Date) {
-    return dt.toLocaleDateString('es-MX', { weekday: 'short', day: '2-digit', month: 'short', year: 'numeric' });
+  formatDate(iso: string) {
+    return new Date(iso).toLocaleDateString('es-MX', { weekday: 'short', day: '2-digit', month: 'short', year: 'numeric' });
   }
 
-  formatTime(dt: Date) {
-    return dt.toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit' });
+  formatTime(iso: string) {
+    return new Date(iso).toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit' });
   }
 }

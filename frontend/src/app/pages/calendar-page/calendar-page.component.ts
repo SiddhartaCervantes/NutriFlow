@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
-
+import { MatDialog } from '@angular/material/dialog';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -10,6 +10,7 @@ import { NextAppointmentCardComponent } from '../../components/next-appointment-
 import { CalendarToolbarComponent } from '../../components/calendar-toolbar/calendar-toolbar.component';
 import { MonthGridComponent, CalendarCell, CalendarEvent } from '../../components/month-grid/month-grid.component';
 import { AppointmentService, AppointmentRow } from '../../data/appointment.service';
+import { AppointmentDialogComponent, AppointmentDialogResult } from '../../components/appointment-dialog/appointment-dialog.component';
 
 @Component({
   selector: 'app-calendar-page',
@@ -30,11 +31,12 @@ export class CalendarPageComponent implements OnInit {
 
   loading = true;
   monthAnchor!: Date;
-  private appointments: AppointmentRow[] = [];
+  appointments: AppointmentRow[] = [];
 
   constructor(
     private appointmentService: AppointmentService,
     private router: Router,
+    private dialog: MatDialog,
   ) {}
 
   async ngOnInit(): Promise<void> {
@@ -49,7 +51,7 @@ export class CalendarPageComponent implements OnInit {
     }
   }
 
-  // ── Toolbar inputs ─────────────────────────────────────────────────────────
+  // ── Toolbar ────────────────────────────────────────────────────────────────
   get monthLabel(): string {
     return this.monthAnchor.toLocaleDateString('es-MX', { month: 'long', year: 'numeric' });
   }
@@ -71,7 +73,7 @@ export class CalendarPageComponent implements OnInit {
     this.monthAnchor = new Date(d.getFullYear(), d.getMonth(), 1);
   }
 
-  // ── Grid inputs ────────────────────────────────────────────────────────────
+  // ── Grid ───────────────────────────────────────────────────────────────────
   get eventsForGrid(): CalendarEvent[] {
     return this.appointments.map(a => ({
       id:       a.id,
@@ -86,23 +88,49 @@ export class CalendarPageComponent implements OnInit {
   }
 
   onSelectEvent(event: CalendarEvent): void {
-    this.router.navigate(['/calendar'], { queryParams: { appointment: event.id } });
+    const appt = this.appointments.find(a => a.id === event.id);
+    if (!appt) return;
+    this.openAppointmentDialog(appt);
   }
 
   // ── Next appointment card ──────────────────────────────────────────────────
-  get nextAppointment(): { id: string; patient: string; dateTime: Date; mode: 'Online' | 'Presencial'; note?: string } | null {
+  get nextAppointment(): AppointmentRow | null {
     const now = new Date();
-    const upcoming = this.appointments
-      .map(a => ({ ...a, dateTime: new Date(a.date_time) }))
-      .filter(a => a.dateTime >= now)
-      .sort((a, b) => a.dateTime.getTime() - b.dateTime.getTime());
-    if (!upcoming[0]) return null;
-    return {
-      id:       upcoming[0].id,
-      patient:  upcoming[0].patient_name,
-      dateTime: upcoming[0].dateTime,
-      mode:     upcoming[0].mode,
-      note:     upcoming[0].note ?? undefined,
-    };
+    return this.appointments
+      .filter(a => new Date(a.date_time) >= now)
+      .sort((a, b) => new Date(a.date_time).getTime() - new Date(b.date_time).getTime())[0] ?? null;
+  }
+
+  onEditNext(): void {
+    const appt = this.nextAppointment;
+    if (appt) this.openAppointmentDialog(appt);
+  }
+
+  // ── Dialog ─────────────────────────────────────────────────────────────────
+  private openAppointmentDialog(appt: AppointmentRow): void {
+    this.dialog
+      .open(AppointmentDialogComponent, { data: appt, width: '420px' })
+      .afterClosed()
+      .subscribe(async (result: AppointmentDialogResult) => {
+        if (!result) return;
+
+        if (result.action === 'save') {
+          try {
+            const updated = await this.appointmentService.update(appt.id, result.changes);
+            this.appointments = this.appointments.map(a => a.id === appt.id ? updated : a);
+          } catch {
+            alert('No se pudo actualizar la cita. Intenta de nuevo.');
+          }
+        }
+
+        if (result.action === 'cancel') {
+          try {
+            await this.appointmentService.delete(appt.id);
+            this.appointments = this.appointments.filter(a => a.id !== appt.id);
+          } catch {
+            alert('No se pudo cancelar la cita. Intenta de nuevo.');
+          }
+        }
+      });
   }
 }

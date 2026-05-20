@@ -1,5 +1,5 @@
 <section class="cal">
-  <app-next-appointment-card [appointment]="nextAppointment"></app-next-appointment-card>
+  <app-next-appointment-card [appointment]="nextAppointment" (edit)="onEditNext()"></app-next-appointment-card>
 
   <app-calendar-toolbar
     [monthLabel]="monthLabel"

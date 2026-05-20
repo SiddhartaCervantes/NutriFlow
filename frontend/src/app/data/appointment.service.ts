@@ -61,6 +61,18 @@ export class AppointmentService {
     return row;
   }
 
+  async update(id: string, changes: Partial<NewAppointment>): Promise<AppointmentRow> {
+    const { data, error } = await supabase
+      .from('appointments')
+      .update(changes)
+      .eq('id', id)
+      .select('*')
+      .single();
+
+    if (error) throw error;
+    return data;
+  }
+
   async delete(id: string): Promise<void> {
     const { error } = await supabase
       .from('appointments')
