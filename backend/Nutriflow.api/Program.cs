@@ -19,6 +19,7 @@ builder.Services.AddControllers().AddJsonOptions(x =>
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddHttpClient();
 
 // 3. Inyectar Supabase
 builder.Services.AddScoped(provider => 

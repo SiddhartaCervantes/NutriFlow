@@ -180,6 +180,9 @@
             <span class="apptRow__badge" [class.apptRow__badge--online]="appt.mode === 'Online'">
               {{ appt.mode }}
             </span>
+            <button mat-icon-button (click)="openEditAppointment(appt)" matTooltip="Editar / cancelar">
+              <mat-icon>more_vert</mat-icon>
+            </button>
           </div>
           <mat-divider></mat-divider>
         }

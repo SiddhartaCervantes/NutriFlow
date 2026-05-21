@@ -23,8 +23,9 @@ import { AddNoteDialogComponent } from './add-note-dialog.component';
 import { AddMeasurementDialogComponent } from './add-measurement-dialog.component';
 import { AssignMealDialogComponent } from './assign-meal-dialog.component';
 import { ScheduleAppointmentDialogComponent, ScheduleAppointmentData } from './schedule-appointment-dialog.component';
+import { AppointmentDialogComponent, AppointmentDialogResult } from '../../components/appointment-dialog/appointment-dialog.component';
 import { RecipeRow } from '../../data/recipe.service';
-import { AppointmentService, NewAppointment } from '../../data/appointment.service';
+import { AppointmentService, AppointmentRow, NewAppointment } from '../../data/appointment.service';
 import { Router } from '@angular/router';
 import { ExportService } from '../../services/export.service';
 import { QrDialogComponent, QrDialogData } from './qr-dialog.component';
@@ -392,6 +393,29 @@ export class PatientDetailComponent implements OnInit {
         this.saveError = e?.message ?? 'Error al agendar la cita.';
       }
     });
+  }
+
+  openEditAppointment(appt: AppointmentRow): void {
+    this.dialog
+      .open(AppointmentDialogComponent, { data: appt, width: '420px' })
+      .afterClosed()
+      .subscribe(async (result: AppointmentDialogResult) => {
+        if (!result) return;
+        if (result.action === 'save') {
+          try {
+            const updated = await this.appointmentService.update(appt.id, result.changes);
+            this.upcomingAppointments = this.upcomingAppointments.map(a =>
+              a.id === appt.id ? updated : a
+            );
+          } catch { this.saveError = 'No se pudo actualizar la cita.'; }
+        }
+        if (result.action === 'cancel') {
+          try {
+            await this.appointmentService.delete(appt.id);
+            this.upcomingAppointments = this.upcomingAppointments.filter(a => a.id !== appt.id);
+          } catch { this.saveError = 'No se pudo cancelar la cita.'; }
+        }
+      });
   }
 
   openAddMeasurement(): void {

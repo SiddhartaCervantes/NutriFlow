@@ -4,6 +4,7 @@ import { ReactiveFormsModule, Validators, FormBuilder } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { Router } from '@angular/router';
 import { PatientsSupabaseService } from '../../data/patients.supabase.service';
+import { AuthBackendService } from '../../data/auth-backend.service';
 
 export type PatientFormData = {
   nombre: string;
@@ -32,7 +33,8 @@ type StepId = 1 | 2 | 3;
 export class NewPatientFormComponent {
   private fb = inject(FormBuilder);
   private router = inject(Router);
-  private patientsApi = inject(PatientsSupabaseService);
+  private patientsApi    = inject(PatientsSupabaseService);
+  private authBackend    = inject(AuthBackendService);
 
   // (si aún quieres mantenerlos, no estorban)
   @Output() back = new EventEmitter<void>();
@@ -178,10 +180,12 @@ export class NewPatientFormComponent {
         notas: payload.notas || undefined,
       });
 
-      // opcional: mantener tu output (por si la página padre escucha)
-      this.save.emit(payload);
+      // Invitar al paciente por email si tiene uno registrado
+      if (payload.email) {
+        try { await this.authBackend.invitePatient(payload.email); } catch { /* no bloquear si falla */ }
+      }
 
-      // vuelve a lista
+      this.save.emit(payload);
       setTimeout(() => this.goToList(), 700);
     } catch (e: any) {
       this.showSuccess = false;

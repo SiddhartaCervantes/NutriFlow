@@ -108,20 +108,14 @@ mat-sidenav-content {
 
 .app-shell.is-collapsed .side-nav,
 .app-shell.is-collapsed .side-footer {
-  padding: 0;
-  align-items: center;
+  padding: 0 10px;
+  align-items: stretch;
 }
 
 .app-shell.is-collapsed .nav-item {
-  width: var(--sidenav-collapsed-width) !important;
   padding: 0 !important;
   justify-content: center !important;
-}
-
-.app-shell.is-collapsed .nav-item ::ng-deep .mdc-button__label {
-  display: flex;
-  justify-content: center;
-  width: 100%;
+  width: 100% !important;
 }
 
 .app-shell.is-expanded .nav-item {
